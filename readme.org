@@ -29,10 +29,10 @@
 ** Meeting 1 <2020-09-17 10:30-11:30>
 - Assigned Morgan "Secretary" role for weekly meetings
 - Assigned Sam "Submit deliverables" role
-- Created meeting guidelines (found [[https://github.com/MorganJamesSmith/sysc3010_group_project/readme.org#weekly-meeting-guidelines][here]])
+- Created meeting guidelines (found [[https://github.com/MorganJamesSmith/sysc3010_group_project/blob/master/readme.org#weekly-meeting-guidelines][here]])
 - Discussed team contract
 - Created a readme to track progress, expectations, and meeting notes
-  (found [[https://github.com/MorganJamesSmith/sysc3010_group_project/readme.org][here]])
+  (found [[https://github.com/MorganJamesSmith/sysc3010_group_project/blob/master/readme.org#weekly-meeting-guidelines][here]])
 - Scheduled Meeting 2
 *** To be completed before meeting 2
 - All members: Review
