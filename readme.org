@@ -1,0 +1,77 @@
+#+title: SYSC3010 Group Project
+* Project Ideas
+* Group Expectations
+- Slack messages will be responded to within 1 work day.
+* Group Roles
+** Sam
+- Submit deliverables
+** Sunny
+** Mario
+** Morgan
+- Meeting Secretary
+* Deadlines
+** DONE Get project group
+CLOSED: [2020-09-08 Tue 18:21] DEADLINE: <2020-09-09 Wed>
+Group: L3-T-2
+Members:
+ - Morgan Smith
+ - Samuel Dewan
+ - Mario Shebib
+ - Sunjeevani Pujari
+** TODO Team Contract Submission
+DEADLINE: <2020-09-20 Sun>
+** TODO Approval of project concept
+DEADLINE: <2020-09-23 Wed>
+** TODO Synchronous Proposal  Peer-Review (Mandatory attendance)
+DEADLINE: <2020-09-30 Wed>
+** TODO Final Submission of Project Proposal (On CULearn)
+DEADLINE: <2020-10-02 Fri 20:00>
+** TODO Individual Lab Exam (To be scheduled collaboratively with TAs)
+DEADLINE: <2020-10-05 Mon>
+** TODO Synchronous Design Peer Review (Mandatory)
+DEADLINE: <2020-10-21 Wed>
+** TODO Final Submission of Project Design (On CULearn)
+DEADLINE: <2020-10-23 Fri 20:00>
+** TODO Lab Check-in (End-to-End Demo) (To be scheduled collaboratively with TAs)
+DEADLINE: <2020-11-04 Wed>
+** TODO Lab Check-in (Testing Demo) (To be scheduled collaboratively with TAs)
+DEADLINE: <2020-11-18 Wed>
+** TODO Submission of Technical Memo
+DEADLINE: <2020-11-22 Sun 20:00>
+** TODO Synchronous Code Peer Review (Mandatory)
+DEADLINE: <2020-11-25 Wed>
+** TODO Final Demo of Project (To be scheduled collaboratively with TAs)
+DEADLINE: <2020-12-02 Wed>
+** TODO Final Project Report/Video with Synchronous Poster Fair
+DEADLINE: <2020-12-09 Wed 11:30>
+* Weekly Meeting Guidelines
+- Happens every Tuesday @ 09:30
+- Reminder should be sent in slack group chat the previous night
+- Meeting is voice chat @ https://meet.jit.si/wewantbird
+- Morgan takes notes and adds them to this document
+
+
+1. Deliver Reports of what was accomplished since last meeting
+2. Discuss any impediments
+3. Discuss any impediments expected for the next week (example: lack
+   of time due to midterms or travel)
+4. Assign work for the next week
+* Project Meeting Notes
+** Meeting 2 <2020-09-18 10:00>
+*** Agenda
+- Discuss Project Ideas
+- Finalizing team contract
+** Meeting 1 <2020-09-17 10:30-11:30>
+- Assigned Morgan "Secretary" role for weekly meetings
+- Assigned Sam "Submit deliverables" role
+- Created meeting guidelines (found [[https://github.com/MorganJamesSmith/sysc3010_group_project/readme.org#weekly-meeting-guidelines][here]])
+- Discussed team contract
+- Created a readme to track progress, expectations, and meeting notes
+  (found [[https://github.com/MorganJamesSmith/sysc3010_group_project/readme.org][here]])
+- Scheduled Meeting 2
+*** To be completed before meeting 2
+- All members: Review
+  https://github.com/MorganJamesSmith/sysc3010_group_project/readme.org
+  and provide comments
+- All members: Review all project requirements (Fact check + add information to
+  this readme)
