@@ -1,4 +1,11 @@
 #+title: SYSC3010 Group Project
+* Table of Contents                                                   :TOC_1:
+- [[#project-ideas][Project Ideas]]
+- [[#group-expectations][Group Expectations]]
+- [[#group-roles][Group Roles]]
+- [[#weekly-meeting-guidelines][Weekly Meeting Guidelines]]
+- [[#project-meeting-notes][Project Meeting Notes]]
+
 * Project Ideas
 * Group Expectations
 - Slack messages will be responded to within 1 work day.
