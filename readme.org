@@ -32,11 +32,11 @@
 - Created meeting guidelines (found [[https://github.com/MorganJamesSmith/sysc3010_group_project/blob/master/readme.org#weekly-meeting-guidelines][here]])
 - Discussed team contract
 - Created a readme to track progress, expectations, and meeting notes
-  (found [[https://github.com/MorganJamesSmith/sysc3010_group_project/blob/master/readme.org#weekly-meeting-guidelines][here]])
+  (found [[https://github.com/MorganJamesSmith/sysc3010_group_project/blob/master/readme.org][here]])
 - Scheduled Meeting 2
 *** To be completed before meeting 2
 - All members: Review
-  https://github.com/MorganJamesSmith/sysc3010_group_project/readme.org
+  https://github.com/MorganJamesSmith/sysc3010_group_project/blob/master/readme.org
   and provide comments
 - All members: Review all project requirements (Fact check + add information to
   this readme)
