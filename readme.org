@@ -28,9 +28,12 @@ door with the results of the query.
 If the user has not already been denied, the system will then take the
 user's temperature. If the temperature is above the threshold, they
 can try again in 1 minute. If they fail 3 times in a row, they will be
-forbidden access for 14 days (unless a system admin uses the GUI to
-return their access). Every temperature reading is sent to the server
-along with the users ID.
+forbidden access, and the operator of the system will have the option
+to automatically deny them entry for the duration of a quarantine
+period.
+
+Every access attempt, including the associated temperature reading and
+user ID, is sent to the server to be logged in a database.
 
 If the temperature is below the threshold, and they have access, the
 door will open.
@@ -48,7 +51,7 @@ negative test result for COVID-19, their access to the building could
 be restored.
 
 ** Hardware
-- 3D printed door
+- 3D printed scale model of door
 - Servo
 - Contact-less Temperature Sensor
 - NFC reader + cards
