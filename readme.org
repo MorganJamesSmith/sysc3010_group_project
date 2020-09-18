@@ -1,12 +1,94 @@
 #+title: SYSC3010 Group Project
 * Table of Contents                                                   :TOC_1:
-- [[#project-ideas][Project Ideas]]
+- [[#symptom-monitoring-door-system][Symptom monitoring Door System]]
 - [[#group-expectations][Group Expectations]]
 - [[#group-roles][Group Roles]]
 - [[#weekly-meeting-guidelines][Weekly Meeting Guidelines]]
 - [[#project-meeting-notes][Project Meeting Notes]]
 
-* Project Ideas
+* Symptom monitoring Door System
+** Description
+The purpose of this system is to increase security and safety of
+secured locations, like offices. The system will attempt to prevent
+the spread of illness by limiting the number of people which can enter
+the building, and by preventing people with a high body temperature
+from entering the building.
+
+The system will display a green light at the entrance if it is
+accepting people. The light will turn red when the area is closed or
+if there are too many people inside.
+
+If the light is green, the user will present their NFC security card
+to the system. The system send a message containing a unique user ID
+to a server. The server will use it'd database to determine if the
+user is authorized and if the user had previously shown symptoms to
+the system within the last 14 days. The server will then notify the
+door with the results of the query.
+
+If the user has not already been denied, the system will then take the
+user's temperature. If the temperature is above the threshold, they
+can try again in 1 minute. If they fail 3 times in a row, they will be
+forbidden access for 14 days (unless a system admin uses the GUI to
+return their access). Every temperature reading is sent to the server
+along with the users ID.
+
+If the temperature is below the threshold, and they have access, the
+door will open.
+
+Users will also have to present their NFC card to the door to leave
+the building. By tracking users entering and exiting the building, the
+server will know how many people are in the building.
+
+The central server will also provide a GUI available to the buildings
+security team. This GUI will allow security officers to manually
+update the status of individuals in case a door must fall back to
+manual operation. It will also allow the security team to modify who
+has access to the building. For example, if someone receives a
+negative test result for COVID-19, their access to the building could
+be restored.
+
+** Hardware
+- 3D printed door
+- Servo
+- Contact-less Temperature Sensor
+- NFC reader + cards
+- Raspberry Pi's
+** Requirements
+*** Computer Components [3/3]
+- [X] Computer per student
+  - Computer for each entrance and exit
+  - Database computer
+- [X] computer in standalone mode
+  - Interface for security team
+    - Allow manual modification of user status
+    - View temperature information on each person
+- [X] computer in headless mode
+  - Computers at entrances and exits
+*** Hardware Components [2/3]
+- [X] Actuator
+  - Door opener
+- [X] one sensor per student
+  - Temperature probes
+- [ ] Feedback loop
+  - Door opens in response to temperature
+*** Software Components [5/7]
+- [X] Database
+  - Number of people inside building
+  - Uniquely identify people via smart card
+- [X] Computer hosting database does something else
+  - Runs GUI
+- [ ] Periodic Timing Loop
+  - Restrict access to when building is open
+- [ ] Data processing
+  - Access control
+  - View interaction history
+- [X] Notifications
+  - Notify on failure and when near capacity
+  - Notify if known infected people try to enter
+- [X] Communication (through thingspeak)
+  - Synchronize Database
+- [X] GUI
+  - See security team interface
 * Group Expectations
 - Slack messages will be responded to within 1 work day.
 * Group Roles
