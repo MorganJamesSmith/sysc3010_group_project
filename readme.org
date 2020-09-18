@@ -29,10 +29,17 @@
    of time due to midterms or travel)
 4. Assign work for the next week
 * Project Meeting Notes
-** Meeting 2 <2020-09-18 10:00>
+** Meeting 3 <2020-09-22 Tue 09:30>
+*** Agenda
+- Research project concepts
+  - Look into hardware price/availability/complexity
+** Meeting 2 <2020-09-18 10:00-12:20>
 *** Agenda
 - Discuss Project Ideas
 - Finalizing team contract
+*** Completed
+- Team contract
+- Initial draft of proposal of a door monitoring system
 ** Meeting 1 <2020-09-17 10:30-11:30>
 - Assigned Morgan "Secretary" role for weekly meetings
 - Assigned Sam "Submit deliverables" role
