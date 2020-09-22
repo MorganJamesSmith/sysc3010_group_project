@@ -154,10 +154,46 @@ be restored.
    of time due to midterms or travel)
 4. Assign work for the next week
 * Project Meeting Notes
-** Meeting 3 <2020-09-22 Tue 09:30>
+** Meeting 4 <2020-09-29 Tue 09:30>
+*** Agenda
+- Review proposal draft together
+** Meeting 3 <2020-09-22 Tue 09:30-11:00>
 *** Agenda
 - Research project concepts
   - Look into hardware price/availability/complexity
+*** Completed
+- Finalized Project Idea
+*** TODOs
+- Everyone: Review proposal draft posted on Monday and bring written
+  comments to next meeting
+- Sam: Update readme with hardware research
+- Morgan: Email Prof to confirm our project concept is approved
+**** Proposal
+***** Timeline
+****** Content
+DEADLINE: <2020-09-27 Sun 12:00>
+****** Latex formatting + send PDF to slack
+DEADLINE: <2020-09-28 Mon>
+***** Sunny
+- [ ] Executive Summary
+  - [ ] Problem Statement
+  - [ ] Motivation
+  - [ ] Objective
+  - [ ] Goals
+  - [ ] Scope
+***** Morgan
+- [ ] deployment diagram
+- [ ] door usage diagram
+- [ ] hardware block diagram
+***** Sam
+- [ ] Test Plan
+- [ ] Milestones and Timeline
+- [ ] Latex formatting
+***** Mario
+- [ ] proposed solution
+  - [ ] Server database
+  - [ ] GUI
+  - [ ] Integrate Morgan's diagrams
 ** Meeting 2 <2020-09-18 10:00-12:20>
 *** Agenda
 - Discuss Project Ideas
