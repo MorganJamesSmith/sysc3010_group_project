@@ -95,7 +95,7 @@ be restored.
 
 * Possible hardware
 ** Temperature Sensor
--[[https://www.melexis.com/en/product/MLX90614/Digital-Plug-Play-Infrared-Thermometer-TO-Can][MLX90614]]
+- [[https://www.melexis.com/en/product/MLX90614/Digital-Plug-Play-Infrared-Thermometer-TO-Can][MLX90614]]
     - Very popular IR thermometer in TO-can
     - MLX90614ESF-DAA is the medical version, MLX90614ESF-BAA is the non medial
       3 V version
