@@ -17,6 +17,11 @@ jobs:
         emacs --quick --script generate-html.el
     - name: Commit results
       run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
         git add html
         git commit html -m 'docs: Re-build html' || echo "No changes to commit"
-        git push origin || echo "No changes to commit"
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
