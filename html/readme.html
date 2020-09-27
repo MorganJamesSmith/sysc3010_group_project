@@ -3,11 +3,241 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-09-27 Sun 20:06 -->
+<!-- 2020-09-27 Sun 20:20 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>SYSC3010 Group Project</title>
 <meta name="generator" content="Org mode" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
 </head>
 <body>
 <div id="content">
@@ -16,61 +246,47 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org61af302">1. Table of Contents&#xa0;&#xa0;&#xa0;<span class="tag"><span class="TOC_1">TOC_1</span></span></a></li>
-<li><a href="#orgf6870e9">2. Symptom monitoring Door System</a>
+<li><a href="#org6379e01">1. Symptom monitoring Door System</a>
 <ul>
-<li><a href="#org87e6edb">2.1. Description</a></li>
-<li><a href="#org914f2cc">2.2. Hardware</a></li>
-<li><a href="#org590db4b">2.3. Requirements</a></li>
+<li><a href="#org135b4b2">1.1. Description</a></li>
+<li><a href="#org9c9424f">1.2. Hardware</a></li>
+<li><a href="#org3d6dc16">1.3. Requirements</a></li>
 </ul>
 </li>
-<li><a href="#orga43617d">3. Possible hardware</a>
+<li><a href="#org83f7f9b">2. Possible hardware</a>
 <ul>
-<li><a href="#org3ecf28f">3.1. Temperature Sensor</a></li>
-<li><a href="#orgc03ab9c">3.2. NFC</a></li>
+<li><a href="#org54a267c">2.1. Temperature Sensor</a></li>
+<li><a href="#org83281ab">2.2. NFC</a></li>
 </ul>
 </li>
-<li><a href="#org0560d7a">4. Group Expectations</a></li>
-<li><a href="#orgad0e610">5. Group Roles</a>
+<li><a href="#org0dd641f">3. Group Expectations</a></li>
+<li><a href="#org68e2b2d">4. Group Roles</a>
 <ul>
-<li><a href="#orgf1f4940">5.1. Sam</a></li>
-<li><a href="#org2dde9d8">5.2. Sunny</a></li>
-<li><a href="#orge7a594b">5.3. Mario</a></li>
-<li><a href="#org73812cb">5.4. Morgan</a></li>
+<li><a href="#org981ccdd">4.1. Sam</a></li>
+<li><a href="#org88229c5">4.2. Sunny</a></li>
+<li><a href="#org8236ae1">4.3. Mario</a></li>
+<li><a href="#org7e4d46f">4.4. Morgan</a></li>
 </ul>
 </li>
-<li><a href="#orgddef5e1">6. Weekly Meeting Guidelines</a></li>
-<li><a href="#org12b8327">7. Project Meeting Notes</a>
+<li><a href="#org60e7f11">5. Weekly Meeting Guidelines</a></li>
+<li><a href="#org38a9fc2">6. Project Meeting Notes</a>
 <ul>
-<li><a href="#org00f88e4">7.1. Meeting 4 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-09-29 Tue 09:30&gt;</span></span></a></li>
-<li><a href="#orgedee7cb">7.2. Meeting 3 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-09-22 Tue 09:30&gt;&#x2013;&lt;2020-09-22 Tue 11:00&gt;</span></span></a></li>
-<li><a href="#org63bf40b">7.3. Meeting 2 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-09-18 Fri 10:00&gt;&#x2013;&lt;2020-09-18 Fri 12:20&gt;</span></span></a></li>
-<li><a href="#org96405d2">7.4. Meeting 1 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-09-17 Thu 10:30&gt;&#x2013;&lt;2020-09-17 Thu 11:30&gt;</span></span></a></li>
+<li><a href="#orga18db44">6.1. Meeting 4 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-09-29 Tue 09:30&gt;</span></span></a></li>
+<li><a href="#org61d4708">6.2. Meeting 3 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-09-22 Tue 09:30&gt;&#x2013;&lt;2020-09-22 Tue 11:00&gt;</span></span></a></li>
+<li><a href="#org540fa70">6.3. Meeting 2 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-09-18 Fri 10:00&gt;&#x2013;&lt;2020-09-18 Fri 12:20&gt;</span></span></a></li>
+<li><a href="#org35a3264">6.4. Meeting 1 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-09-17 Thu 10:30&gt;&#x2013;&lt;2020-09-17 Thu 11:30&gt;</span></span></a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org61af302" class="outline-2">
-<h2 id="org61af302"><span class="section-number-2">1</span> Table of Contents&#xa0;&#xa0;&#xa0;<span class="tag"><span class="TOC_1">TOC_1</span></span></h2>
+<div id="outline-container-org6379e01" class="outline-2">
+<h2 id="org6379e01"><span class="section-number-2">1</span> Symptom monitoring Door System</h2>
 <div class="outline-text-2" id="text-1">
-<ul class="org-ul">
-<li></li>
-<li></li>
-<li></li>
-<li></li>
-<li></li>
-</ul>
 </div>
-</div>
-
-<div id="outline-container-orgf6870e9" class="outline-2">
-<h2 id="orgf6870e9"><span class="section-number-2">2</span> Symptom monitoring Door System</h2>
-<div class="outline-text-2" id="text-2">
-</div>
-<div id="outline-container-org87e6edb" class="outline-3">
-<h3 id="org87e6edb"><span class="section-number-3">2.1</span> Description</h3>
-<div class="outline-text-3" id="text-2-1">
+<div id="outline-container-org135b4b2" class="outline-3">
+<h3 id="org135b4b2"><span class="section-number-3">1.1</span> Description</h3>
+<div class="outline-text-3" id="text-1-1">
 <p>
 The purpose of this system is to increase security and safety of
 secured locations, like offices. The system will attempt to prevent
@@ -131,9 +347,9 @@ be restored.
 </div>
 </div>
 
-<div id="outline-container-org914f2cc" class="outline-3">
-<h3 id="org914f2cc"><span class="section-number-3">2.2</span> Hardware</h3>
-<div class="outline-text-3" id="text-2-2">
+<div id="outline-container-org9c9424f" class="outline-3">
+<h3 id="org9c9424f"><span class="section-number-3">1.2</span> Hardware</h3>
+<div class="outline-text-3" id="text-1-2">
 <ul class="org-ul">
 <li>3D printed scale model of door</li>
 <li>Servo</li>
@@ -143,13 +359,13 @@ be restored.
 </ul>
 </div>
 </div>
-<div id="outline-container-org590db4b" class="outline-3">
-<h3 id="org590db4b"><span class="section-number-3">2.3</span> Requirements</h3>
-<div class="outline-text-3" id="text-2-3">
+<div id="outline-container-org3d6dc16" class="outline-3">
+<h3 id="org3d6dc16"><span class="section-number-3">1.3</span> Requirements</h3>
+<div class="outline-text-3" id="text-1-3">
 </div>
 <ol class="org-ol">
-<li><a id="org69cef32"></a>Computer Components <code>[3/3]</code><br />
-<div class="outline-text-4" id="text-2-3-1">
+<li><a id="org3414f48"></a>Computer Components <code>[3/3]</code><br />
+<div class="outline-text-4" id="text-1-3-1">
 <ul class="org-ul">
 <li class="on"><code>[X]</code> Computer per student
 <ul class="org-ul">
@@ -171,8 +387,8 @@ be restored.
 </ul>
 </div>
 </li>
-<li><a id="org899df94"></a>Hardware Components <code>[2/3]</code><br />
-<div class="outline-text-4" id="text-2-3-2">
+<li><a id="org91fec70"></a>Hardware Components <code>[2/3]</code><br />
+<div class="outline-text-4" id="text-1-3-2">
 <ul class="org-ul">
 <li class="on"><code>[X]</code> Actuator
 <ul class="org-ul">
@@ -189,8 +405,8 @@ be restored.
 </ul>
 </div>
 </li>
-<li><a id="org3383aeb"></a>Software Components <code>[5/7]</code><br />
-<div class="outline-text-4" id="text-2-3-3">
+<li><a id="org0fdc21c"></a>Software Components <code>[5/7]</code><br />
+<div class="outline-text-4" id="text-1-3-3">
 <ul class="org-ul">
 <li class="on"><code>[X]</code> Database
 <ul class="org-ul">
@@ -230,13 +446,13 @@ be restored.
 </div>
 </div>
 
-<div id="outline-container-orga43617d" class="outline-2">
-<h2 id="orga43617d"><span class="section-number-2">3</span> Possible hardware</h2>
-<div class="outline-text-2" id="text-3">
+<div id="outline-container-org83f7f9b" class="outline-2">
+<h2 id="org83f7f9b"><span class="section-number-2">2</span> Possible hardware</h2>
+<div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-org3ecf28f" class="outline-3">
-<h3 id="org3ecf28f"><span class="section-number-3">3.1</span> Temperature Sensor</h3>
-<div class="outline-text-3" id="text-3-1">
+<div id="outline-container-org54a267c" class="outline-3">
+<h3 id="org54a267c"><span class="section-number-3">2.1</span> Temperature Sensor</h3>
+<div class="outline-text-3" id="text-2-1">
 <ul class="org-ul">
 <li><a href="https://www.melexis.com/en/product/MLX90614/Digital-Plug-Play-Infrared-Thermometer-TO-Can">MLX90614</a>
 <ul class="org-ul">
@@ -259,9 +475,9 @@ microcontoller like an ATTiny as a bridge</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orgc03ab9c" class="outline-3">
-<h3 id="orgc03ab9c"><span class="section-number-3">3.2</span> NFC</h3>
-<div class="outline-text-3" id="text-3-2">
+<div id="outline-container-org83281ab" class="outline-3">
+<h3 id="org83281ab"><span class="section-number-3">2.2</span> NFC</h3>
+<div class="outline-text-3" id="text-2-2">
 <ul class="org-ul">
 <li><a href="https://www.nxp.com/docs/en/nxp/data-sheets/PN532_C1.pdf">Adafruit breakout for PN532</a>
 <ul class="org-ul">
@@ -295,44 +511,44 @@ same chip though</li>
 </div>
 
 
-<div id="outline-container-org0560d7a" class="outline-2">
-<h2 id="org0560d7a"><span class="section-number-2">4</span> Group Expectations</h2>
-<div class="outline-text-2" id="text-4">
+<div id="outline-container-org0dd641f" class="outline-2">
+<h2 id="org0dd641f"><span class="section-number-2">3</span> Group Expectations</h2>
+<div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li>Slack messages will be responded to within 1 work day.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orgad0e610" class="outline-2">
-<h2 id="orgad0e610"><span class="section-number-2">5</span> Group Roles</h2>
-<div class="outline-text-2" id="text-5">
+<div id="outline-container-org68e2b2d" class="outline-2">
+<h2 id="org68e2b2d"><span class="section-number-2">4</span> Group Roles</h2>
+<div class="outline-text-2" id="text-4">
 </div>
-<div id="outline-container-orgf1f4940" class="outline-3">
-<h3 id="orgf1f4940"><span class="section-number-3">5.1</span> Sam</h3>
-<div class="outline-text-3" id="text-5-1">
+<div id="outline-container-org981ccdd" class="outline-3">
+<h3 id="org981ccdd"><span class="section-number-3">4.1</span> Sam</h3>
+<div class="outline-text-3" id="text-4-1">
 <ul class="org-ul">
 <li>Submit deliverables</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org2dde9d8" class="outline-3">
-<h3 id="org2dde9d8"><span class="section-number-3">5.2</span> Sunny</h3>
+<div id="outline-container-org88229c5" class="outline-3">
+<h3 id="org88229c5"><span class="section-number-3">4.2</span> Sunny</h3>
 </div>
-<div id="outline-container-orge7a594b" class="outline-3">
-<h3 id="orge7a594b"><span class="section-number-3">5.3</span> Mario</h3>
+<div id="outline-container-org8236ae1" class="outline-3">
+<h3 id="org8236ae1"><span class="section-number-3">4.3</span> Mario</h3>
 </div>
-<div id="outline-container-org73812cb" class="outline-3">
-<h3 id="org73812cb"><span class="section-number-3">5.4</span> Morgan</h3>
-<div class="outline-text-3" id="text-5-4">
+<div id="outline-container-org7e4d46f" class="outline-3">
+<h3 id="org7e4d46f"><span class="section-number-3">4.4</span> Morgan</h3>
+<div class="outline-text-3" id="text-4-4">
 <ul class="org-ul">
 <li>Meeting Secretary</li>
 </ul>
 </div>
 </div>
 </div>
-<div id="outline-container-orgddef5e1" class="outline-2">
-<h2 id="orgddef5e1"><span class="section-number-2">6</span> Weekly Meeting Guidelines</h2>
-<div class="outline-text-2" id="text-6">
+<div id="outline-container-org60e7f11" class="outline-2">
+<h2 id="org60e7f11"><span class="section-number-2">5</span> Weekly Meeting Guidelines</h2>
+<div class="outline-text-2" id="text-5">
 <ul class="org-ul">
 <li>Happens every Tuesday @ 09:30</li>
 <li>Reminder should be sent in slack group chat the previous night</li>
@@ -350,17 +566,17 @@ of time due to midterms or travel)</li>
 </ol>
 </div>
 </div>
-<div id="outline-container-org12b8327" class="outline-2">
-<h2 id="org12b8327"><span class="section-number-2">7</span> Project Meeting Notes</h2>
-<div class="outline-text-2" id="text-7">
+<div id="outline-container-org38a9fc2" class="outline-2">
+<h2 id="org38a9fc2"><span class="section-number-2">6</span> Project Meeting Notes</h2>
+<div class="outline-text-2" id="text-6">
 </div>
-<div id="outline-container-org00f88e4" class="outline-3">
-<h3 id="org00f88e4"><span class="section-number-3">7.1</span> Meeting 4 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-09-29 Tue 09:30&gt;</span></span></h3>
-<div class="outline-text-3" id="text-7-1">
+<div id="outline-container-orga18db44" class="outline-3">
+<h3 id="orga18db44"><span class="section-number-3">6.1</span> Meeting 4 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-09-29 Tue 09:30&gt;</span></span></h3>
+<div class="outline-text-3" id="text-6-1">
 </div>
 <ol class="org-ol">
-<li><a id="org1eb6614"></a>Agenda<br />
-<div class="outline-text-4" id="text-7-1-1">
+<li><a id="org44d9311"></a>Agenda<br />
+<div class="outline-text-4" id="text-6-1-1">
 <ul class="org-ul">
 <li>Review proposal draft together</li>
 </ul>
@@ -368,13 +584,13 @@ of time due to midterms or travel)</li>
 </li>
 </ol>
 </div>
-<div id="outline-container-orgedee7cb" class="outline-3">
-<h3 id="orgedee7cb"><span class="section-number-3">7.2</span> Meeting 3 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-09-22 Tue 09:30&gt;&#x2013;&lt;2020-09-22 Tue 11:00&gt;</span></span></h3>
-<div class="outline-text-3" id="text-7-2">
+<div id="outline-container-org61d4708" class="outline-3">
+<h3 id="org61d4708"><span class="section-number-3">6.2</span> Meeting 3 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-09-22 Tue 09:30&gt;&#x2013;&lt;2020-09-22 Tue 11:00&gt;</span></span></h3>
+<div class="outline-text-3" id="text-6-2">
 </div>
 <ol class="org-ol">
-<li><a id="orgc43812b"></a>Agenda<br />
-<div class="outline-text-4" id="text-7-2-1">
+<li><a id="orgd16441e"></a>Agenda<br />
+<div class="outline-text-4" id="text-6-2-1">
 <ul class="org-ul">
 <li>Research project concepts
 <ul class="org-ul">
@@ -383,15 +599,15 @@ of time due to midterms or travel)</li>
 </ul>
 </div>
 </li>
-<li><a id="orgfd9596d"></a>Completed<br />
-<div class="outline-text-4" id="text-7-2-2">
+<li><a id="orgc22ee8e"></a>Completed<br />
+<div class="outline-text-4" id="text-6-2-2">
 <ul class="org-ul">
 <li>Finalized Project Idea</li>
 </ul>
 </div>
 </li>
-<li><a id="org3777a03"></a>TODOs<br />
-<div class="outline-text-4" id="text-7-2-3">
+<li><a id="orgda55e61"></a>TODOs<br />
+<div class="outline-text-4" id="text-6-2-3">
 <ul class="org-ul">
 <li>Everyone: Review proposal draft posted on Monday and bring written
 comments to next meeting</li>
@@ -400,22 +616,24 @@ comments to next meeting</li>
 </ul>
 </div>
 <ol class="org-ol">
-<li><a id="org739004f"></a>Proposal<br />
+<li><a id="orgb7235f1"></a>Proposal<br />
 <ol class="org-ol">
-<li><a id="org0480569"></a>Timeline<br />
+<li><a id="org0a9f118"></a>Timeline<br />
 <ol class="org-ol">
-<li><a id="orgd5bf3aa"></a>Content<br />
-<div class="outline-text-7" id="text-7-2-3-1-1-1">
+<li><a id="org640e656"></a>Content<br />
+<div class="outline-text-7" id="text-6-2-3-1-1-1">
+<p><span class="timestamp-wrapper"><span class="timestamp-kwd">DEADLINE:</span> <span class="timestamp">&lt;2020-09-27 Sun 12:00&gt;</span></span></p>
 </div>
 </li>
-<li><a id="orge3518b6"></a>Latex formatting + send PDF to slack<br />
-<div class="outline-text-7" id="text-7-2-3-1-1-2">
+<li><a id="orgef3feaa"></a>Latex formatting + send PDF to slack<br />
+<div class="outline-text-7" id="text-6-2-3-1-1-2">
+<p><span class="timestamp-wrapper"><span class="timestamp-kwd">DEADLINE:</span> <span class="timestamp">&lt;2020-09-28 Mon&gt;</span></span></p>
 </div>
 </li>
 </ol>
 </li>
-<li><a id="org92b2e2e"></a>Sunny<br />
-<div class="outline-text-6" id="text-7-2-3-1-2">
+<li><a id="org85eee46"></a>Sunny<br />
+<div class="outline-text-6" id="text-6-2-3-1-2">
 <ul class="org-ul">
 <li class="off"><code>[&#xa0;]</code> Executive Summary
 <ul class="org-ul">
@@ -428,8 +646,8 @@ comments to next meeting</li>
 </ul>
 </div>
 </li>
-<li><a id="org13a05c0"></a>Morgan<br />
-<div class="outline-text-6" id="text-7-2-3-1-3">
+<li><a id="org2421049"></a>Morgan<br />
+<div class="outline-text-6" id="text-6-2-3-1-3">
 <ul class="org-ul">
 <li class="off"><code>[&#xa0;]</code> deployment diagram</li>
 <li class="off"><code>[&#xa0;]</code> door usage diagram</li>
@@ -437,8 +655,8 @@ comments to next meeting</li>
 </ul>
 </div>
 </li>
-<li><a id="org3219ea9"></a>Sam<br />
-<div class="outline-text-6" id="text-7-2-3-1-4">
+<li><a id="org945c699"></a>Sam<br />
+<div class="outline-text-6" id="text-6-2-3-1-4">
 <ul class="org-ul">
 <li class="off"><code>[&#xa0;]</code> Test Plan</li>
 <li class="off"><code>[&#xa0;]</code> Milestones and Timeline</li>
@@ -446,8 +664,8 @@ comments to next meeting</li>
 </ul>
 </div>
 </li>
-<li><a id="org7cca6f0"></a>Mario<br />
-<div class="outline-text-6" id="text-7-2-3-1-5">
+<li><a id="org7a03fe3"></a>Mario<br />
+<div class="outline-text-6" id="text-6-2-3-1-5">
 <ul class="org-ul">
 <li class="off"><code>[&#xa0;]</code> proposed solution
 <ul class="org-ul">
@@ -464,21 +682,21 @@ comments to next meeting</li>
 </li>
 </ol>
 </div>
-<div id="outline-container-org63bf40b" class="outline-3">
-<h3 id="org63bf40b"><span class="section-number-3">7.3</span> Meeting 2 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-09-18 Fri 10:00&gt;&#x2013;&lt;2020-09-18 Fri 12:20&gt;</span></span></h3>
-<div class="outline-text-3" id="text-7-3">
+<div id="outline-container-org540fa70" class="outline-3">
+<h3 id="org540fa70"><span class="section-number-3">6.3</span> Meeting 2 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-09-18 Fri 10:00&gt;&#x2013;&lt;2020-09-18 Fri 12:20&gt;</span></span></h3>
+<div class="outline-text-3" id="text-6-3">
 </div>
 <ol class="org-ol">
-<li><a id="org7411e02"></a>Agenda<br />
-<div class="outline-text-4" id="text-7-3-1">
+<li><a id="org18b2b1c"></a>Agenda<br />
+<div class="outline-text-4" id="text-6-3-1">
 <ul class="org-ul">
 <li>Discuss Project Ideas</li>
 <li>Finalizing team contract</li>
 </ul>
 </div>
 </li>
-<li><a id="org9c17822"></a>Completed<br />
-<div class="outline-text-4" id="text-7-3-2">
+<li><a id="org482e5c0"></a>Completed<br />
+<div class="outline-text-4" id="text-6-3-2">
 <ul class="org-ul">
 <li>Team contract</li>
 <li>Initial draft of proposal of a door monitoring system</li>
@@ -487,9 +705,9 @@ comments to next meeting</li>
 </li>
 </ol>
 </div>
-<div id="outline-container-org96405d2" class="outline-3">
-<h3 id="org96405d2"><span class="section-number-3">7.4</span> Meeting 1 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-09-17 Thu 10:30&gt;&#x2013;&lt;2020-09-17 Thu 11:30&gt;</span></span></h3>
-<div class="outline-text-3" id="text-7-4">
+<div id="outline-container-org35a3264" class="outline-3">
+<h3 id="org35a3264"><span class="section-number-3">6.4</span> Meeting 1 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-09-17 Thu 10:30&gt;&#x2013;&lt;2020-09-17 Thu 11:30&gt;</span></span></h3>
+<div class="outline-text-3" id="text-6-4">
 <ul class="org-ul">
 <li>Assigned Morgan "Secretary" role for weekly meetings</li>
 <li>Assigned Sam "Submit deliverables" role</li>
@@ -501,8 +719,8 @@ comments to next meeting</li>
 </ul>
 </div>
 <ol class="org-ol">
-<li><a id="org402139a"></a>To be completed before meeting 2<br />
-<div class="outline-text-4" id="text-7-4-1">
+<li><a id="org3770893"></a>To be completed before meeting 2<br />
+<div class="outline-text-4" id="text-6-4-1">
 <ul class="org-ul">
 <li>All members: Review
 <a href="https://github.com/MorganJamesSmith/sysc3010_group_project/blob/master/readme.org">https://github.com/MorganJamesSmith/sysc3010_group_project/blob/master/readme.org</a>
@@ -515,10 +733,6 @@ this readme)</li>
 </ol>
 </div>
 </div>
-</div>
-<div id="postamble" class="status">
-<p class="date">Created: 2020-09-27 Sun 20:06</p>
-<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
 </html>
