@@ -1,0 +1,524 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2020-09-27 Sun 20:06 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SYSC3010 Group Project</title>
+<meta name="generator" content="Org mode" />
+</head>
+<body>
+<div id="content">
+<h1 class="title">SYSC3010 Group Project</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org61af302">1. Table of Contents&#xa0;&#xa0;&#xa0;<span class="tag"><span class="TOC_1">TOC_1</span></span></a></li>
+<li><a href="#orgf6870e9">2. Symptom monitoring Door System</a>
+<ul>
+<li><a href="#org87e6edb">2.1. Description</a></li>
+<li><a href="#org914f2cc">2.2. Hardware</a></li>
+<li><a href="#org590db4b">2.3. Requirements</a></li>
+</ul>
+</li>
+<li><a href="#orga43617d">3. Possible hardware</a>
+<ul>
+<li><a href="#org3ecf28f">3.1. Temperature Sensor</a></li>
+<li><a href="#orgc03ab9c">3.2. NFC</a></li>
+</ul>
+</li>
+<li><a href="#org0560d7a">4. Group Expectations</a></li>
+<li><a href="#orgad0e610">5. Group Roles</a>
+<ul>
+<li><a href="#orgf1f4940">5.1. Sam</a></li>
+<li><a href="#org2dde9d8">5.2. Sunny</a></li>
+<li><a href="#orge7a594b">5.3. Mario</a></li>
+<li><a href="#org73812cb">5.4. Morgan</a></li>
+</ul>
+</li>
+<li><a href="#orgddef5e1">6. Weekly Meeting Guidelines</a></li>
+<li><a href="#org12b8327">7. Project Meeting Notes</a>
+<ul>
+<li><a href="#org00f88e4">7.1. Meeting 4 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-09-29 Tue 09:30&gt;</span></span></a></li>
+<li><a href="#orgedee7cb">7.2. Meeting 3 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-09-22 Tue 09:30&gt;&#x2013;&lt;2020-09-22 Tue 11:00&gt;</span></span></a></li>
+<li><a href="#org63bf40b">7.3. Meeting 2 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-09-18 Fri 10:00&gt;&#x2013;&lt;2020-09-18 Fri 12:20&gt;</span></span></a></li>
+<li><a href="#org96405d2">7.4. Meeting 1 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-09-17 Thu 10:30&gt;&#x2013;&lt;2020-09-17 Thu 11:30&gt;</span></span></a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org61af302" class="outline-2">
+<h2 id="org61af302"><span class="section-number-2">1</span> Table of Contents&#xa0;&#xa0;&#xa0;<span class="tag"><span class="TOC_1">TOC_1</span></span></h2>
+<div class="outline-text-2" id="text-1">
+<ul class="org-ul">
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgf6870e9" class="outline-2">
+<h2 id="orgf6870e9"><span class="section-number-2">2</span> Symptom monitoring Door System</h2>
+<div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-org87e6edb" class="outline-3">
+<h3 id="org87e6edb"><span class="section-number-3">2.1</span> Description</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+The purpose of this system is to increase security and safety of
+secured locations, like offices. The system will attempt to prevent
+the spread of illness by limiting the number of people which can enter
+the building, and by preventing people with a high body temperature
+from entering the building.
+</p>
+
+<p>
+The system will display a green light at the entrance if it is
+accepting people. The light will turn red when the area is closed or
+if there are too many people inside.
+</p>
+
+<p>
+If the light is green, the user will present their NFC security card
+to the system. The system send a message containing a unique user ID
+to a server. The server will use it'd database to determine if the
+user is authorized and if the user had previously shown symptoms to
+the system within the last 14 days. The server will then notify the
+door with the results of the query.
+</p>
+
+<p>
+If the user has not already been denied, the system will then take the
+user's temperature. If the temperature is above the threshold, they
+can try again in 1 minute. If they fail 3 times in a row, they will be
+forbidden access, and the operator of the system will have the option
+to automatically deny them entry for the duration of a quarantine
+period.
+</p>
+
+<p>
+Every access attempt, including the associated temperature reading and
+user ID, is sent to the server to be logged in a database.
+</p>
+
+<p>
+If the temperature is below the threshold, and they have access, the
+door will open.
+</p>
+
+<p>
+Users will also have to present their NFC card to the door to leave
+the building. By tracking users entering and exiting the building, the
+server will know how many people are in the building.
+</p>
+
+<p>
+The central server will also provide a GUI available to the buildings
+security team. This GUI will allow security officers to manually
+update the status of individuals in case a door must fall back to
+manual operation. It will also allow the security team to modify who
+has access to the building. For example, if someone receives a
+negative test result for COVID-19, their access to the building could
+be restored.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org914f2cc" class="outline-3">
+<h3 id="org914f2cc"><span class="section-number-3">2.2</span> Hardware</h3>
+<div class="outline-text-3" id="text-2-2">
+<ul class="org-ul">
+<li>3D printed scale model of door</li>
+<li>Servo</li>
+<li>Contact-less Temperature Sensor</li>
+<li>NFC reader + cards</li>
+<li>Raspberry Pi's</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org590db4b" class="outline-3">
+<h3 id="org590db4b"><span class="section-number-3">2.3</span> Requirements</h3>
+<div class="outline-text-3" id="text-2-3">
+</div>
+<ol class="org-ol">
+<li><a id="org69cef32"></a>Computer Components <code>[3/3]</code><br />
+<div class="outline-text-4" id="text-2-3-1">
+<ul class="org-ul">
+<li class="on"><code>[X]</code> Computer per student
+<ul class="org-ul">
+<li>Computer for each entrance and exit</li>
+<li>Database computer</li>
+</ul></li>
+<li class="on"><code>[X]</code> computer in standalone mode
+<ul class="org-ul">
+<li>Interface for security team
+<ul class="org-ul">
+<li>Allow manual modification of user status</li>
+<li>View temperature information on each person</li>
+</ul></li>
+</ul></li>
+<li class="on"><code>[X]</code> computer in headless mode
+<ul class="org-ul">
+<li>Computers at entrances and exits</li>
+</ul></li>
+</ul>
+</div>
+</li>
+<li><a id="org899df94"></a>Hardware Components <code>[2/3]</code><br />
+<div class="outline-text-4" id="text-2-3-2">
+<ul class="org-ul">
+<li class="on"><code>[X]</code> Actuator
+<ul class="org-ul">
+<li>Door opener</li>
+</ul></li>
+<li class="on"><code>[X]</code> one sensor per student
+<ul class="org-ul">
+<li>Temperature probes</li>
+</ul></li>
+<li class="off"><code>[&#xa0;]</code> Feedback loop
+<ul class="org-ul">
+<li>Door opens in response to temperature</li>
+</ul></li>
+</ul>
+</div>
+</li>
+<li><a id="org3383aeb"></a>Software Components <code>[5/7]</code><br />
+<div class="outline-text-4" id="text-2-3-3">
+<ul class="org-ul">
+<li class="on"><code>[X]</code> Database
+<ul class="org-ul">
+<li>Number of people inside building</li>
+<li>Uniquely identify people via smart card</li>
+</ul></li>
+<li class="on"><code>[X]</code> Computer hosting database does something else
+<ul class="org-ul">
+<li>Runs GUI</li>
+</ul></li>
+<li class="off"><code>[&#xa0;]</code> Periodic Timing Loop
+<ul class="org-ul">
+<li>Restrict access to when building is open</li>
+</ul></li>
+<li class="off"><code>[&#xa0;]</code> Data processing
+<ul class="org-ul">
+<li>Access control</li>
+<li>View interaction history</li>
+</ul></li>
+<li class="on"><code>[X]</code> Notifications
+<ul class="org-ul">
+<li>Notify on failure and when near capacity</li>
+<li>Notify if known infected people try to enter</li>
+</ul></li>
+<li class="on"><code>[X]</code> Communication (through thingspeak)
+<ul class="org-ul">
+<li>Synchronize Database</li>
+</ul></li>
+<li class="on"><code>[X]</code> GUI
+<ul class="org-ul">
+<li>See security team interface</li>
+</ul></li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-orga43617d" class="outline-2">
+<h2 id="orga43617d"><span class="section-number-2">3</span> Possible hardware</h2>
+<div class="outline-text-2" id="text-3">
+</div>
+<div id="outline-container-org3ecf28f" class="outline-3">
+<h3 id="org3ecf28f"><span class="section-number-3">3.1</span> Temperature Sensor</h3>
+<div class="outline-text-3" id="text-3-1">
+<ul class="org-ul">
+<li><a href="https://www.melexis.com/en/product/MLX90614/Digital-Plug-Play-Infrared-Thermometer-TO-Can">MLX90614</a>
+<ul class="org-ul">
+<li>Very popular IR thermometer in TO-can</li>
+<li>MLX90614ESF-DAA is the medical version, MLX90614ESF-BAA is the non medial
+3 V version</li>
+<li>In stock at <a href="https://www.sparkfun.com/products/9570">SparkFun</a></li>
+</ul></li>
+<li><a href="https://www.excelitas.com/product/tpis-1t-1256-l55-digipile-sensor">TPIS 1T 1256 L5.5</a>
+<ul class="org-ul">
+<li>Designed for ear and forehead temperature measurement applications</li>
+<li>5 degree field of view</li>
+<li>67 counts per degree kelvin for a 40 ℃ object at 25 ℃ ambient, 8 counts per kelvin of noise for same conditions</li>
+<li>Also measures ambient temp</li>
+<li>Very annoying badly documented single wire digital interface, may be a bit
+tricky to get working directly on R-Pi but we could always use a small
+microcontoller like an ATTiny as a bridge</li>
+<li>In stock at <a href="https://www.digikey.ca/en/products/detail/excelitas-technologies/TPIS-1T-1256-L5-5/5885902">DigiKey</a></li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgc03ab9c" class="outline-3">
+<h3 id="orgc03ab9c"><span class="section-number-3">3.2</span> NFC</h3>
+<div class="outline-text-3" id="text-3-2">
+<ul class="org-ul">
+<li><a href="https://www.nxp.com/docs/en/nxp/data-sheets/PN532_C1.pdf">Adafruit breakout for PN532</a>
+<ul class="org-ul">
+<li>Seems to be compatible with <a href="https://github.com/nfc-tools/libnfc">libnfc</a></li>
+<li>I2C, SPI and UART interfaces (Adafruit seems to strongly recommend SPI for
+use with the Raspberry Pi, but that could be a limitation of their
+CircuitPython library)</li>
+<li>Comes with a MiFare Classic 1K card</li>
+<li>Can get MiFare Classic in many different form factors (cards, keychains,
+rings, bracelets, etc.) from Adafruit or Sparkfun.</li>
+</ul></li>
+<li><a href="https://www.nxp.com/products/rfid-nfc/nfc-hf/nfc-readers/explore-nfc-exclusive-from-element14:PNEV512R">NXP EXPLORE-NFC-WW</a>
+<ul class="org-ul">
+<li>R-Pi hat based on <a href="https://www.nxp.com/docs/en/data-sheet/PN512.pdf">PN512</a></li>
+<li>Cheaper than the Adafruit option and it's a nice hat form factor, but it
+is only available from <a href="https://canada.newark.com/nxp/explore-nfc-ww/nfc-add-on-board-raspberry-pi/dp/45X6356">Newark</a>
+and they have not been reliable lately.</li>
+</ul></li>
+<li>Mario has a module based on the <a href="https://www.nxp.com/docs/en/data-sheet/MFRC522.pdf">MFR522</a>
+<ul class="org-ul">
+<li>Slightly older chip than the others, but it should support everything we
+need</li>
+<li>Might be hard to reliably find exactly the same board for other group
+members, it came as part of a kit and seems to be one of those Ali-Express
+type things. It would probably be possible to find other boards with the
+same chip though</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org0560d7a" class="outline-2">
+<h2 id="org0560d7a"><span class="section-number-2">4</span> Group Expectations</h2>
+<div class="outline-text-2" id="text-4">
+<ul class="org-ul">
+<li>Slack messages will be responded to within 1 work day.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgad0e610" class="outline-2">
+<h2 id="orgad0e610"><span class="section-number-2">5</span> Group Roles</h2>
+<div class="outline-text-2" id="text-5">
+</div>
+<div id="outline-container-orgf1f4940" class="outline-3">
+<h3 id="orgf1f4940"><span class="section-number-3">5.1</span> Sam</h3>
+<div class="outline-text-3" id="text-5-1">
+<ul class="org-ul">
+<li>Submit deliverables</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org2dde9d8" class="outline-3">
+<h3 id="org2dde9d8"><span class="section-number-3">5.2</span> Sunny</h3>
+</div>
+<div id="outline-container-orge7a594b" class="outline-3">
+<h3 id="orge7a594b"><span class="section-number-3">5.3</span> Mario</h3>
+</div>
+<div id="outline-container-org73812cb" class="outline-3">
+<h3 id="org73812cb"><span class="section-number-3">5.4</span> Morgan</h3>
+<div class="outline-text-3" id="text-5-4">
+<ul class="org-ul">
+<li>Meeting Secretary</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-orgddef5e1" class="outline-2">
+<h2 id="orgddef5e1"><span class="section-number-2">6</span> Weekly Meeting Guidelines</h2>
+<div class="outline-text-2" id="text-6">
+<ul class="org-ul">
+<li>Happens every Tuesday @ 09:30</li>
+<li>Reminder should be sent in slack group chat the previous night</li>
+<li>Meeting is voice chat @ <a href="https://meet.jit.si/wewantbird">https://meet.jit.si/wewantbird</a></li>
+<li>Morgan takes notes and adds them to this document</li>
+</ul>
+
+
+<ol class="org-ol">
+<li>Deliver Reports of what was accomplished since last meeting</li>
+<li>Discuss any impediments</li>
+<li>Discuss any impediments expected for the next week (example: lack
+of time due to midterms or travel)</li>
+<li>Assign work for the next week</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-org12b8327" class="outline-2">
+<h2 id="org12b8327"><span class="section-number-2">7</span> Project Meeting Notes</h2>
+<div class="outline-text-2" id="text-7">
+</div>
+<div id="outline-container-org00f88e4" class="outline-3">
+<h3 id="org00f88e4"><span class="section-number-3">7.1</span> Meeting 4 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-09-29 Tue 09:30&gt;</span></span></h3>
+<div class="outline-text-3" id="text-7-1">
+</div>
+<ol class="org-ol">
+<li><a id="org1eb6614"></a>Agenda<br />
+<div class="outline-text-4" id="text-7-1-1">
+<ul class="org-ul">
+<li>Review proposal draft together</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+<div id="outline-container-orgedee7cb" class="outline-3">
+<h3 id="orgedee7cb"><span class="section-number-3">7.2</span> Meeting 3 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-09-22 Tue 09:30&gt;&#x2013;&lt;2020-09-22 Tue 11:00&gt;</span></span></h3>
+<div class="outline-text-3" id="text-7-2">
+</div>
+<ol class="org-ol">
+<li><a id="orgc43812b"></a>Agenda<br />
+<div class="outline-text-4" id="text-7-2-1">
+<ul class="org-ul">
+<li>Research project concepts
+<ul class="org-ul">
+<li>Look into hardware price/availability/complexity</li>
+</ul></li>
+</ul>
+</div>
+</li>
+<li><a id="orgfd9596d"></a>Completed<br />
+<div class="outline-text-4" id="text-7-2-2">
+<ul class="org-ul">
+<li>Finalized Project Idea</li>
+</ul>
+</div>
+</li>
+<li><a id="org3777a03"></a>TODOs<br />
+<div class="outline-text-4" id="text-7-2-3">
+<ul class="org-ul">
+<li>Everyone: Review proposal draft posted on Monday and bring written
+comments to next meeting</li>
+<li>Sam: Update readme with hardware research</li>
+<li>Morgan: Email Prof to confirm our project concept is approved</li>
+</ul>
+</div>
+<ol class="org-ol">
+<li><a id="org739004f"></a>Proposal<br />
+<ol class="org-ol">
+<li><a id="org0480569"></a>Timeline<br />
+<ol class="org-ol">
+<li><a id="orgd5bf3aa"></a>Content<br />
+<div class="outline-text-7" id="text-7-2-3-1-1-1">
+</div>
+</li>
+<li><a id="orge3518b6"></a>Latex formatting + send PDF to slack<br />
+<div class="outline-text-7" id="text-7-2-3-1-1-2">
+</div>
+</li>
+</ol>
+</li>
+<li><a id="org92b2e2e"></a>Sunny<br />
+<div class="outline-text-6" id="text-7-2-3-1-2">
+<ul class="org-ul">
+<li class="off"><code>[&#xa0;]</code> Executive Summary
+<ul class="org-ul">
+<li class="off"><code>[&#xa0;]</code> Problem Statement</li>
+<li class="off"><code>[&#xa0;]</code> Motivation</li>
+<li class="off"><code>[&#xa0;]</code> Objective</li>
+<li class="off"><code>[&#xa0;]</code> Goals</li>
+<li class="off"><code>[&#xa0;]</code> Scope</li>
+</ul></li>
+</ul>
+</div>
+</li>
+<li><a id="org13a05c0"></a>Morgan<br />
+<div class="outline-text-6" id="text-7-2-3-1-3">
+<ul class="org-ul">
+<li class="off"><code>[&#xa0;]</code> deployment diagram</li>
+<li class="off"><code>[&#xa0;]</code> door usage diagram</li>
+<li class="off"><code>[&#xa0;]</code> hardware block diagram</li>
+</ul>
+</div>
+</li>
+<li><a id="org3219ea9"></a>Sam<br />
+<div class="outline-text-6" id="text-7-2-3-1-4">
+<ul class="org-ul">
+<li class="off"><code>[&#xa0;]</code> Test Plan</li>
+<li class="off"><code>[&#xa0;]</code> Milestones and Timeline</li>
+<li class="off"><code>[&#xa0;]</code> Latex formatting</li>
+</ul>
+</div>
+</li>
+<li><a id="org7cca6f0"></a>Mario<br />
+<div class="outline-text-6" id="text-7-2-3-1-5">
+<ul class="org-ul">
+<li class="off"><code>[&#xa0;]</code> proposed solution
+<ul class="org-ul">
+<li class="off"><code>[&#xa0;]</code> Server database</li>
+<li class="off"><code>[&#xa0;]</code> GUI</li>
+<li class="off"><code>[&#xa0;]</code> Integrate Morgan's diagrams</li>
+</ul></li>
+</ul>
+</div>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</div>
+<div id="outline-container-org63bf40b" class="outline-3">
+<h3 id="org63bf40b"><span class="section-number-3">7.3</span> Meeting 2 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-09-18 Fri 10:00&gt;&#x2013;&lt;2020-09-18 Fri 12:20&gt;</span></span></h3>
+<div class="outline-text-3" id="text-7-3">
+</div>
+<ol class="org-ol">
+<li><a id="org7411e02"></a>Agenda<br />
+<div class="outline-text-4" id="text-7-3-1">
+<ul class="org-ul">
+<li>Discuss Project Ideas</li>
+<li>Finalizing team contract</li>
+</ul>
+</div>
+</li>
+<li><a id="org9c17822"></a>Completed<br />
+<div class="outline-text-4" id="text-7-3-2">
+<ul class="org-ul">
+<li>Team contract</li>
+<li>Initial draft of proposal of a door monitoring system</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+<div id="outline-container-org96405d2" class="outline-3">
+<h3 id="org96405d2"><span class="section-number-3">7.4</span> Meeting 1 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-09-17 Thu 10:30&gt;&#x2013;&lt;2020-09-17 Thu 11:30&gt;</span></span></h3>
+<div class="outline-text-3" id="text-7-4">
+<ul class="org-ul">
+<li>Assigned Morgan "Secretary" role for weekly meetings</li>
+<li>Assigned Sam "Submit deliverables" role</li>
+<li>Created meeting guidelines (found <a href="https://github.com/MorganJamesSmith/sysc3010_group_project/blob/master/readme.org#weekly-meeting-guidelines">here</a>)</li>
+<li>Discussed team contract</li>
+<li>Created a readme to track progress, expectations, and meeting notes
+(found <a href="https://github.com/MorganJamesSmith/sysc3010_group_project/blob/master/readme.org">here</a>)</li>
+<li>Scheduled Meeting 2</li>
+</ul>
+</div>
+<ol class="org-ol">
+<li><a id="org402139a"></a>To be completed before meeting 2<br />
+<div class="outline-text-4" id="text-7-4-1">
+<ul class="org-ul">
+<li>All members: Review
+<a href="https://github.com/MorganJamesSmith/sysc3010_group_project/blob/master/readme.org">https://github.com/MorganJamesSmith/sysc3010_group_project/blob/master/readme.org</a>
+and provide comments</li>
+<li>All members: Review all project requirements (Fact check + add information to
+this readme)</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Created: 2020-09-27 Sun 20:06</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
