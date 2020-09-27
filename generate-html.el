@@ -9,8 +9,8 @@
          :publishing-directory "html"
          :headline-levels 2
          :with-broken-links t
-         :html-head-include-default-style nil
-         :html-head-include-scripts nil
+         :with-planning t
+         :html-postamble nil
          :publishing-function org-html-publish-to-html)))
 
 (org-publish-all)

@@ -1,5 +1,5 @@
 #+title: SYSC3010 Group Project
-* Table of Contents                                                   :TOC_1:
+* Table of Contents                                          :TOC_1:noexport:
 - [[#symptom-monitoring-door-system][Symptom monitoring Door System]]
 - [[#group-expectations][Group Expectations]]
 - [[#group-roles][Group Roles]]
