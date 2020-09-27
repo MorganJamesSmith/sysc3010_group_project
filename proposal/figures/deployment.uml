@@ -8,43 +8,45 @@ node admin_interface [
 Admin GUI
 Server
 ]
+Admin -- admin_interface
 
 database Database {
-    collections record [
-    Record
+    collections logs [
+    Interaction Logs
     --
-    User ID
-    ..
-    Name
-    ..
-    Temperature
-    ..
-    Time
+    ]
+    collections user [
+    User Profiles
+    --
     ]
 }
 
-admin_interface -- Database
+admin_interface -r- Database
 
-node Door1
-node Door2
-node Door3
-node Door4
 
-actor User1
-actor User2
-actor User3
-actor User4
+!procedure $door($doornum)
+!$doorname = "Door" + $doornum
+!$tp = "tp" + $doornum
+!$cr = "cr" + $doornum
+!$user = "User" + $doornum
+node $doorname [
+<<Headless RPi>>
+$doorname
+--
+Temperature Probe
+--
+Card Reader
+--
+Lock
+]
+actor "User" as $user
+$doorname -- $user
+admin_interface .. $doorname : TS Channel
+!endprocedure
 
-Admin -- admin_interface
-
-admin_interface .. Door4 : TS Channel
-admin_interface .. Door3 : TS Channel
-admin_interface .. Door2 : TS Channel
-admin_interface .. Door1 : TS Channel
-
-User4 -up- Door4
-User3 -up- Door3
-User2 -up- Door2
-User1 -up- Door1
+$door("1")
+$door("2")
+$door("3")
+$door("4")
 
 @enduml
