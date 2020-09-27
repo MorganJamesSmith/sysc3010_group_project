@@ -8,7 +8,7 @@
 \usepackage[calcwidth]{titlesec}
 \usepackage{chngcntr}
 \usepackage{booktabs}
-\usepackage{xcolor}
+\usepackage[x11names]{xcolor}
 \usepackage{listings}
 \usepackage[section]{placeins}
 \usepackage[style=iso]{datetime2}
@@ -16,6 +16,11 @@
 \usepackage{amsmath}
 \usepackage{cite}
 \usepackage[nottoc,numbib]{tocbibind}
+\usepackage{colortbl}
+\usepackage{caption}
+
+\DeclareCaptionFont{blue}{\color{LightSteelBlue3}}
+\newcommand{\foo}{\color{LightSteelBlue3}\makebox[0pt]{\textbullet}\hskip-0.5pt\vrule width 1pt\hspace{\labelsep}}
 
 \title{L3-T-2 Proposal}
 \author{Samuel Dewan, Sunjeevani Pujari, Mario Shebib and Morgan Smith}
