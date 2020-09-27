@@ -1,0 +1,25 @@
+@startuml
+
+actor User
+participant "Headless RPi" as hrpi
+participant Server
+
+User -> hrpi : Taps Identification card
+hrpi -> Server : Is User authorized to continue?
+
+Server -> Server : Is the building at maximum capacity?
+Server -> Server : Does User have security clearance to this door at this time?
+Server -> Server : Is User marked as unwell?
+
+Server -> hrpi : Yes
+hrpi -> User : Takes temperature
+hrpi -> Server : Is this temperature ok?
+Server -> hrpi : Yes
+hrpi -> User : Opens Lock
+hrpi -> Server : User is inside
+
+Server -> Server : Increments record of current occupants
+
+
+
+@enduml

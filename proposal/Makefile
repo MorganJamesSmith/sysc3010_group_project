@@ -8,6 +8,9 @@ all: $(TARGET).pdf
 $(TARGET).pdf: $(TARGET).tex
 	latexmk -pdf --bibtex -pdflatex="pdflatex -interaction=nonstopmode" -use-make $<
 
+%.png : %.uml
+	plantuml -tpng $<
+
 clean:
 	latexmk -bibtex -C
-
+	find figures -name "*.png" -exec rm {} \;

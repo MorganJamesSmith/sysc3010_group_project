@@ -1,0 +1,50 @@
+@startuml
+
+skinparam defaultTextAlignment center
+
+actor Admin
+node admin_interface [
+<<Standalone RPi>>
+Admin GUI
+Server
+]
+
+database Database {
+    collections record [
+    Record
+    --
+    User ID
+    ..
+    Name
+    ..
+    Temperature
+    ..
+    Time
+    ]
+}
+
+admin_interface -- Database
+
+node Door1
+node Door2
+node Door3
+node Door4
+
+actor User1
+actor User2
+actor User3
+actor User4
+
+Admin -- admin_interface
+
+admin_interface .. Door4 : TS Channel
+admin_interface .. Door3 : TS Channel
+admin_interface .. Door2 : TS Channel
+admin_interface .. Door1 : TS Channel
+
+User4 -up- Door4
+User3 -up- Door3
+User2 -up- Door2
+User1 -up- Door1
+
+@enduml
