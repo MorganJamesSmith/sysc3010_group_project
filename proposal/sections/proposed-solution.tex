@@ -3,30 +3,27 @@
 \includegraphics[width=\textwidth]{figures/deployment.png}
 
 \subsection{Communication Between Nodes}
-The door nodes will be communicating with one another using Wifi. The door nodes
-do not communicate between themselves with their outputs informing the control
-server which in turn can send updates to the door nodes of changes that have
-occurred at other door nodes.
+The door nodes will be communicating with one another using ThingSpeak. The door nodes
+do not communicate between themselves, instead all communication is done through the control server. The door nodes send data for the server to put into their database and based off of the event the server will communicate what is the proper response for the door nodes.
 
 \subsection{Door Nodes}
-The door nodes are Raspberry Pis that are set up in headless mode that will be
-the front line in the protection of the secured locations that use the product.
-They are connected to an NFC security badge reader, an infrared
+The door nodes are Raspberry Pis that are set up in headless mode. These door nodes are the 
+points of interaction with the system for all but the operator that will be utilizing the control server.
+They are connected to an Near Field Communication(NFC) security badge reader, an infrared
 temperature sensor and an electronic lock actuator. They will
-not allow the doors to be opened if there is a full occupancy or if there is a
-temperature beyond the limit set by the control server. Furthermore, if that
-temperature occurs three times the control server will be given an option to set
-their account to not allow them in until a quarantine period ends. An LED is set
-up with each of the door nodes that will be green if not yet at full capacity
-with the LED shining red if at full capacity to discourage people from
-attempting to enter the door.
+not allow the doors to be opened if the building has reached the occupancy limit. 
+As well, as if the temperature is above the approved limit set by the control server. 
+If the temperature test comes back over the limit three times, the control server will be given an option to
+prohibit access to the building for the user of the security badge until a quarantine period ends. 
+An LED is hooked up to each of the door nodes that will be green if people are allowed to enter. 
+The LED will however shine red if the building is not allowing people to enter the door.
 
 % ID card -> NFC security badge
 % card reader -> NFC security badge reader
 % temperature probe -> infrared temperature sensor
 % door opener -> electronic lock
 
-\subsubsection{Hardware Block Diagram for Door Hardware}
+% \subsubsection{Hardware Block Diagram for Door Hardware}
 
 \subsubsection{Usage Diagram for Door}
 
@@ -63,9 +60,7 @@ will be asked to quarantine.
 
 \subsubsection{Database}
 The database will contain the information about the individuals with valid
-security badges and what the most recent result of the temperature probe was.
-Also, it will indicate whether those individuals are signed into the building or
-not, as well as how many individuals are currently signed into the building.
+security badges. This information includes records of the infrared temperature sensors and the times of entering and leaving the building.
 
 \subsubsection{Graphical User Interface}
 The Graphical User Interface (GUI) of the control server will appear as a table
