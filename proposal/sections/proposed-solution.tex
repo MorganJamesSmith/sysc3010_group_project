@@ -3,25 +3,17 @@
 \includegraphics[width=\textwidth]{figures/deployment.png}
 
 \subsection{Communication Between Nodes}
-The door nodes will be communicating with one another using ThingSpeak. The door nodes
-do not communicate between themselves, instead all communication is done through the control server. The door nodes send data for the server to put into their database and based off of the event the server will communicate what is the proper response for the door nodes.
+The door nodes will communicate with with the control server using ThingSpeak.
+They will send send messages to the control server on each user interaction and
+the control server will provide information to them on whether users should be
+granted access and what the door node's LED should show.
 
 \subsection{Door Nodes}
-The door nodes are Raspberry Pis that are set up in headless mode. These door nodes are the 
-points of interaction with the system for all but the operator that will be utilizing the control server.
-They are connected to an Near Field Communication(NFC) security badge reader, an infrared
-temperature sensor and an electronic lock actuator. They will
-not allow the doors to be opened if the building has reached the occupancy limit. 
-As well, as if the temperature is above the approved limit set by the control server. 
-If the temperature test comes back over the limit three times, the control server will be given an option to
-prohibit access to the building for the user of the security badge until a quarantine period ends. 
-An LED is hooked up to each of the door nodes that will be green if people are allowed to enter. 
-The LED will however shine red if the building is not allowing people to enter the door.
-
-% ID card -> NFC security badge
-% card reader -> NFC security badge reader
-% temperature probe -> infrared temperature sensor
-% door opener -> electronic lock
+The door nodes are Raspberry Pis that are set up in headless mode. The door
+nodes are the  main points of interaction for the system, they have an NFC
+security badge reader, an infrared temperature sensor and an electronic lock
+actuator. An LED is connected to each of the door nodes that can be illuminated
+in red or green to indicate whether people are allowed to enter the area.
 
 % \subsubsection{Hardware Block Diagram for Door Hardware}
 
@@ -30,18 +22,15 @@ The LED will however shine red if the building is not allowing people to enter t
 \includegraphics[width=\textwidth]{figures/door_interface.png}
 
 \subsubsection{Sensors}
-The infrared temperature sensor that will be used is central to the safety of the location
-and why the system exists. It will measure the temperature of the individual
-without physically touching them that will be communicated to the computer which
-has a program to determine if they have a fever which will not allow them to go
-through the door. If the temperature is within the acceptable range it will
-inform the door node to open and if it's below the acceptable range that will
-currently be determined to be the ambient temperature and keep the door closed
-as well. An NFC system will be used with security badges that will inform the door node
-which can check if the individual should currently be in quarantine, if they
-don't have a valid security badge or if there have been enough other
-security badges that have been
-swiped that the building is at maximum capacity.
+The infrared temperature sensor is central to the safety of the location
+and why the system exists. It can measure the temperature of an individual
+without physically touching them. The temperature information will be
+communicated to the control server which can use it to determine if the users
+has a fever and, if they do, will deny them access.
+
+The NFC security badge reader is used to identify users. The control server will
+keep track of users, including their access permissions and history of possible
+symptoms, based on their security badges.
 
 \subsubsection{Actuator}
 The door will open from an actuator that is attached to the door and will be
@@ -53,14 +42,19 @@ from being harmed by the door swinging open.
 
 \subsection{Control Server}
 The control server will be a Raspberry Pi connected to a monitor, keyboard and
-mouse. It will be where the operator of the security system can modify the
-acceptable range of temperatures and view the database for themselves as well as
-revoke access to those whose temperatures are at a high enough level that they
-will be asked to quarantine.
+mouse. The control server will maintain the database and will be responsible for
+makeing descisions on whether to grant access to individuals based on the
+configured access controls, the sensor data reported by the door nodes and the 
+number of people currently in an area. 
+
+The control server will also have a user interface that can be used for managing
+the system.
 
 \subsubsection{Database}
 The database will contain the information about the individuals with valid
-security badges. This information includes records of the infrared temperature sensors and the times of entering and leaving the building.
+security badges. The database records will inculde information the temperature
+measurments and the times at which people entered and leaft the building as well
+as information about the access policy for entering the building.
 
 \subsubsection{Graphical User Interface}
 The Graphical User Interface (GUI) of the control server will appear as a table
