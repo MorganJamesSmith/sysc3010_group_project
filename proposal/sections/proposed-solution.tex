@@ -2,20 +2,22 @@
 
 \includegraphics[width=\textwidth]{figures/deployment.png}
 
+<<<<<<< HEAD
 \subsection{Communication Between Nodes}
-The nodes will be communicating with one another using Wifi. The door nodes do
-not communicate between themselves with their outputs informing the control node
-which in turn can send updates to the door nodes of changes that have occurred
-at other nodes.
+The door nodes will be communicating with one another using Wifi. The door nodes
+do not communicate between themselves with their outputs informing the control
+server which in turn can send updates to the door nodes of changes that have
+occurred at other door nodes.
 
 \subsection{Door Nodes}
 The door nodes are Raspberry Pis that are set up in headless mode that will be
 the front line in the protection of the secured locations that use the product.
-They are connected to id cards, temperature probes and a door opener. They will
+They are connected to an NFC security badge reader, an infrared
+temperature sensor and an electronic lock actuator. They will
 not allow the doors to be opened if there is a full occupancy or if there is a
-temperature beyond the limit set by the control node. Furthermore, if that
-temperature occurs three times the control node will be given an option to set
-their id card to not allow them in until a quarantine period ends. An LED is set
+temperature beyond the limit set by the control server. Furthermore, if that
+temperature occurs three times the control server will be given an option to set
+their account to not allow them in until a quarantine period ends. An LED is set
 up with each of the door nodes that will be green if not yet at full capacity
 with the LED shining red if at full capacity to discourage people from
 attempting to enter the door.
@@ -32,21 +34,22 @@ attempting to enter the door.
 \includegraphics[width=\textwidth]{figures/door_interface.png}
 
 \subsubsection{Sensors}
-The temperature probe that will be used is central to the safety of the location
+The infrared temperature sensor that will be used is central to the safety of the location
 and why the system exists. It will measure the temperature of the individual
 without physically touching them that will be communicated to the computer which
 has a program to determine if they have a fever which will not allow them to go
 through the door. If the temperature is within the acceptable range it will
 inform the door node to open and if it's below the acceptable range that will
 currently be determined to be the ambient temperature and keep the door closed
-as well. An NFC system will be used with id cards that will inform the Door node
+as well. An NFC system will be used with security badges that will inform the door node
 which can check if the individual should currently be in quarantine, if they
-don't have a valid card or if there have been enough other cards that have been
+don't have a valid security badge or if there have been enough other
+security badges that have been
 swiped that the building is at maximum capacity.
 
 \subsubsection{Actuator}
 The door will open from an actuator that is attached to the door and will be
-activated upon permission being granted by the node. It will open with a
+activated upon permission being granted by the control server. It will open with a
 pressure that is set as to not hurt individuals or individuals with children if
 the time they take to enter the door after it opens exceeds the default time.
 This is also to prevent any theoretical people on the other side of the door
@@ -60,10 +63,10 @@ revoke access to those whose temperatures are at a high enough level that they
 will be asked to quarantine.
 
 \subsubsection{Database}
-The database will contain the information about the individuals with valid ID
-cards and what the most recent result of the temperature probe was. Also, it
-will indicate whether those individuals are signed into the building or not, as
-well as how many individuals are currently signed into the building.
+The database will contain the information about the individuals with valid
+security badges and what the most recent result of the temperature probe was.
+Also, it will indicate whether those individuals are signed into the building or
+not, as well as how many individuals are currently signed into the building.
 
 \subsubsection{Graphical User Interface}
 The Graphical User Interface (GUI) of the control server will appear as a table
@@ -71,7 +74,8 @@ with an option to open up a pop-up to unilaterally turn on the red light for any
 of the door nodes as well as a pop up to change the acceptable temperature
 range. There will be a notification sidebar which will list the individuals who
 have had three temperatures above the temperature range limits in a row with an
-option to allow that ID to be used again with an O and to not allow them to be
-used for 14 days as a quarantine period with an X. In the spreadsheet, the
-operator can manually override these options if it is deemed necessary by them.
+option to allow that indiviudal to have access again with an O and to not allow
+them to be access for 14 days as a quarantine period with an X. In the
+spreadsheet, the operator can manually override these options if it is deemed
+necessary by them.
 

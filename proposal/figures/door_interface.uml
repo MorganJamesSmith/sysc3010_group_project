@@ -1,10 +1,10 @@
 @startuml
 
 actor User
-participant "Headless RPi" as hrpi
-participant Server
+participant "Door Node" as hrpi
+participant "Control Server" as Server
 
-User -> hrpi : Taps Identification card
+User -> hrpi : Taps security badge
 hrpi -> Server : Is User authorized to continue?
 
 Server -> Server : Is the building at maximum capacity?
