@@ -2,13 +2,13 @@
 
 skinparam defaultTextAlignment center
 
-actor Admin
+actor Operator
 node admin_interface [
 <<Standalone RPi>>
-Admin GUI
+Operator GUI
 Server
 ]
-Admin -- admin_interface
+Operator -- admin_interface
 
 database Database {
     collections logs [
@@ -26,18 +26,16 @@ admin_interface -r- Database
 
 !procedure $door($doornum)
 !$doorname = "Door" + $doornum
-!$tp = "tp" + $doornum
-!$cr = "cr" + $doornum
 !$user = "User" + $doornum
 node $doorname [
 <<Headless RPi>>
 $doorname
 --
-Temperature Probe
+Infrared Temperature Sensor
 --
-Card Reader
+NFC security Badge Reader
 --
-Lock
+Electronic Lock Actuator
 ]
 actor "User" as $user
 $doorname -- $user

@@ -13,7 +13,7 @@ tested individually and as a complete system.
 
 The door node contains three main hardware components for which interface code
 will need to be written and tested: the infrared temperature sensor, the NFC
-card reader and the door actuator. To ease testing of the logic and
+security badge reader and the electronic lock actuator. To ease testing of the logic and
 communications portions of the door node software we will write stubs which
 emulate the functionality of each these hardware components. Our software will
 be architected in such a way that the driver for any hardware component can be
@@ -28,14 +28,14 @@ mechanism will be used to when hardware is not available, when testing with real
 hardware is too cumbersome and to ensure that the the door node application code
 reacts appropriately to invalid or missing data.
 
-\subsubsection{Temperature Sensor}
+\subsubsection{Infrared Temperature Sensor}
 
-\paragraph{Temperature Sensor Interface Code.}
-We will write a minimal test application in order to test the temperature sensor
+\paragraph{Infrared Temperature Sensor Interface Code.}
+We will write a minimal test application in order to test the infrared temperature sensor
 hardware and interface code separately from the rest of the system. We will also
-write unit tests with full line and branch coverage for the temperature sensor
+write unit tests with full line and branch coverage for the infrared temperature sensor
 interface code. Some tests will be performed while monitoring the digital
-interface of the temperature sensor with a logic analyzer or oscilloscope in
+interface of the infrared temperature sensor with a logic analyzer or oscilloscope in
 order to verify that the interface code is meeting the timing requirements of
 the digital sensor interface.
 
@@ -52,7 +52,7 @@ described in the below as part of our proposed approach to sensor calibration.
 A stub will be developed that will allow emulated temperature data from a text
 file to be fed to the door node application code.
 
-\paragraph{Temperature Sensor Calibration.}
+\paragraph{Infrared Temperature Sensor Calibration.}
 It is not trivial to achieve medical grade accuracy from an off the shelf
 infrared temperature sensor module and some form of calibration will be required
 in order to obtain useful readings. While a blackbody calibration source is
@@ -60,7 +60,7 @@ prohibitively expensive, for the scope of our project we can make due with a
 makeshift calibration solution.
 
 We will calibrate and test our infrared temperature sensors using a pot of water
-heated to a target temperature. The temperature sensor will be mounted at a
+heated to a target temperature. The infrared temperature sensor will be mounted at a
 known height above the water, which will be heated on a stove to the desired
 calibration temperature within the range of normal human body temperatures.
 The water temperature will be measured with a standard mercury or digital
@@ -80,7 +80,7 @@ will also write unit tests with full line and branch coverage for the NFC reader
 interface code. We will test our interface code using NFC cards that we have
 prepared containing both invalid and valid data.
 
-A stub will be developed that will allow emulated NFC card data from a text file
+A stub will be developed that will allow emulated NFC security badge data from a text file
 to be fed to the door node application code.
 
 \subsubsection{Door Actuator}
@@ -91,11 +91,11 @@ and interface code separately from the rest of the system.
 A stub will be developed that will allow the door node application code to be
 tested without the actuator hardware.
 
-\subsection{Control Node}
+\subsection{Control Server}
 
-In order to test the control node we will use the stubs described in section
+In order to test the control server we will use the stubs described in section
 \ref{subsec:testing-communication}. This will allow us to thoroughly
-exercise the functions of the control node as it is being developed and before
+exercise the functions of the control server as it is being developed and before
 the door node code is complete. This will also allow us to test that the
 database and GUI portions of our system are able to support realistically large
 numbers of door nodes despite the limited amount of door node hardware that we
@@ -106,7 +106,7 @@ have at our disposal.
 
 We will test our communication interfaces by writing a stub application that
 emulates one or more door nodes and a stub application that emulates the control
-node.
+server.
 
 These stubs will make use of our code for interacting with ThingSpeak and the
 code that implements our communications protocol. This will allow us to test our
@@ -116,8 +116,7 @@ isolation by using the real code for one node and the stub for the other.
 
 \subsection{Integration Testing}
 
-Integration testing will be performed manually by running the control node and
+Integration testing will be performed manually by running the control server and
 door node code on real hardware communicating between nodes via ThingSpeak.
 Integration testing may be augmented with additional emulated door nodes using
 the door node stub.
-
