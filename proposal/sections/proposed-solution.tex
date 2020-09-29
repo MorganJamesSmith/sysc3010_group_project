@@ -33,12 +33,8 @@ keep track of users, including their access permissions and history of possible
 symptoms, based on their security badges.
 
 \subsubsection{Actuator}
-The door will open from an actuator that is attached to the door and will be
-activated upon permission being granted by the control server. It will open with a
-pressure that is set as to not hurt individuals or individuals with children if
-the time they take to enter the door after it opens exceeds the default time.
-This is also to prevent any theoretical people on the other side of the door
-from being harmed by the door swinging open.
+The door will be unlocked by the electronic lock actuator that is attached to the door that receives a signal upon permission being granted by the control server. It will still require the physical opening of the door which means
+that hand sanitizer will be provided. The electronic lock by default will not open entering the building or leaving it. However there are fail safes so that if there is a power outage or emergency it can be either kept locked or unlocked.
 
 \subsection{Control Server}
 The control server will be a Raspberry Pi connected to a monitor, keyboard and
@@ -58,12 +54,6 @@ as information about the access policy for entering the building.
 
 \subsubsection{Graphical User Interface}
 The Graphical User Interface (GUI) of the control server will appear as a table
-with an option to open up a pop-up to unilaterally turn on the red light for any
-of the door nodes as well as a pop up to change the acceptable temperature
-range. There will be a notification sidebar which will list the individuals who
-have had three temperatures above the temperature range limits in a row with an
-option to allow that indiviudal to have access again with an O and to not allow
-them to be access for 14 days as a quarantine period with an X. In the
-spreadsheet, the operator can manually override these options if it is deemed
-necessary by them.
+with menus for options for the operator to view and interact with the database and the control server in a visually clear fashion. This includes being able to set ranges for temperature, override the current LED colours and approving quarantining.
+
 
