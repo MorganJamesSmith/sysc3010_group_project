@@ -4,7 +4,7 @@ critical components will only be tested at a module level due to time
 constraints. We will also perform integration testing on the system as a whole.
 
 This section describes the testing approach for each component of the project
-and out planned approach to integration testing for the project as a whole.
+and our planned approach to integration testing for the project as a whole.
 
 \subsection{Door Nodes}
 
@@ -30,7 +30,7 @@ reacts appropriately to invalid or missing data.
 
 \subsubsection{Temperature Sensor}
 
-\paragraph{Temperature Sensor Interface Code.}
+\paragraph{Temperature Sensor Interface Code}
 We will write a minimal test application in order to test the temperature sensor
 hardware and interface code separately from the rest of the system. We will also
 write unit tests with full line and branch coverage for the temperature sensor
@@ -52,7 +52,7 @@ described in the below as part of our proposed approach to sensor calibration.
 A stub will be developed that will allow emulated temperature data from a text
 file to be fed to the door node application code.
 
-\paragraph{Temperature Sensor Calibration.}
+\paragraph{Temperature Sensor Calibration}
 It is not trivial to achieve medical grade accuracy from an off the shelf
 infrared temperature sensor module and some form of calibration will be required
 in order to obtain useful readings. While a blackbody calibration source is
@@ -72,7 +72,7 @@ have similar emissivities in the infrared spectrum. The emissivity of human skin
 is roughly 0.98 \cite{Steketee_1973} and the emissivity of water is about 0.993
 \cite{Buettner_1965}.
 
-\subsubsection{NFC Reader}
+\subsubsection{NFC Security Badge Reader}
 
 We will develop a minimal test application that will allow us to test the NFC
 reader hardware and interface code separately from the rest of the system. We
@@ -83,7 +83,7 @@ prepared containing both invalid and valid data.
 A stub will be developed that will allow emulated NFC card data from a text file
 to be fed to the door node application code.
 
-\subsubsection{Door Actuator}
+\subsubsection{Electronic Door Lock}
 
 A minimal test application will be developed to test the door actuator hardware
 and interface code separately from the rest of the system.
