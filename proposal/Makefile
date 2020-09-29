@@ -1,11 +1,14 @@
 TARGET=L3-T-2_Proposal
 
+FIGURES_SRC=$(wildcard figures/*.uml)
+FIGURES=$(patsubst figures/%.uml,figures/%.png,$(FIGURES_SRC))
+
 # $(TARGET).pdf is phony so that we always call latexmk
 .PHONY: $(TARGET).pdf all clean
 
 all: $(TARGET).pdf
 
-$(TARGET).pdf: $(TARGET).tex
+$(TARGET).pdf: $(TARGET).tex $(FIGURES)
 	latexmk -pdf --bibtex -pdflatex="pdflatex -interaction=nonstopmode" -use-make $<
 
 %.png : %.uml
@@ -13,4 +16,5 @@ $(TARGET).pdf: $(TARGET).tex
 
 clean:
 	latexmk -bibtex -C
-	find figures -name "*.png" -exec rm {} \;
+	rm $(FIGURES)
+
