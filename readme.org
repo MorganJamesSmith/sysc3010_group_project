@@ -1,6 +1,7 @@
 #+title: SYSC3010 Group Project
 * Table of Contents                                          :TOC_1:noexport:
 - [[#symptom-monitoring-door-system][Symptom monitoring Door System]]
+- [[#possible-hardware][Possible hardware]]
 - [[#group-expectations][Group Expectations]]
 - [[#group-roles][Group Roles]]
 - [[#weekly-meeting-guidelines][Weekly Meeting Guidelines]]
@@ -13,6 +14,10 @@ secured locations, like offices. The system will attempt to prevent
 the spread of illness by limiting the number of people which can enter
 the building, and by preventing people with a high body temperature
 from entering the building.
+
+This system will be mounted on the entrances and exits of a
+building. The system will be modular to allow an arbitrary number of
+nodes to be added.
 
 The system will display a green light at the entrance if it is
 accepting people. The light will turn red when the area is closed or
@@ -154,9 +159,16 @@ be restored.
    of time due to midterms or travel)
 4. Assign work for the next week
 * Project Meeting Notes
-** Meeting 4 <2020-09-29 Tue 09:30>
+** Meeting 5 <2020-10-06 Tue 09:30>
+** Meeting 4 <2020-09-29 Tue 09:30-11:30>
 *** Agenda
 - Review proposal draft together
+*** Minutes
+- We reviewed the proposal and made some changes
+*** TODOs
+- Everyone: Touch up proposal as we discussed
+- Morgan: Email the prof asking if we should include the actors in our
+  deployment diagram
 ** Meeting 3 <2020-09-22 Tue 09:30-11:00>
 *** Agenda
 - Research project concepts
@@ -171,29 +183,29 @@ be restored.
 **** Proposal
 ***** Timeline
 ****** Content
-DEADLINE: <2020-09-27 Sun 12:00>
+<2020-09-27 Sun 12:00>
 ****** Latex formatting + send PDF to slack
-DEADLINE: <2020-09-28 Mon>
+<2020-09-28 Mon>
 ***** Sunny
-- [ ] Executive Summary
-  - [ ] Problem Statement
-  - [ ] Motivation
-  - [ ] Objective
-  - [ ] Goals
-  - [ ] Scope
+- Executive Summary
+  - Problem Statement
+  - Motivation
+  - Objective
+  - Goals
+  - Scope
 ***** Morgan
-- [ ] deployment diagram
-- [ ] door usage diagram
-- [ ] hardware block diagram
+- deployment diagram
+- door usage diagram
+- hardware block diagram
 ***** Sam
-- [ ] Test Plan
-- [ ] Milestones and Timeline
-- [ ] Latex formatting
+- Test Plan
+- Milestones and Timeline
+- Latex formatting
 ***** Mario
-- [ ] proposed solution
-  - [ ] Server database
-  - [ ] GUI
-  - [ ] Integrate Morgan's diagrams
+- proposed solution
+  - Server database
+  - GUI
+  - Integrate Morgan's diagrams
 ** Meeting 2 <2020-09-18 10:00-12:20>
 *** Agenda
 - Discuss Project Ideas
