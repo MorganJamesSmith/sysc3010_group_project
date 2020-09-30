@@ -33,13 +33,11 @@ keep track of users, including their access permissions and history of possible
 symptoms, based on their security badges.
 
 \subsubsection{Actuator}
-The door will be unlocked by the electronic lock actuator that is attached to 
-the door that receives a signal upon permission being granted by the control server. 
-It will still require the physical opening of the door which means
-that hand sanitizer will be provided. The electronic lock by default 
-will not open entering the building or leaving it. 
-However there are fail safes so that if there is a power outage or emergency 
-it can be either kept locked or unlocked.
+The door will be unlocked by an electronic lock actuator attached to it. The
+actuator will be controled based on permission being granted by the control
+server. The electronic lock by default will require an NFC securty badge when
+entering the building or leaving it. However, there will be failsafes so that if
+there is a power outage or emergency it can be kept either locked or unlocked.
 
 \subsection{Control Server}
 The control server will be a Raspberry Pi connected to a monitor, keyboard and
@@ -54,14 +52,13 @@ the system.
 \subsubsection{Database}
 The database will contain the information about the individuals with valid
 security badges. The database records will inculde information the temperature
-measurments and the times at which people entered and leaft the building as well
+measurments and the times at which people entered and left the building as well
 as information about the access policy for entering the building.
 
 \subsubsection{Graphical User Interface}
 The Graphical User Interface (GUI) of the control server will appear as a table
 with menus for options for the operator to view and interact with the database 
-and the control server in a visually clear fashion. 
-This includes being able to set ranges for temperature, 
-override the current LED colours and approving quarantining.
-
+and the control server in a visually clear fashion. This includes being able to
+set ranges for temperature, override the current LED colours and approving
+quarantining.
 
