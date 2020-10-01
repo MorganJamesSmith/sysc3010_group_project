@@ -11,13 +11,12 @@ Members:
 CLOSED: [2020-09-19 Sat 15:32] DEADLINE: <2020-09-20 Sun>
 * DONE Approval of project concept
 CLOSED: [2020-09-22 Tue 13:57] DEADLINE: <2020-09-23 Wed>
-* TODO Proposal Draft
-DEADLINE: <2020-09-29 Tue 23:59>
-* TODO Proposal Peer-Review (during class)
-SCHEDULED: <2020-09-30 Wed 11:35-13:25>
-* TODO Proposal Peer-Review feedback reflection
-DEADLINE: <2020-10-02 Fri 20:00>
-Opens <2020-10-01 Thu 12:00>
+* DONE Proposal Draft
+CLOSED: [2020-09-29 Tue 18:00] DEADLINE: <2020-09-29 Tue 23:59>
+* DONE Proposal Peer-Review
+CLOSED: [2020-09-30 Wed 13:49] SCHEDULED: <2020-09-30 Wed 11:35-13:25>
+* DONE Proposal Peer-Review feedback reflection
+CLOSED: [2020-09-30 Wed 17:20] DEADLINE: <2020-10-02 Fri 20:00>
 * TODO Final Submission of Project Proposal (On CULearn)
 DEADLINE: <2020-10-02 Fri 20:00>
 * TODO Individual Lab Exam (To be scheduled collaboratively with TAs)
