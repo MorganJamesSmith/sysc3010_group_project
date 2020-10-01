@@ -159,7 +159,9 @@ be restored.
    of time due to midterms or travel)
 4. Assign work for the next week
 * Project Meeting Notes
-** Meeting 5 <2020-10-06 Tue 09:30>
+** Meeting 6 <2020-10-06 Tue 09:30>
+** Meeting 5 <2020-10-01 Thu 08:30-10:15>
+- Reviewed proposal feedback and made changes
 ** Meeting 4 <2020-09-29 Tue 09:30-11:30>
 *** Agenda
 - Review proposal draft together
