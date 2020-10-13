@@ -159,7 +159,50 @@ be restored.
    of time due to midterms or travel)
 4. Assign work for the next week
 * Project Meeting Notes
-** Meeting 6 <2020-10-06 Tue 09:30>
+** Meeting 8 <2020-10-20 Tue 09:30>
+*** Agenda
+- Design Peer Review Integration
+** Meeting 7 <2020-10-13 Tue 09:30>
+*** Minutes
+- Sam demoed his ThingSpeak code (very cool, much wow)
+- Determined project design schedule
+*** Project Design Roles
+- flow chart for testing
+**** Sam
+- demo plan 3
+- design overview text
+- software design text
+- Hardware design text
+- temperature sensor
+  - relevant hardware specification
+  - test plan 2 a
+- communication protocol table
+- Related Class diagrams
+- door node circuit diagram
+**** Sunny
+- Problem statement
+- Project Update
+- Database table design (help from Sam)
+- Related Class diagrams
+- test plan demo plan 1
+- test plan demo 2 b
+**** Mario
+- NFC
+  - relevant hardware specification
+  - test plan 2 a
+- Related Class diagrams
+- flow chart for door interface
+- flow chart for server:door messaging
+**** Morgan
+- motor
+  - relevant hardware specification
+  - test plan 2 a
+- UML Architectural diagram
+- Message sequence diagram(s)
+- Related Class diagrams
+** Meeting 6 <2020-10-06 Tue 09:30-10:10>
+*** Minutes
+- preliminary project design discussions
 ** Meeting 5 <2020-10-01 Thu 08:30-10:15>
 - Reviewed proposal feedback and made changes
 ** Meeting 4 <2020-09-29 Tue 09:30-11:30>
