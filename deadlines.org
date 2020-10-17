@@ -25,17 +25,17 @@ DEADLINE: <2020-10-18 Sun 12:00>
 DEADLINE: <2020-10-18 Sun 23:59>
 * TODO Design review
 SCHEDULED: <2020-10-20 Tue 09:30>
-* TODO Synchronous Design Peer Review (Mandatory)
-DEADLINE: <2020-10-21 Wed>
-- Post received feedback to group chat
 * TODO Design Peer Review Integration
 SCHEDULED: <2020-10-22 Thu 09:30-11:00>
-* TODO Final Submission of Project Design (On CULearn)
-DEADLINE: <2020-10-23 Fri 20:00>
-* TODO Lab Check-in (End-to-End Demo) (To be scheduled collaboratively with TAs)
+* TODO Synchronous Project Design Peer Review (Mandatory)
 DEADLINE: <2020-11-04 Wed>
+- Post received feedback to group chat
+* TODO Final Submission of Project Design (On CULearn)
+DEADLINE: <2020-11-06 Fri 20:00>
+* TODO Lab Check-in (End-to-End Demo) (To be scheduled collaboratively with TAs)
+DEADLINE: <2020-11-12 Thu>
 * TODO Lab Check-in (Testing Demo) (To be scheduled collaboratively with TAs)
-DEADLINE: <2020-11-18 Wed>
+DEADLINE: <2020-11-19 Thu>
 * TODO Submission of Technical Memo
 DEADLINE: <2020-11-22 Sun 20:00>
 * TODO Synchronous Code Peer Review (Mandatory)
