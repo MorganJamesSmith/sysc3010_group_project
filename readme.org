@@ -8,6 +8,15 @@
 - [[#project-meeting-notes][Project Meeting Notes]]
 
 * Symptom monitoring Door System
+** Terminology
+To keep a consistent style please use the following terms. No synonyms please
+- Door Node
+- Control Server
+  - Users have: Accounts
+- Security Badge
+- NFC security badge reader
+- infrared temperature sensor
+- electronic lock actuator
 ** Description
 The purpose of this system is to increase security and safety of
 secured locations, like offices. The system will attempt to prevent
