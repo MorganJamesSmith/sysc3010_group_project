@@ -16,16 +16,16 @@ transaction
 \toprule
 Sender & Receiver & Message & Data Format\\
 \midrule
-Door Node & Control Server & USER\_REQUEST\_ACCESS &
+Door Node & Control Server & ACCESS\_REQUEST &
 Node ID \newline Transaction ID \newline Current time \newline Account ID\\
 \hline
 Door Node & Control Server & INFORMATION\_RESPONSE &
 Node ID \newline Transaction ID \newline Current time \newline Information Response\\
 \hline
-Control Server & Door Node & REQUEST\_INFORMATION &
+Control Server & Door Node & INFORMATION\_REQUEST &
 Node ID \newline Transaction ID \newline Current time \newline Information Request\\
 \hline
-Control Server & Door Node & ACCESS\_REQUEST\_RESPONSE &
+Control Server & Door Node & ACCESS\_RESPONSE &
 Node ID \newline Transaction ID \newline Current time \newline Account ID \newline Access Request Response\\
 \bottomrule
 \end{tabular}
@@ -33,6 +33,8 @@ Node ID \newline Transaction ID \newline Current time \newline Account ID \newli
 \end{table*}
 
 \subsection{Message Sequence Diagrams}
+
+\includegraphics[width=\textwidth]{figures/message-sequence-diagram.png}
 
 \subsection{Database Schema}
 
