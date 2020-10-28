@@ -1,3 +1,23 @@
+\subsection{Architecture}
+
+Our product it made up of two parts: the control server, and the door nodes.
+Our product interacts with two types of actors: Operators and Users.
+
+The control server maintains a database of operator profiles, operator logs,
+user profiles, and interaction logs.  The control server will use the operator
+profiles to validate users using the operator GUI.  Every action performed in
+the operator GUI will be logged in the operator logs.  Operators can create and
+modify user profiles.  When a user attempts to use a door node, their identity
+is checked against their user profile.  Each interaction with a door node is
+recorded in a user log.
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=\textwidth]{figures/architecture.png}
+\caption{UML Architecture Diagram}
+\label{fig:architecture-diagram}
+\end{figure}
+
 \subsection{Communication Protocol}
 
 \begin{itemize}
