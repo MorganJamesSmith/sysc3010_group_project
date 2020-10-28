@@ -1,0 +1,16 @@
+@startuml
+
+class "Door Node" as door {
+ACCESS_REQUEST()
+INFORMATION_RESPONSE()
+}
+
+class "Control Server" as serv {
+INFORMATION_REQUEST()
+ACCESS_RESPONSE()
+}
+
+door "1..*" - "1" serv
+
+
+@enduml
