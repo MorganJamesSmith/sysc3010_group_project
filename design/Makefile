@@ -1,7 +1,7 @@
 TARGET=L3-T-2_Design
 
-FIGURES_SRC=$(wildcard figures/*.uml)
-FIGURES=$(patsubst figures/%.uml,figures/%.png,$(FIGURES_SRC))
+FIGURES_SRC=$(wildcard uml/*.uml)
+FIGURES=$(patsubst uml/%.uml,uml/%.png,$(FIGURES_SRC))
 
 # $(TARGET).pdf is phony so that we always call latexmk
 .PHONY: $(TARGET).pdf all clean

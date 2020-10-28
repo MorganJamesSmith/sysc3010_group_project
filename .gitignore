@@ -1,6 +1,7 @@
 .DS_Store
 __pycache__
-*.png
+proposal/figures/*.png
+design/uml/*.png
 
 ##### TeX.gitignore from
 ##### https://github.com/github/gitignore/blob/master/TeX.gitignore
