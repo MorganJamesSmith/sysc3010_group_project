@@ -1,0 +1,585 @@
+\subsection{End to End Demo}
+
+\noindent
+Hardware requirements:
+\begin{itemize}
+    \item Setup Raspberry Pi's in headless mode 
+    \item Connect sensors to Raspberry Pi's
+    \item If available, connect LED displays to Raspberry Pi
+\end{itemize}
+
+\noindent
+Software requirements:
+\begin{itemize}
+    \item Set up Thingspeak channel 
+    \item Hard code sensor signal communication to Thingspeak 
+    \item Have test stubs which emulate the functionality of the hardware
+          components ready
+\end{itemize}
+
+\subsubsection*{Entry Access}
+
+\paragraph{Scenario 1}
+Employee with valid NFC card, normal body temperature and ideal distance away
+from temperature sensor at entry node.
+
+\noindent
+Features to be tested:
+\begin{itemize}
+    \item Communication between the NFC card reader and Thingspeak 
+    \item Communication between control server and Thingspeak
+    \item Communication between Time of Flight range finder and Thingspeak 
+    \item Communication between Time of Flight range finder and Thingspeak 
+    \item Communication between LED display and Thingspeak 
+    \item Communication between Temperature sensor and Thingspeak 
+    \item Communication between control server and database
+    \item Communication between Thingspeak and the electronic lock at entry node
+\end{itemize}
+
+\noindent
+Test scenario steps:
+\begin{enumerate}
+    \item Control server uses Thingspeak to send the LED display a signal to
+          display green light to indicate door node accepting entries
+    \item NFC reader identifies NFC id card being tapped and notifies control
+          server of access attempt
+    \item NFC reader identifies tapped NFC card id and reports the id to the
+          control server
+    \item Control server recognizes employee id based on NFC card id
+    \item Control server signals the rangefinder to identify if employee in
+          range of temperature sensor through Thingspeak
+    \item Range finder reports back to the control server with the results and
+          displays orange light
+    \item When in range, the control server sends a signal to the temperature
+          sensor to measure employee body temperature through Thingspeak
+    \item Temperature sensor sends the recorded temperature to the control
+          server using Thingspeak
+    \item Control server saves the recorded temperatures and other required
+          information into the database
+    \item Control server compares recorded temperature to acceptable temperature
+          range
+    \item If in acceptable temperature range, control server authorizes employee
+          to enter building through Thingspeak
+    \item Control server sends a signal to the led display to display a flashing
+          green light to indicate employee's access has been authorized
+    \item Control server signals the electronic lock to unlock and adds 1 to
+          number of people on the premises through Thingspeak
+    \item Control server uploads the additional entry attempt recorded data to
+          database
+\end{enumerate}
+
+\noindent
+Expected test scenario result: proper communication between nodes and control
+server occurred to authorize employee access to the workplace.
+
+
+\paragraph{Scenario 2}
+Employee with valid NFC card, normal body temperature and not in ideal distance
+range away from temperature sensor at entry node.
+
+\noindent
+Features to be tested:
+\begin{itemize}
+    \item Communication between the NFC card reader and Thingspeak
+    \item Communication between control server and Thingspeak
+    \item Communication between Time of Flight range finder and Thingspeak 
+    \item Communication between LED display and Thingspeak 
+    \item Communication between Thingspeak and the electronic lock at entry node
+\end{itemize}
+
+\noindent
+Test scenario steps:
+\begin{enumerate}
+    \item Control server uses Thingspeak to send the LED display a signal to
+          display green light to indicate door node accepting entries
+    \item NFC reader identifies NFC id card being tapped and notifies control
+          server of access attempt
+    \item NFC reader identifies tapped NFC card id and reports the id to the
+          control server
+    \item Control server recognizes employee id based on NFC card id
+    \item Control server signals the range-finder to identify if employee in
+          range of temperature sensor through Thingspeak
+    \item Range finder reports back to the control server with the results and
+          displays red light to let employee know to stand in ideal range away
+          from the temperature sensor
+    \item Control server signals electronic lock to stay locked through
+          Thingspeak
+\end{enumerate}
+
+\noindent
+Expected test scenario result: proper communication between nodes and control
+server occurred to let the employee know to stand in an ideal distance range
+away from the temperature sensor.
+
+\paragraph{Scenario 3}
+Employee with valid NFC card, body temperature over 39.1 °C and in ideal
+distance range away from temperature sensor at entry node.
+
+\noindent
+Features to be tested:
+\begin{itemize}
+    \item Communication between the NFC card reader and Thingspeak 
+    \item Communication between control server and Thingspeak
+    \item Communication between Time of Flight range finder and Thingspeak 
+    \item Communication between LED display and Thingspeak 
+    \item Communication between Temperature sensor and Thingspeak 
+    \item  Communication between the GUI and Thingspeak
+    \item Communication between control server and database
+    \item Communication between Thingspeak and the electronic lock at entry node
+\end{itemize}
+
+\noindent
+Test scenario steps:
+\begin{enumerate}
+    \item Control server uses Thingspeak to send the LED display a signal to
+          display green light to indicate door node accepting entries
+    \item Identify tapped NFC card id
+    \item Notify control server of access attempt
+    \item NFC reader recognizes employee id based on NFC card id and reports to
+          control server through Thingspeak
+    \item Control server signals the range-finder to identify if employee in
+          range of temperature sensor through Thingspeak
+    \item Range finder reports back to the control server with the results and
+          displays orange light if employee in range of the temperature sensor
+          and red light if employee not in range 
+    \item When in range, the control server sends a signal to the temperature
+          sensor to measure employee body temperature through Thingspeak
+    \item Temperature sensor sends the recorded temperature to the control
+          server using Thingspeak
+    \item Control server saves the recorded temperatures and other required
+          information into the database
+    \item Control server compares recorded temperature to acceptable temperature
+          range
+    \item If not in ideal temperature range, control server restricts employee
+          from entering the building through Thingspeak
+    \item Control server sends a signal to the led display to display a flashing
+          red light to indicate employee's access has been unauthorized
+    \item Control server sends a quarantine approval notification to the GUI
+          through Thingspeak
+    \item User approves the quarantine period notification
+    \item Approval is sent to the control server through Thingspeak from the GUI
+    \item Control server adds the employee information and recorded data to
+          unauthorized employee table in the database and marks entry access
+          date as the start of quarantine date 
+    \item Using Thingspeak the control server signals the electronic lock to
+          stay locked 
+    \item Control server uploads the additional entry attempt recorded data to
+          database
+\end{enumerate}
+
+\noindent
+Expected test scenario result: proper communication between nodes and control
+server occurred to unauthorize employee access to workplace.
+
+\subsubsection*{Exit Access}
+
+\paragraph{Scenario 1}
+Employee with valid NFC card and at exit node.
+
+\noindent
+Features to be tested:
+\begin{itemize}
+    \item Communication between the NFC card reader and Thingspeak
+    \item Communication between the control server and Thingspeak
+    \item Communication between Thingspeak and the electronic lock at exit node 
+\end{itemize}
+
+\noindent
+Test scenario steps:
+\begin{enumerate}
+    \item NFC reader identifies NFC id card being tapped and notifies control
+          server of exit attempt
+    \item NFC reader identifies tapped NFC card id and reports the id to the
+          control server
+    \item Control server recognizes employee id based on NFC card id 
+    \item Control server logs the data recorded for the exit attempt and updates
+          the database 
+    \item Control server signals the electronic lock to unlock and subtracts 1
+          from the number of people on the premises through Thingspeak
+\end{enumerate}
+
+\noindent
+Expected test scenario result: employee successfully exits the building.
+
+\subsection{Hardware Testing Demo}
+
+\subsubsection{Infrared Temperature Sensor}
+
+\begin{table*}[htb]
+\centering
+\begin{tabular}{>{\centering\arraybackslash}m{0.75cm}|>{\centering\arraybackslash}m{4cm}|>{\centering\arraybackslash}m{4.5cm}|>{\centering\arraybackslash}m{4cm}}
+\toprule
+Test & Description & Setup & Expected Result \\
+\midrule
+1 & Measure a temperature within the normal range & Aim temperature sensor at
+someone's forehead and take a measurement & Measured temperature value is within
+the expected range \\
+\hline
+2 & Measure a temperature that could indicate a fever & Aim the temperature
+sensor at a pot of water that has been heated to 39 ℃ and take a measurement &
+Measured temperature value should be with 0.5 ℃ of 39 ℃. \\
+\hline
+3 & Measure a temperature below the expected range & Aim the temperature sensor
+at any room temperature surface and take a measurement & The measurement should be
+approximately room temperature. \\
+\bottomrule
+\end{tabular}
+\caption{Infrared Temperature Sensor Tests}
+\label{table:ir-tests}
+\end{table*}
+
+\subsubsection{NFC Security Badge Reader}
+
+\begin{table*}[htb]
+\centering
+\begin{tabular}{>{\centering\arraybackslash}m{0.75cm}|>{\centering\arraybackslash}m{4cm}|>{\centering\arraybackslash}m{4.5cm}|>{\centering\arraybackslash}m{4cm}}
+\toprule
+Test & Description & Setup & Expected Result \\
+\midrule
+1 & Green RGB LED functions & Have breadboard set up & Green is shown on LED \\
+\hline
+2 & Red RGB LED functions & Have breadboard set up & Red is shown on LED \\
+\hline
+3 & Green RGB LED can change to red & Have breadboard set up & Initially green
+is shown on LED which then changes to red \\
+\hline
+4 & Red RGB LED can change to green & Have breadboard set up & Initially red is
+shown on LED which then changes to green \\
+\hline
+5 & MFRC 522 RFID Module activates & Have breadboard set up. Have a passive tag
+ready to wave in front & Pi prints out data on RFID tag \\
+\hline
+6 & MFRC 522 RFID Module can note separate ID & Have breadboard set up. Have two
+passive tags ready to wave in front & Pi prints out different data for each RFID
+tag swiped in front. \\
+\hline
+7 & MFRC 5222 RFID Module will not read when RGB LED is red & Have breadboard
+set up. Have a passive tag ready to wave in front & RGB LED is red and no data
+is printed out by the Pi. \\
+\bottomrule
+\end{tabular}
+\caption{NFC Security Badge Reader Sensor Tests}
+\label{table:nfc-tests}
+\end{table*}
+
+\subsubsection{Electronic Door Lock}
+
+\subsubsection{Time of Flight Range Sensor}
+
+\begin{table*}[htb]
+\centering
+\begin{tabular}{>{\centering\arraybackslash}m{0.75cm}|>{\centering\arraybackslash}m{4cm}|>{\centering\arraybackslash}m{4.5cm}|>{\centering\arraybackslash}m{4cm}}
+\toprule
+Test & Description & Setup & Expected Result \\
+\midrule
+1 & Orange\_LED function activated & Have LED display set up with the Raspberry
+Pi connected to monitor & RGB LED displays Orange \\
+\hline
+2 & Red\_LED function activated & Have LED display set up with the Raspberry Pi
+connected to monitor & RGB LED displays Red \\
+\hline
+3 & Switch between orange and red LEDs & Have LED display set up with the
+Raspberry Pi connected to monitor & RGB LED initially displays orange and then
+switches to display red \\
+\hline
+4 & Switch between red and orange LEDs & Have LED display set up with the
+Raspberry Pi connected to monitor & RGB LED initially displays red and then
+switches to display orange \\
+\hline
+5 & VL6180X module activated & Have sensor connected to the Raspberry Pi and
+connect Raspberry Pi to a display & Display prints out initial reading \\
+\hline
+6 & VL6180X module activated and Range\_Find class used to display multiple
+range recordings & Have sensor connected to the Raspberry Pi and connect
+Raspberry Pi to a display. Keep moving hand over the sensor to be able to
+measure range. & Display prints out different readings recorded from moving
+hand over the sensor \\
+\bottomrule
+\end{tabular}
+\caption{Time of Flight Sensor Tests}
+\label{table:tof-tests}
+\end{table*}
+
+\subsection{Database Demo}
+
+The following features are to be tested in order to test the integrity of the
+database:
+
+\begin{itemize}
+    \item Control server populating right tables 
+    \item Proper formatted data uploaded to appropriate fields
+    \item Records of the temperature readings of all employees are accessible
+          for at least 14 days
+\end{itemize}
+
+\paragraph{Scenario 1}
+Populating sample test data access\_entry table.
+
+\noindent
+Features to be tested:
+\begin{itemize}
+    \item Control server populating right tables
+\end{itemize}
+
+\noindent
+Initial setup: set up Raspberry pi connected to monitor keyboard and mouse.
+Open command prompt on Raspberry Pi.
+
+\noindent
+Test scenario steps:
+\begin{enumerate}
+    \item Invoke SQLite by typing this command in the command prompt
+\begin{lstlisting}
+sqlite3
+\end{lstlisting}
+    \item Open the database by typing this command 
+\begin{lstlisting}
+.open project_database.db
+\end{lstlisting}
+    \item Populate data to employee access\_entry table 
+\begin{lstlisting}
+INSERT INTO access_entry
+    VALUES(19234,time('now'),date('now'), "S_entry",
+           "Yes", 38.0, "Authorized");
+INSERT INTO access_entry
+    VALUES(19437,time('now','-12 minutes'),date('now'),
+          "E_entry", "Yes", 38.3, "Authorized");
+INSERT INTO access_entry
+    VALUES(19632,time('now','-1 hour'),date('now'),
+           "N_entry", "Yes", 39.2, "Unauthorized");
+INSERT INTO access_entry
+    VALUES(19957,time('now','-5 minutes'),date('now'),
+           "W_entry", "Yes", 38.5, "Authorized");
+\end{lstlisting}
+    \item Query data using \lstinline{Select*} command
+\begin{lstlisting}
+SELECT * FROM access_entry; 
+\end{lstlisting}
+\end{enumerate}
+
+\noindent
+Expected test scenario result: table populated with test sample data and query
+outputs.
+
+\begin{lstlisting}
+19234|09:30:23|2020-10-26|S_entry|Yes| 38.0| Authorized
+19437|09:18:23|2020-10-26|E_entry|Yes| 38.3| Authorized
+19632|08:30:23|2020-10-26|N_entry|Yes| 39.2| Unauthorized
+19957|09:25:23|2020-10-26|W_entry|Yes|38.5|Authorized
+\end{lstlisting}
+
+\paragraph{Scenario 2}
+Populating sample test data nfc\_and\_employer\_id table.
+
+\noindent
+Features to be tested:
+\begin{itemize}
+    \item Proper formatted data uploaded to appropriate fields
+\end{itemize}
+
+\noindent
+Initial setup: set up Raspberry pi connected to monitor keyboard and mouse.
+Open command prompt on Raspberry Pi.
+
+\noindent
+Test scenario steps:
+\begin{enumerate}
+    \item Invoke SQLite by typing this command in the command prompt
+\begin{lstlisting}
+sqlite3
+\end{lstlisting}
+    \item Open the database by typing this command 
+\begin{lstlisting}
+.open project_database.db
+\end{lstlisting}
+    \item Populate data to employee access\_entry table 
+\begin{lstlisting}
+INSERT INTO access_entry
+    VALUES(19234,time('now'),date('now'), "S_entry",
+           "Yes", 38.0, "Authorized");
+INSERT INTO access_entry
+    VALUES(19437,time('now','-12 minutes'),date('now'),
+           "E_entry","Yes", 38.3, "Authorized");
+INSERT INTO access_entry
+    VALUES(19632,time('now','-1 hour'),date('now'),
+           "N_entry","Yes", 39.2, "Unauthorized");
+INSERT INTO access_entry
+    VALUES(19957,time('now','-5 minutes'),date('now'),
+           "W_entry","Yes", 38.5, "Authorized");
+\end{lstlisting}
+    \item Query data using \lstinline{Select*} command
+\begin{lstlisting}
+SELECT access_time, access_date FROM access_entry;
+\end{lstlisting}
+\end{enumerate}
+
+\noindent
+Expected test scenario result: table populated with test sample data and query
+outputs.
+
+\begin{lstlisting}
+09:30:23|2020-10-26
+09:18:23|2020-10-26
+08:30:23|2020-10-26
+09:25:23|2020-10-26
+\end{lstlisting}
+
+\paragraph{Scenario 3}
+Populating sample test data access\_entry table.
+
+\noindent
+Features to be tested:
+\begin{itemize}
+    \item Records of the temperature readings of all employees are accessible
+          for at least 14 days
+\end{itemize}
+
+\noindent
+Initial setup: set up Raspberry pi connected to monitor keyboard and mouse.
+Open command prompt on Raspberry Pi.
+
+\noindent
+Test scenario steps:
+\begin{enumerate}
+    \item Invoke SQLite by typing this command in the command prompt
+\begin{lstlisting}
+sqlite3
+\end{lstlisting}
+    \item Open the database by typing this command 
+\begin{lstlisting}
+.open project_database.db
+\end{lstlisting}
+    \item Populate data to employee access\_entry table 
+\begin{lstlisting}
+INSERT INTO access_entry
+    VALUES (19234, time('now'), date('now'), "S_entry",
+            "Yes", 38.0, "Authorized");
+INSERT INTO access_entry
+    VALUES (19437, time('now','-12 minutes'),
+            date('now',-1 day'), "E_entry", "Yes", 38.3,
+            "Authorized");
+INSERT INTO access_entry
+    VALUES (19632, time('now','-1 hour'),
+            date('now', '-3 days'), "N_entry", "Yes", 39.2,
+            "Unauthorized");
+INSERT INTO access_entry
+    VALUES (19957, time('now','-5 minutes'),
+            date('now', '-7 days'), "W_entry", "Yes", 38.5,
+            "Authorized");
+INSERT INTO access_entry
+    VALUES (19234, time('now'), date('now', '-13 days'),
+            "S_entry", "Yes", 38.0, "Authorized");
+INSERT INTO access_entry
+    VALUES (19437, time('now','-12 minutes'),
+            date('now','-14 days'), "E_entry", "Yes", 38.3,
+            "Authorized");
+INSERT INTO access_entry
+    VALUES (19632, time('now','-1 hour'),
+            date('now','-14 days'), "N_entry", "Yes", 39.2,
+            "Unauthorized");
+INSERT INTO access_entry
+    VALUES (19957, time('now','-5 minutes'),
+            date('now','-15 days'), "W_entry", "Yes", 38.5,
+            "Authorized");
+\end{lstlisting}
+    \item Query data using \lstinline{Select*} command
+\begin{lstlisting}
+SELECT * FROM access_entry WHERE access_date > date('now');
+\end{lstlisting}
+\end{enumerate}
+
+\noindent
+Expected test scenario result: table populated with test sample data and query
+outputs.
+
+\begin{lstlisting}
+19437|09:18:23|2020-10-25|E_entry|Yes| 38.3| Authorized
+19632|08:30:23|2020-10-23|N_entry|Yes| 39.2| Unauthorized
+19957|09:25:23|2020-10-19|W_entry|Yes|38.5|Authorized
+19234|09:30:23|2020-10-13|S_entry|Yes| 38.0| Authorized
+19437|09:18:23|2020-10-12|E_entry|Yes| 38.3| Authorized
+19632|08:30:23|2020-10-12|N_entry|Yes| 39.2| Unauthorized
+19957|09:25:23|2020-10-11|W_entry|Yes|38.5|Authorized
+\end{lstlisting}
+
+
+\subsection{Final Demo}
+
+Table \ref{table:final-tests} lists the scenarios that we will test during the
+final demo. These scenarios have been chosen to demonstrate the functional
+requirements as listed in section \ref{sec:problem-statement}.
+
+% Functional requirements:
+% - Control access to a building using security badges.
+% - Require users to present their security badge when they enter or exit the
+%   building in order to track the number of users in the building.
+% - Measure user's temperatures when they are entering the building in order to
+%   determine if they have possible symptoms.
+% - The door node should have a range sensor to determine whether users are in
+%   an appropriate position for a temperature reading.
+% - Do not allow more users to enter the building if the a preset maximum
+%   capacity has been reached.
+% - An multicoloured LED at each door node should indicate be used to indicate
+%   the status of the door node. The LED should be normally red when the door is
+%   locked and should change to green when the door is unlocked. The LED should
+%   be orange when in the process of taking a temperature reading if the user is
+%   not within an appropriate range of the temperature sensor.
+
+
+\begin{longtable}[htb]{>{\centering\arraybackslash}m{3cm}|>{\centering\arraybackslash}m{3.5cm}|>{\centering\arraybackslash}m{3cm}|>{\centering\arraybackslash}m{3.5cm}}
+\toprule
+Description & Requirement & Procedure & Expected Result \\
+\midrule
+Ideal Building Entry & Control access to a building using security badges,
+measure users' temperatures when they are entering the building, change LED 
+colours & Present a valid security badge to the incoming reader, provide a
+normal temperature reading the temperature sensor & The electronic door lock
+should be actuated to allow entry, the access should be logged in the database,
+the count of people in the building should incremented and the LED at the door
+node should change to green temporarily \\
+\hline
+Ideal Building Exit & Require users to present their security badge when exiting
+the building in order to track the number of users in the building & Present a
+valid building security badge to the outgoing reader at a door node & The door
+node should be actuated to allow the user to exit, the exit should be logged in
+the database and the count of people in the building should be decremented \\
+\hline
+Attempted building entry with invalid security badge & Control access to a
+building using security badges & Present an invalid security badge to the
+incoming reader & The electronic door lock should not be actuated and entry
+should not be allowed, the attempted access should be logged in the database and
+the LED at the door node should remain red \\
+\hline
+Attempted building entry with fever & Measure user's temperature when they are
+entering the building & Present a valid security badge to the reader but then
+present a temperature that is too high & The electronic door lock should not be
+actuated and entry should not be allowed, the attempted access should be logged
+in the database and the LED at the door node should remain red \\
+\hline
+Attempted building entry with low temperature & Measure user's temperature when
+they are entering the building & Present a valid security badge to the reader
+but then present a temperature that is too low & The electronic door lock should
+not be actuated and entry should not be allowed, the attempted access should be
+logged in the database and the LED at the door node should remain red \\
+\hline
+Attempted building entry when building is at capacity & Do not allow users to
+enter the building if a maximum capacity has been reached & Set the maximum
+capacity of the system to one users, enter with a valid security badge and
+temperature reading then attempt to enter with a second valid security badge &
+The electronic door lock should not be actuated and entry should not be allowed,
+the attempted access should be logged in the database and the LED at the door
+node should remain red \\
+\hline
+Temperature measurement from incorrect distance & Determine whether users are in
+an appropriate position for a temperature reading & Present a valid security
+badge to the incoming reader but initially stand approximately one meter away
+from the temperature sensor, slowly move closer until a temperature reading is
+taken & The LED should be illuminated orange and the electronic door lock should
+not be actuated until the user is within an appropriate range of the infrared
+temperature sensor \\
+\bottomrule
+\caption{Final Demo Tests}
+\label{table:final-tests}
+\end{longtable}
+
+

@@ -1,0 +1,77 @@
+The door node is the hardware that will be located at each door. It consists of
+a NFC security badge reader, infrared temperature sensor, time of flight range
+sensor and elextronic door lock, all connected to a Raspberry Pi.
+
+Figure \ref{fig:door-node-schematic} shows a schematic of the door node.
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=\textwidth]{figures/door-node-schematic.png}
+\caption{Door Node Schematic}
+\label{fig:door-node-schematic}
+\end{figure}
+
+\subsection{Infrared Temperature Sensor}
+
+In order to detect fever we need to measure the temperature of the users of our
+system. We have determined that a forehead temperature measurement using an
+infrared temperature sensor is the best way to obtain sufficiently accurate
+contactless temperature measurements.
+
+We plan to use the TPiS 1T 1256 L5.5 thermopile from Excelitas Technologies.
+This temperature sensor was chosen after a comparison of available infrared
+temperature sensors.
+
+The TPiS 1T 1256 L5.5 offers medical grade accuracy within the temperature range
+expected for human skin. It also provides accurate ambient temperature
+measurments. The optics of the sensor provide a relativly narrow 5 degree field
+of view which is appropriate for measuring the fairly small target of a human
+forehead from a reasonable range.
+
+The TPiS 1T 1256 L5.5 can be powered from the Raspberry Pi's 3.3 volt rail and
+features a single pin digital interface of readout of the temperature data. This
+digital interface requires more accruate timing than can easily be accomplished
+with a Raspberry Pi so a small 8 bit microcontroller will be used with minimal
+firmware that converts betweem the thermopile's digital interface and an I2C
+interface.
+
+Figture \ref{fig:ir-test-circuit} shows the test circuit for the infrared
+temperature sensor.
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.75\textwidth]{figures/ir-test-circuit.png}
+\caption{Test Circuit for Infrared Temperature Sensor}
+\label{fig:ir-test-circuit}
+\end{figure}
+
+\subsection{NFC Security Badge Reader}
+
+The T GPIO extension board used is coloured differently and indicates GPIO
+rather than \# before the numbers. MFRC 522 RFID was selected due to it being
+available in a kit that I already had access to and having provided code. 
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=\textwidth]{figures/nfc-test-circuit.png}
+\caption{Test Circuit for NFC Security Badge Reader}
+\label{fig:nfc-test-circuit}
+\end{figure}
+
+\subsection{Electronic Door Lock}
+
+\subsection{Time of Flight Range Sensor}
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.6\textwidth]{figures/tof-test-circuit.png}
+\caption{Test Circuit for Time of Flight Sensor}
+\label{fig:tof-test-circuit}
+\end{figure}
+
+
+\subsection{Control Server}
+
+The control server hardware will consist of a Raspberry Pi connected to a
+monitor, keyboard and mouse.
+

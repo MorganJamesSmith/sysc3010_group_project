@@ -1,0 +1,88 @@
+Our access control system will be designed to meet the needs of employers to
+look after the safety of their employees. The scope of this project is to
+provide employers with an access control system that grants access to employees
+entering the workplace based on their measured body temperature. As studies show
+that fever (< 39.1 °C) is the most frequent symptom in more than 50\% of
+COVID-19 cases our system also blocks access to employees with a body
+temperature of over 39.1 °C for 14 days to prevent the spread of COVID-19 in the
+workplace. Additionally, our system adheres to social distancing guidelines
+implemented by the government by keeping track of the number of people on the
+premises and restricts employees from entering the building when the maximum
+threshold for the workplace has been attained. Although not in the scope of the
+project, our system would work with employers to comply with their standards and
+constraints to provide their employees access to a COVID-19 free workplace. With
+many more features and benefits, implementing our system at workplaces around
+the world successfully helps in providing a COVID-19 free work environment for
+employees.
+
+Our access control system is a technology-based solution using a data collection
+and management system whose primary features and their functionalities include: 
+\begin{itemize}
+    \item NFC security badge reader
+    \begin{itemize}
+        \item Available at each door node at both entry and exit ways
+        \item Read valid NFC card ID and associate with employee ID
+    \end{itemize}
+    \item Infrared temperature sensor
+    \begin{itemize}
+        \item Available at each entry way
+        \item Measure the body temperature of an employee trying to enter the
+              work premises
+        \item Alert control server in case of high temperature reading
+    \end{itemize}
+    \item Time of flight distance sensor
+    \begin{itemize}
+        \item Available at each entry way
+        \item Identify if the employee is standing at an ideal distance from the
+              temperature sensor.
+    \end{itemize}
+    \item LED display
+    \begin{itemize}
+        \item Available at each entry way
+        \item Display a green light at the entrance if accepting employee entry
+        \item Display a red circle light at the entrance when control server
+              restricts access due to premises acquiring maximum threshold
+        \item Display orange light if employee in range of the temperature
+              sensor
+        \item Display red light if employee not in range of temperature sensor
+        \item Display flashing green light if control server authorizes employee
+              to access after having temperature recorded
+        \item Display flashing red light if control server unauthorizes employee
+              from accessing the building after having temperature recorded 
+    \end{itemize}
+    \item Electronic door lock
+    \begin{itemize}
+        \item Available at each door node at both entry and exit ways
+        \item Unlock only when control server authorizes the employee to
+              enter/exit premises
+        \item Locked when control server prevents access to employees with
+              recorded fever temperatures
+        \item Locked at entry ways when control server restricts access due to
+              premises acquiring maximum threshold
+    \end{itemize}
+    \item Control server
+    \begin{itemize}
+        \item Able to access all door nodes
+        \item Able to access database and available tables
+        \item Identifies number of people entering and exiting the premises
+        \item Initializes access restriction when maximum threshold of premises
+              is acquired
+    \end{itemize}
+    \item Database
+    \begin{itemize}
+        \item Properly organized tables with appropriate entries for each
+              individual field
+        \item Properly formatted values for sensor recorded data fields
+        \item Records of the temperature readings of all employees are
+              accessible for at least 14 days 
+    \end{itemize}
+    \item GUI
+    \begin{itemize}
+        \item Able to add new employee information
+        \item Able to view details of all employees based on NFC security card
+              user id and employee id
+        \item Able to approve quarantine period initiated by the control server
+              for individual employees
+    \end{itemize}
+\end{itemize}
+

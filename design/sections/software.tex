@@ -1,30 +1,29 @@
+\subsection{Door Node}
 
-\begin{itemize}
-\item Account ID: (number) uniquely identifies an account
-\item Node ID: (number) uniquely identifies a door node
-\item Transaction ID: (number) uniquely identifies a transaction
-\item Current time: (number) Time message was sent
-\item Information Request: (list of keys) A list of information required to further the
-transaction
-\item Information Response: (list of key value pairs) Contains obtained information
-\item Access Request Response: (boolean)
-\end{itemize}
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=\textwidth]{figures/tof-driver-class-dia.png}
+\caption{Class Diagram for Time of Flight Range Sensor Driver}
+\end{figure}
 
-\begin{center}
-\begin{tabular}{ | l | l | l | p{4.5cm} | }
-Sender & Receiver & Message & Data Format\\
-\hline
-Door Node & Control Server & USER\_REQUEST\_ACCESS &
-Node ID \newline Transaction ID \newline Current time \newline Account ID\\
-\hline
-Door Node & Control Server & INFORMATION\_RESPONSE &
-Node ID \newline Transaction ID \newline Current time \newline Information Response\\
-\hline
-Control Server & Door Node & REQUEST\_INFORMATION &
-Node ID \newline Transaction ID \newline Current time \newline Information Request\\
-\hline
-Control Server & Door Node & ACCESS\_REQUEST\_RESPONSE &
-Node ID \newline Transaction ID \newline Current time \newline Account ID \newline Access Request Response\\
-\hline
-\end{tabular}
-\end{center}
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=\textwidth]{figures/nfc-driver-class-dia.png}
+\caption{Class Diagram for NFC Security Badge Reader Driver}
+\end{figure}
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.4\textwidth]{figures/door-interface-flow.png}
+\caption{Flow of Door Node Software}
+\end{figure}
+
+\subsection{Control Server}
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.5\textwidth]{figures/server-door-msg-flow.png}
+\caption{Flow of Communication Between Control Server and Door Node}
+\end{figure}
+
+
