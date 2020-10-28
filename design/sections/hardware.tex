@@ -74,6 +74,16 @@ Other then those two changes the below circuit is identical to that which will b
 
 \subsection{Electronic Door Lock}
 
+The electronic door lock model will be powered by a servo motor. The chosen
+servo motor is the Adafruit Micro Servo.  This servo has 180 degrees of motion
+that can be traversed in 0.3 seconds.  The servo operates between 3V and 6V so
+it can be powered through the Raspberry Pi's 5V line.
+
+A test program will be written that will initially place the servo at an angle
+of 0 degrees.  Then a loop will run that will move the servo arm to 180 degrees,
+wait a second, move back to 0 degrees, and wait another second.  The operation
+of the servo can be easily verified visually.
+
 \begin{figure}[!htb]
 \centering
 \includegraphics[width=0.5\textwidth]{figures/electronic-lock-schematic.png}
