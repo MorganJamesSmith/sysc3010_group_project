@@ -47,9 +47,23 @@ temperature sensor.
 
 \subsection{NFC Security Badge Reader}
 
-The T GPIO extension board used is coloured differently and indicates GPIO
-rather than \# before the numbers. MFRC 522 RFID was selected due to it being
-available in a kit that I already had access to and having provided code. 
+The MFRC522 RFID reader is the chosen device for the NFC security badge reader. 
+It has an operating distance of up to 50 mm which means that the users will not have to place
+the card almost touching the reader. the fact that it includes a programmable timer
+is very useful as it can help avoid creating issues where it scans a card multiple times 
+when doing a single swipe. As the reader is not meant to be the end all of deciding 
+whether or not an employee will unlock the door it is therefore useful that the device
+supports power down by software mode. When in lockdown or an employee attempts
+to enter the building at full capacity it will be powered-down preventing entrance.  
+The usage of serial peripheral interface helps as the badge reader functions quickly 
+being able to handle data speeds up to 10 Mbit/s. 
+It is powered by the 3.3 V DC power source of the Raspberry Pi.
+
+
+For the below test circuit the differences between the test circuit and the actual demo circuit
+are as follows. The T GPIO extension board used is coloured differently
+and indicates GPIO rather than "#" before the numbers. 
+Other then those two changes the below circuit is identical to that which will be used in demonstrations.
 
 \begin{figure}[!htb]
 \centering
