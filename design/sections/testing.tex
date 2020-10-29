@@ -264,6 +264,26 @@ is printed out by the Pi. \\
 
 \subsubsection{Electronic Door Lock}
 
+\begin{table*}[htb]
+\centering
+\begin{tabular}{>{\centering\arraybackslash}m{0.75cm}|>{\centering\arraybackslash}m{4cm}|>{\centering\arraybackslash}m{4.5cm}|>{\centering\arraybackslash}m{4cm}}
+\toprule
+Test & Description & Setup & Expected Result \\
+\midrule
+1 & Test servo Oscillation & Have breadboard set up & Servo alternates between
+0 degrees and 180 degrees every second \\
+\bottomrule
+\end{tabular}
+\caption{Electronic Door Lock Tests}
+\label{table:servo-tests}
+\end{table*}
+
+
+A test program will be written that will initially place the servo at an angle
+of 0 degrees.  Then a loop will run that will move the servo arm to 180 degrees,
+wait a second, move back to 0 degrees, and wait another second.  The operation
+of the servo can be easily verified visually.
+
 \subsubsection{Time of Flight Range Sensor}
 
 \begin{table*}[htb]
