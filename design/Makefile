@@ -9,7 +9,7 @@ FIGURES=$(patsubst uml/%.uml,uml/%.png,$(FIGURES_SRC))
 all: $(TARGET).pdf
 
 $(TARGET).pdf: $(TARGET).tex $(FIGURES)
-	latexmk -pdf --bibtex -pdflatex="pdflatex -interaction=nonstopmode" -use-make $<
+	latexmk -pdf --bibtex -pdflatex="pdflatex -shell-escape -interaction=nonstopmode" -use-make $<
 
 %.png : %.uml
 	plantuml -tpng $<
