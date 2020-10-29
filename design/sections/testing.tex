@@ -333,11 +333,14 @@ Test scenario steps:
 sqlite3
 \end{lstlisting}
     \item Open the database by typing this command 
-\begin{lstlisting}
+\begin{listing}[H]
+\begin{minted}[]{text}
 .open project_database.db
-\end{lstlisting}
-    \item Populate data to employee access\_entry table 
-\begin{lstlisting}
+\end{minted}
+\end{listing}
+    \item Populate data to employee access\_entry table
+\begin{listing}[H]
+\begin{minted}[]{sql}
 INSERT INTO access_entry
     VALUES(19234,time('now'),date('now'), "S_entry",
            "Yes", 38.0, "Authorized");
@@ -350,11 +353,14 @@ INSERT INTO access_entry
 INSERT INTO access_entry
     VALUES(19957,time('now','-5 minutes'),date('now'),
            "W_entry", "Yes", 38.5, "Authorized");
-\end{lstlisting}
+\end{minted}
+\end{listing}
     \item Query data using \lstinline{Select*} command
-\begin{lstlisting}
-SELECT * FROM access_entry; 
-\end{lstlisting}
+\begin{listing}[H]
+\begin{minted}[]{sql}
+SELECT * FROM access_entry;
+\end{minted}
+\end{listing}
 \end{enumerate}
 
 \noindent
@@ -362,10 +368,10 @@ Expected test scenario result: table populated with test sample data and query
 outputs.
 
 \begin{lstlisting}
-19234|09:30:23|2020-10-26|S_entry|Yes| 38.0| Authorized
-19437|09:18:23|2020-10-26|E_entry|Yes| 38.3| Authorized
-19632|08:30:23|2020-10-26|N_entry|Yes| 39.2| Unauthorized
-19957|09:25:23|2020-10-26|W_entry|Yes|38.5|Authorized
+19234 | 09:30:23 | 2020-10-26 | S_entry | Yes | 38.0 | Authorized
+19437 | 09:18:23 | 2020-10-26 | E_entry | Yes | 38.3 | Authorized
+19632 | 08:30:23 | 2020-10-26 | N_entry | Yes | 39.2 | Unauthorized
+19957 | 09:25:23 | 2020-10-26 | W_entry | Yes | 38.5 | Authorized
 \end{lstlisting}
 
 \paragraph{Scenario 2}
@@ -385,15 +391,20 @@ Open command prompt on Raspberry Pi.
 Test scenario steps:
 \begin{enumerate}
     \item Invoke SQLite by typing this command in the command prompt
-\begin{lstlisting}
+\begin{listing}[H]
+\begin{minted}[]{bash}
 sqlite3
-\end{lstlisting}
-    \item Open the database by typing this command 
-\begin{lstlisting}
+\end{minted}
+\end{listing}
+    \item Open the database by typing this command
+\begin{listing}[H]
+\begin{minted}[]{sql}
 .open project_database.db
-\end{lstlisting}
-    \item Populate data to employee access\_entry table 
-\begin{lstlisting}
+\end{minted}
+\end{listing}
+    \item Populate data to employee access\_entry table
+\begin{listing}[H]
+\begin{minted}[]{sql}
 INSERT INTO access_entry
     VALUES(19234,time('now'),date('now'), "S_entry",
            "Yes", 38.0, "Authorized");
@@ -406,23 +417,28 @@ INSERT INTO access_entry
 INSERT INTO access_entry
     VALUES(19957,time('now','-5 minutes'),date('now'),
            "W_entry","Yes", 38.5, "Authorized");
-\end{lstlisting}
+\end{minted}
+\end{listing}
     \item Query data using \lstinline{Select*} command
-\begin{lstlisting}
+\begin{listing}[H]
+\begin{minted}[]{sql}
 SELECT access_time, access_date FROM access_entry;
-\end{lstlisting}
+\end{minted}
+\end{listing}
 \end{enumerate}
 
 \noindent
 Expected test scenario result: table populated with test sample data and query
 outputs.
 
-\begin{lstlisting}
-09:30:23|2020-10-26
-09:18:23|2020-10-26
-08:30:23|2020-10-26
-09:25:23|2020-10-26
-\end{lstlisting}
+\begin{listing}[H]
+\begin{minted}[]{text}
+09:30:23 | 2020-10-26
+09:18:23 | 2020-10-26
+08:30:23 | 2020-10-26
+09:25:23 | 2020-10-26
+\end{minted}
+\end{listing}
 
 \paragraph{Scenario 3}
 Populating sample test data access\_entry table.
@@ -442,21 +458,26 @@ Open command prompt on Raspberry Pi.
 Test scenario steps:
 \begin{enumerate}
     \item Invoke SQLite by typing this command in the command prompt
-\begin{lstlisting}
+\begin{listing}[H]
+\begin{minted}[]{bash}
 sqlite3
-\end{lstlisting}
-    \item Open the database by typing this command 
-\begin{lstlisting}
+\end{minted}
+\end{listing}
+    \item Open the database by typing this command
+\begin{listing}[H]
+\begin{minted}[]{sql}
 .open project_database.db
-\end{lstlisting}
-    \item Populate data to employee access\_entry table 
-\begin{lstlisting}
+\end{minted}
+\end{listing}
+    \item Populate data to employee access\_entry table
+\begin{listing}[H]
+\begin{minted}[]{sql}
 INSERT INTO access_entry
     VALUES (19234, time('now'), date('now'), "S_entry",
             "Yes", 38.0, "Authorized");
 INSERT INTO access_entry
     VALUES (19437, time('now','-12 minutes'),
-            date('now',-1 day'), "E_entry", "Yes", 38.3,
+            date('now', '-1 day'), "E_entry", "Yes", 38.3,
             "Authorized");
 INSERT INTO access_entry
     VALUES (19632, time('now','-1 hour'),
@@ -471,36 +492,41 @@ INSERT INTO access_entry
             "S_entry", "Yes", 38.0, "Authorized");
 INSERT INTO access_entry
     VALUES (19437, time('now','-12 minutes'),
-            date('now','-14 days'), "E_entry", "Yes", 38.3,
+            date('now', '-14 days'), "E_entry", "Yes", 38.3,
             "Authorized");
 INSERT INTO access_entry
     VALUES (19632, time('now','-1 hour'),
-            date('now','-14 days'), "N_entry", "Yes", 39.2,
+            date('now', '-14 days'), "N_entry", "Yes", 39.2,
             "Unauthorized");
 INSERT INTO access_entry
     VALUES (19957, time('now','-5 minutes'),
-            date('now','-15 days'), "W_entry", "Yes", 38.5,
+            date('now', '-15 days'), "W_entry", "Yes", 38.5,
             "Authorized");
-\end{lstlisting}
+\end{minted}
+\end{listing}
     \item Query data using \lstinline{Select*} command
-\begin{lstlisting}
+\begin{listing}[H]
+\begin{minted}[]{sql}
 SELECT * FROM access_entry WHERE access_date > date('now');
-\end{lstlisting}
+\end{minted}
+\end{listing}
 \end{enumerate}
 
 \noindent
 Expected test scenario result: table populated with test sample data and query
 outputs.
 
-\begin{lstlisting}
-19437|09:18:23|2020-10-25|E_entry|Yes| 38.3| Authorized
-19632|08:30:23|2020-10-23|N_entry|Yes| 39.2| Unauthorized
-19957|09:25:23|2020-10-19|W_entry|Yes|38.5|Authorized
-19234|09:30:23|2020-10-13|S_entry|Yes| 38.0| Authorized
-19437|09:18:23|2020-10-12|E_entry|Yes| 38.3| Authorized
-19632|08:30:23|2020-10-12|N_entry|Yes| 39.2| Unauthorized
-19957|09:25:23|2020-10-11|W_entry|Yes|38.5|Authorized
-\end{lstlisting}
+\begin{listing}[H]
+\begin{minted}[]{text}
+19437 | 09:18:23 | 2020-10-25 | E_entry | Yes | 38.3 | Authorized
+19632 | 08:30:23 | 2020-10-23 | N_entry | Yes | 39.2 | Unauthorized
+19957 | 09:25:23 | 2020-10-19 | W_entry | Yes | 38.5 | Authorized
+19234 | 09:30:23 | 2020-10-13 | S_entry | Yes | 38.0 | Authorized
+19437 | 09:18:23 | 2020-10-12 | E_entry | Yes | 38.3 | Authorized
+19632 | 08:30:23 | 2020-10-12 | N_entry | Yes | 39.2 | Unauthorized
+19957 | 09:25:23 | 2020-10-11 | W_entry | Yes | 38.5 | Authorized
+\end{minted}
+\end{listing}
 
 
 \subsection{Final Demo}
