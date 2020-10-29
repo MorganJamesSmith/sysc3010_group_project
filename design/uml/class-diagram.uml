@@ -10,7 +10,7 @@ INFORMATION_REQUEST()
 ACCESS_RESPONSE()
 }
 
-door "1..*" - "1" serv
+door "1..*" -d- "1" serv
 
 
 @enduml

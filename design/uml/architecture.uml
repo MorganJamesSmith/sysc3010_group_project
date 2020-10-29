@@ -9,11 +9,11 @@ Control Server
 --
 Operator GUI
 ]
-Operator "0..*" -- "1" admin_interface
+Operator "1..*" -- "1" admin_interface
 
 database Database {
     collections userlogs [
-    Interaction Logs
+    User Logs
     --
     ]
     collections user [
@@ -42,6 +42,8 @@ Infrared Temperature Sensor
 NFC security Badge Reader
 --
 Electronic Lock Actuator
+--
+Time of Flight Distance Sensor
 ]
 
 actor User
