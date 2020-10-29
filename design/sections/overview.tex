@@ -54,6 +54,40 @@ Node ID \newline Transaction ID \newline Current time \newline Account ID \newli
 
 \subsection{Message Sequence Diagrams}
 
+As seen in Figure \ref{fig:message-sequence-diagram}, all message sequences are
+initiated by the Door Node sending an ACCESS\_REQUEST.  The Control Server can
+reply with an ACCESS\_RESPONSE to immediately grant or deny access.  If the
+Control Server doesn't have enough information to make a decision, it will send
+INFORMATION\_REQUEST's until it has enough information to send an
+ACCESS\_RESPONSE message.
+
+These messages are built in a way that additional sensors could easily be added
+to system.
+
+Since there are separate Door Nodes for entrances and exits, the Control Server
+can determine if a user is entering or exiting based on the Node ID.  If a Door
+Node is to be used for both entering and exiting, it will be equipped with two
+NFC Security Badge Readers.  The Door Node will use a separate Node ID for
+interactions with each NFC Security Badge Reader.  The Control Server will view
+this Door Node with two NFC Security Badge Readers as two separate Door Nodes.
+
+When a user is entering the building, the Control Server will consult the
+database to determine if the user is authorized to enter the building.  If the
+the user is not authorized, the Control Server will respond with an
+ACCESS\_RESPONSE message denying the user.  If the user is authorized, the
+Control Server will respond with an INFORMATION\_REQUEST for the user's
+temperature.  The door node will then respond with an INFORMATION\_RESPONSE
+containing the user's temperature.  The Control Server will repeat the
+INFORMATION\_REQUEST for temperature until a temperature not indicating a fever
+is received, or the maximum number of tries is reached.  The Control Server
+will then respond with an ACCESS\_RESPONSE message denying the user if it is
+determined they might have a fever or granting access to the user if their
+temperature is normal.  The Control server will then update the database.
+
+When a user is exiting the building, the Control Server will immediately respond
+with an ACCESS\_RESPONSE message granting access to the user.  The Control
+Server will then use this information to update the database.
+
 \begin{figure}[!htb]
 \centering
 \includegraphics[width=\textwidth]{uml/message-sequence-diagram.png}
