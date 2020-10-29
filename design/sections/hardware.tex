@@ -1,6 +1,6 @@
 The door node is the hardware that will be located at each door. It consists of
 a NFC security badge reader, infrared temperature sensor, time of flight range
-sensor and elextronic door lock, all connected to a Raspberry Pi.
+sensor and electronic door lock, all connected to a Raspberry Pi.
 
 Figure \ref{fig:door-node-schematic} shows a schematic of the door node.
 
@@ -24,18 +24,18 @@ temperature sensors.
 
 The TPiS 1T 1256 L5.5 offers medical grade accuracy within the temperature range
 expected for human skin. It also provides accurate ambient temperature
-measurments. The optics of the sensor provide a relativly narrow 5 degree field
+measurements. The optics of the sensor provide a relatively narrow 5 degree field
 of view which is appropriate for measuring the fairly small target of a human
 forehead from a reasonable range.
 
 The TPiS 1T 1256 L5.5 can be powered from the Raspberry Pi's 3.3 volt rail and
 features a single pin digital interface of readout of the temperature data. This
-digital interface requires more accruate timing than can easily be accomplished
+digital interface requires more accurate timing than can easily be accomplished
 with a Raspberry Pi so a small 8 bit microcontroller will be used with minimal
-firmware that converts betweem the thermopile's digital interface and an I2C
+firmware that converts between the thermopile's digital interface and an I2C
 interface.
 
-Figture \ref{fig:ir-test-circuit} shows the test circuit for the infrared
+Figure \ref{fig:ir-test-circuit} shows the test circuit for the infrared
 temperature sensor.
 
 \begin{figure}[!htb]
