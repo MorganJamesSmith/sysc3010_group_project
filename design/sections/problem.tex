@@ -17,78 +17,19 @@ COVID-19 free work environment.
 Our access control system is a technology-based solution using a data collection
 and management system whose primary features and their functionalities include:
 
-\subsection{Door Node}
+\subsection{Functional Requirements}
 \begin{itemize}
-    \item NFC security badge reader
-    \begin{itemize}
-        \item Available at each door node at both entry and exit ways
-        \item Read valid NFC card ID and associate with employee ID
-    \end{itemize}
-    \item Infrared temperature sensor
-    \begin{itemize}
-        \item Available at each entry way
-        \item Measure the body temperature of an employee trying to enter the
-              work premises
-        \item Alert control server in case of high temperature reading
-    \end{itemize}
-    \item Time of flight distance sensor
-    \begin{itemize}
-        \item Available at each entry way
-        \item Identify if the employee is standing at an ideal distance from the
-              temperature sensor.
-    \end{itemize}
-    \item LED display
-    \begin{itemize}
-        \item Available at each entry way
-        \item Display a green light at the entrance if accepting employee entry
-        \item Display a red circle light at the entrance when control server
-              restricts access due to premises acquiring maximum threshold
-        \item Display orange light if employee in range of the temperature
-              sensor
-        \item Display red light if employee not in range of temperature sensor
-        \item Display flashing green light if control server authorizes employee
-              to access after having temperature recorded
-        \item Display flashing red light if control server unauthorizes employee
-              from accessing the building after having temperature recorded 
-    \end{itemize}
-    \item Electronic door lock
-    \begin{itemize}
-        \item Available at each door node at both entry and exit ways
-        \item Unlock only when control server authorizes the employee to
-              enter/exit premises
-        \item Locked when control server prevents access to employees with
-              recorded fever temperatures
-        \item Locked at entry ways when control server restricts access due to
-              premises acquiring maximum threshold
-    \end{itemize}
-\end{itemize}
-
-\subsection{Control server}
-
-\begin{itemize}
-    \item Control server
-    \begin{itemize}
-        \item Able to access all door nodes
-        \item Able to access database and available tables
-        \item Identifies number of people entering and exiting the premises
-        \item Initializes access restriction when maximum threshold of premises
-              is acquired
-    \end{itemize}
-    \item Database
-    \begin{itemize}
-        \item Properly organized tables with appropriate entries for each
-              individual field
-        \item Properly formatted values for sensor recorded data fields
-        \item Records of the temperature readings of all employees are
-              accessible for at least 14 days 
-    \end{itemize}
-    \item Operator GUI
-    \begin{itemize}
-        \item Able to add new employee information
-        \item Able to view details of all employees based on NFC security card
-              user id and employee id
-        \item Able to approve quarantine period initiated by the control server
-              for individual employees
+    \item User should know if door is locked or unlocked
+    \item User should know if they are too far away from temperature sensor
+    \item User should be able to scan ID without touching the NFC reader
+    \item Database should know how many users are in the building
+    \item Server user should be able to render invalid ID of ill users
+    \item Door lock should unlock when server requests unlock
+    \item User should know if the building is at capacity
+    \item Server should not request door unlock if user temperature is outside range
+    \item Server should request door unlock if user temperature is within range
+    \item Time of flight sensor should send to server distance of user from temperature sensor
+    \item User should be able to exit if server finds maximum threshold of employees in building
     \end{itemize}
 \end{itemize}
 
