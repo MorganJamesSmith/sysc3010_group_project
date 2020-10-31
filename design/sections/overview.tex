@@ -18,40 +18,6 @@ recorded in a user log.
 \label{fig:architecture-diagram}
 \end{figure}
 
-\subsection{Communication Protocol}
-
-\begin{itemize}
-\item Account ID: (number) uniquely identifies an account
-\item Node ID: (number) uniquely identifies a door node
-\item Transaction ID: (number) uniquely identifies a transaction
-\item Current time: (number) Time message was sent
-\item Information Request: (list of keys) A list of information required to further the
-transaction
-\item Information Response: (list of key value pairs) Contains obtained information
-\item Access Request Response: (boolean)
-\end{itemize}
-
-\begin{table*}[htb]
-\begin{tabular}{ l | l | l | p{4.5cm} }
-\toprule
-Sender & Receiver & Message & Data Format\\
-\midrule
-Door Node & Control Server & ACCESS\_REQUEST &
-Node ID \newline Transaction ID \newline Current time \newline Account ID\\
-\hline
-Door Node & Control Server & INFORMATION\_RESPONSE &
-Node ID \newline Transaction ID \newline Current time \newline Information Response\\
-\hline
-Control Server & Door Node & INFORMATION\_REQUEST &
-Node ID \newline Transaction ID \newline Current time \newline Information Request\\
-\hline
-Control Server & Door Node & ACCESS\_RESPONSE &
-Node ID \newline Transaction ID \newline Current time \newline Account ID \newline Access Request Response\\
-\bottomrule
-\end{tabular}
-\caption{Messages}
-\end{table*}
-
 \subsection{Message Sequence Diagrams}
 
 As seen in Figure \ref{fig:message-sequence-diagram}, all message sequences are
@@ -94,6 +60,256 @@ Server will then use this information to update the database.
 \caption{Message Sequence Diagram}
 \label{fig:message-sequence-diagram}
 \end{figure}
+
+\subsection{Communication Protocol}
+
+Our communication protocol consists of two layers: a simple transport layer that
+abstracts over ThingSpeak and an application layer that carries information
+specific to our system.
+
+\subsubsection{ThingSpeak Transport Layer}
+
+The ThingSpeak transport layer is designed to provide an interface that
+functions similarly to a TCP or UDP socket but uses ThingSpeak as a backend.
+
+The ThingSpeak transport layer uses a single ThingSpeak channel to facilitate
+communication between an arbitrary number of endpoints. Each entry posted to the
+channel uses two ThingSpeak fields. The first contains a transport layer header
+and the second contains the application layer data.
+
+The ThingSpeak transport layer header is encoded as string in the first field of
+a ThingSpeak channel entry. It contains three fields, which are separated by a
+tab character.
+\begin{itemize}
+    \item Source Address: A string the uniquely identifies the device from which
+          the message originates.
+    \item Destination Address: A string the uniquely identifies the device for
+          which the message is intended.
+    \item Flags: A comma separated lists of flags.
+\end{itemize}
+
+The valid message flags are listed in table \ref{tab:ts-transport-flags}.
+
+\begin{table*}[htb]
+\centering
+\begin{tabular}{ c | c | m{6.0cm} }
+\toprule
+Name & Encoded Value & Description\\
+\midrule
+Connection Request & conn\_req & Indicates that the message is a connection
+request. If set, any other flags and the payload are ignored.\\
+\bottomrule
+\end{tabular}
+\caption{Transport Layer Header Flags}
+\label{tab:ts-transport-flags}
+\end{table*}
+
+In order to establish a connection, a client sends message to the server to
+which it wishes to connect that has the conn\_req flag set. If the server
+receives the message and wishes to accept the connection it will respond with a
+messages that has the conn\_req flag set.
+
+The second field of a ThingSpeak channel entry contains the application layer
+message content encoded as a base 64 string.
+
+\subsubsection{Application Layer}
+
+The application layer protocol consist of five different message types, which
+are listed in table \ref{tab:app-layer-messages}.
+
+All message fields are encoded with network endianness (big endian).
+
+\begin{table*}[htb]
+\begin{tabular}{ l | l | l | p{4.5cm} }
+\toprule
+Sender & Receiver & Message & Data Format\\
+\midrule
+Door Node & Control Server & ACCESS\_REQUEST &
+Transaction ID \newline Account ID\\
+\hline
+Control Server & Door Node & ACCESS\_RESPONSE &
+Transaction ID \newline Access Request Response\\
+\hline
+Control Server & Door Node & INFORMATION\_REQUEST &
+Transaction ID \newline Information Type\\
+\hline
+Door Node & Control Server & INFORMATION\_RESPONSE &
+Transaction ID \newline Information Type \newline Information Value\\
+\bottomrule
+\end{tabular}
+\caption{Application Layer Messages}
+\label{tab:app-layer-messages}
+\end{table*}
+
+All messages start with a 32 bit integer Message Type field. The possible
+message types are listed in table \ref{tab:message-types}.
+
+\begin{table*}[htb]
+\centering
+\begin{tabular}{@{}ll@{}}
+\toprule
+Value               &   Description \\
+\midrule
+0x0                 &   Reserved for future use \\
+0x1                 &   Access Request \\
+0x2                 &   Access Response \\
+0x3                 &   Information Request \\
+0x4                 &   Information Response \\
+0x5                 &   Door State Update \\
+0x6 through 0xFFFF  &   Reserved for future use \\
+\bottomrule
+\end{tabular}
+\caption{Message Type Values}
+\label{tab:message-types}
+\end{table*}
+
+\paragraph{ACCESS\_REQUEST}
+This message is sent by a door node in order to initiate an access request. The
+message contains a transaction ID to identify this access request sequence. The
+transaction ID is a 32 bit integer that should be unique for the door node that
+is initializing the request. The message also contains the 128 bit identifier
+from the NFC security badge that prompted the access request.
+
+The format of an ACCESS\_REQUEST message is shown in figure
+\ref{fig:msg-frmt-access-req}.
+
+\begin{figure}[h]
+\centering
+\begin{bytefield}[bitwidth=0.03\linewidth]{32}
+    \bitheader{0-31} \\
+    \wordbox{1}{Message Type} \\
+    \wordbox{1}{Transaction ID} \\
+    \wordbox{4}{NFC Security Badge ID} \\
+\end{bytefield}
+\caption{Format of Access Request Message}
+\label{fig:msg-frmt-access-req}
+\end{figure}
+
+\paragraph{ACCESS\_RESPONSE}
+This message is sent by the control server in response to an access request. The
+message contains a 32 bit transaction ID which must correspond to the ID from an
+ACCESS\_REQUEST message send by the door node and a flag which indicates whether
+access should be granted. Bits 33 to 63 of this message type are unused.
+
+The format of an ACCESS\_RESPONSE message is shown in figure
+\ref{fig:msg-frmt-access-resp}.
+
+\begin{figure}[h]
+\centering
+\begin{bytefield}[bitwidth=0.03\linewidth]{32}
+    \bitheader{0-31} \\
+    \wordbox{1}{Message Type} \\
+    \wordbox{1}{Transaction ID} \\
+    \bitbox{1}{\tiny{Rsp.}} &
+        \bitbox{31}{\color{lightgray}\rule{\width}{\height}}
+\end{bytefield}
+\caption{Format of Access Response Message}
+\label{fig:msg-frmt-access-resp}
+\end{figure}
+
+\paragraph{INFORMATION\_REQUEST}
+This message is sent by the control server when it requires more information in
+order to make an access decision. The message contains a 32 bit transaction ID
+and a 32 bit information type value. The possible information types are listed
+in table \ref{tab:msg-info-req-types}.
+
+The format of an INFORMATION\_REQUEST message is shown in figure
+\ref{fig:msg-frmt-info-req}.
+
+\begin{figure}[h]
+\centering
+\begin{bytefield}[bitwidth=0.03\linewidth]{32}
+    \bitheader{0-31} \\
+    \wordbox{1}{Message Type} \\
+    \wordbox{1}{Transaction ID} \\
+    \wordbox{1}{Information Type} \\
+\end{bytefield}
+\caption{Format of Information Request Message}
+\label{fig:msg-frmt-info-req}
+\end{figure}
+
+\begin{table*}[htb]
+\centering
+\begin{tabular}{@{}ll@{}}
+\toprule
+Value               &   Description \\
+\midrule
+0x0                 &   Reserved for future use \\
+0x1                 &   Request user temperature \\
+0x2 through 0xFFFF  &   Reserved for future use \\
+\bottomrule
+\end{tabular}
+\caption{Information Request Types}
+\label{tab:msg-info-req-types}
+\end{table*}
+
+\paragraph{INFORMATION\_RESPONSE}
+This message is sent by a door node in response to an INFORMATION\_REQUEST
+message. The message contains a 32 bit transaction ID, the 32 bit specifier for
+the type of information requested (as specified in table
+\ref{tab:msg-info-req-types}) and the requested data.
+
+The format of the data returned will depend on the information type. For user
+temperature information, the information payload will be 32 bits long. The first
+16 bits will be a signed integer in two's complement format indicating the
+ambient temperature in units of one hundredth of a degree Celsius per least
+significant bit. The second 16 bits will be a signed integer in two's complement
+format indicating the temperature of the user in units of one hundredth of a
+degree Celsius per least significant bit.
+
+The format of an INFORMATION\_RESPONSE message is shown in figure
+\ref{fig:msg-frmt-info-resp}.
+
+\begin{figure}[h]
+\centering
+\begin{bytefield}[bitwidth=0.03\linewidth]{32}
+    \bitheader{0-31} \\
+    \wordbox{1}{Message Type} \\
+    \wordbox{1}{Transaction ID} \\
+    \wordbox{1}{Information Type} \\
+    \wordbox[tlr]{1}{Information Payload} \\
+    \wordbox[blr]{1}{$\cdots$} \\
+\end{bytefield}
+\caption{Format of Information Response Message}
+\label{fig:msg-frmt-info-resp}
+\end{figure}
+
+\paragraph{DOOR\_STATE\_UPDATE}
+This message can be sent by the control server to a door node to provide it with
+information about the state of the system. This information can be used by the
+door node to decide what information to display to users. This state value is
+encoded as a 32 bit unsigned integer. The possible state values are listed in
+table \ref{tab:msg-door-states}.
+
+The format of an DOOR\_STATE\_UPADTE message is shown in figure
+\ref{fig:msg-frmt-door-state}.
+
+\begin{figure}[h]
+\centering
+\begin{bytefield}[bitwidth=0.03\linewidth]{32}
+    \bitheader{0-31} \\
+    \wordbox{1}{Message Type} \\
+    \wordbox{1}{Door State} \\
+\end{bytefield}
+\caption{Format of Door State Update Message}
+\label{fig:msg-frmt-door-state}
+\end{figure}
+
+\begin{table*}[htb]
+\centering
+\begin{tabular}{@{}ll@{}}
+\toprule
+Value               &   Description \\
+\midrule
+0x0                 &   Reserved for future use \\
+0x1                 &   Allowing entry \\
+0x2                 &   Not allowing entry \\
+0x3 through 0xFFFF  &   Reserved for future use \\
+\bottomrule
+\end{tabular}
+\caption{Door State Values}
+\label{tab:msg-door-states}
+\end{table*}
 
 \subsection{Database Schema}
 
