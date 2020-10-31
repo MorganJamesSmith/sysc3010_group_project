@@ -18,22 +18,19 @@ system. We have determined that a forehead temperature measurement using an
 infrared temperature sensor is the best way to obtain sufficiently accurate
 contactless temperature measurements.
 
-We plan to use the TPiS 1T 1256 L5.5 thermopile from Excelitas Technologies.
-This temperature sensor was chosen after a comparison of available infrared
+We plan to use the MLX90614 thermopile from Melexis Technologies. This
+temperature sensor was chosen after a comparison of available infrared
 temperature sensors.
 
-The TPiS 1T 1256 L5.5 offers medical grade accuracy within the temperature range
-expected for human skin. It also provides accurate ambient temperature
-measurements. The optics of the sensor provide a relatively narrow 5 degree field
-of view which is appropriate for measuring the fairly small target of a human
-forehead from a reasonable range.
+The MLX90614 offers medical grade accuracy within the temperature range expected
+for human skin. It also provides accurate ambient temperature measurements. The
+optics of the sensor provide a relatively narrow field of view which is
+appropriate for measuring the fairly small target of a human forehead from a
+reasonable range.
 
-The TPiS 1T 1256 L5.5 can be powered from the Raspberry Pi's 3.3 volt rail and
-features a single pin digital interface of readout of the temperature data. This
-digital interface requires more accurate timing than can easily be accomplished
-with a Raspberry Pi so a small 8 bit microcontroller will be used with minimal
-firmware that converts between the thermopile's digital interface and an I2C
-interface.
+The MLX90614 can be powered from the Raspberry Pi's 3.3 volt rail and
+features an I$^2$C serial interface, which is suitable for communication with a
+Raspberry Pi.
 
 Figure \ref{fig:ir-test-circuit} shows the test circuit for the infrared
 temperature sensor.
@@ -79,11 +76,14 @@ servo motor is the Adafruit Micro Servo.  This servo has 180 degrees of motion
 that can be traversed in 0.3 seconds.  The servo operates between 3V and 6V so
 it can be powered through the Raspberry Pi's 5V line.
 
+Figure \ref{fig:lock-test-circuit} shows the test circuit for the electronic
+door lock.
+
 \begin{figure}[!htb]
 \centering
-\includegraphics{uml/electronic-lock-schematic.png}
-\caption{Test Circuit for the Electronic Lock}
-\label{fig:electronic-lock-schematic}
+\includegraphics[width=0.75\textwidth]{images/lock-test-circuit.png}
+\caption{Test Circuit for Electronic Door Lock}
+\label{fig:lock-test-circuit}
 \end{figure}
 
 \subsection{Time of Flight Range Sensor}
