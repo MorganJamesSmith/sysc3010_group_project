@@ -180,7 +180,7 @@ class Connection:
         header = TransportLayerHeader.from_string(entry['field1'])
         if (header.dest_addr != self.address) or (header.source_addr != self.peer_address):
             # Message is not for this connection
-            pass
+            return
         # Check if this is the start of a new connection
         if TransportLayerFlags.CONN_REQ in header.flags:
             self.established.set()
