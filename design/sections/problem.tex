@@ -19,16 +19,21 @@ and management system whose primary features and their functionalities include:
 
 \subsection{Functional Requirements}
 \begin{itemize}
-    \item User should know if door is locked or unlocked
-    \item User should know if they are too far away from temperature sensor
+    \item User should know if door is locked by seeing a red RGB LED
+    \item User should know if they are too far away from temperature sensor by seeing an orange RGB LED
+    \item User should know if the door is unlocked by seeing a green LED
+    \item User should know if the building is at full capacity because of a LED
     \item User should be able to scan ID without touching the NFC reader
+    \item Server should know if user is leaving or entering the building
     \item Database should know how many users are in the building
     \item Server user should be able to render invalid ID of ill users
     \item Door lock should unlock when server requests unlock
-    \item User should know if the building is at capacity
+    \item Server should request temperature sensor data if ID is valid
     \item Server should not request door unlock if user temperature is outside range
     \item Server should request door unlock if user temperature is within range
+    \item User should know if the building is at capacity
     \item Time of flight sensor should send to server distance of user from temperature sensor
+    \item User should not be able to unlock door if building is at capacity
     \item User should be able to exit if server finds maximum threshold of employees in building
 \end{itemize}
 
