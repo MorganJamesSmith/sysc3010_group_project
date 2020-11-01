@@ -1,0 +1,25 @@
+@startuml
+
+class Database {
+    +db: sqlite3.Connection
+    
+    +Integer: get_user_id(Byte[16] badge_id)
+    +Boolean: user_is_permitted(Integer user_id, Integer door_id)
+    +void: record_user_access(Integer user_id, Integer door_id, Integer user_temp, Integer ambient_temp)
+
+    +Integer: num_users_in_building()
+}
+
+class ServerController {
+    +thingspeak_chan: Channel
+    +server_conn: Connection
+
+    +database: Database
+
+    +void main_loop()
+}
+
+ServerController --> Database
+
+@enduml
+

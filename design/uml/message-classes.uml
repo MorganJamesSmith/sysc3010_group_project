@@ -1,0 +1,100 @@
+@startuml
+
+class MessageException <<Exception>>
+
+enum MessageType <<Enumeration>> {
+    ACCESS_REQUEST
+    ACCESS_RESPONSE
+    INFORMATION_REQUEST
+    INFORMATION_RESPONSE
+    DOOR_STATE_UPDATE
+}
+
+abstract class Message {
+    +{abstract} bytes to_bytes()
+    
+    -{abstract}{static}Message _parse(bytes packet)
+
+    +{static} Message from_bytes(bytes packet)
+}
+
+class AccessRequestMessage {
+    +transaction_id: Integer
+    +badge_id: Byte[16]
+    
+    +bytes to_bytes()
+    +{static} AccessRequestMessage _parse(bytes packet)
+}
+
+class AccessResponseMessage {
+    +transaction_id: Integer
+    +accepted: Boolean
+    
+    +bytes to_bytes()
+    +{static} AccessResponseMessage _parse(bytes packet)
+}
+
+enum InformationType <<Enumeration>> {
+    USER_TEMPERATURE
+}
+
+class InformationRequestMessage {
+    +transaction_id: Integer
+    +information_type: Integer
+    
+    +bytes to_bytes()
+    +{static} InformationRequestMessage _parse(bytes packet)
+}
+
+abstract class InformationPayload {
+    +{abstract} bytes to_bytes()
+
+    -{abstract} {static} InformationPayload _parse(bytes payload)
+
+    +{static} InformationPayload from_bytes(Integer info_type, bytes payload)
+}
+
+class TemperatureInfoPayload {
+    +ambient_temp: Integer
+    +user_temp: Integer
+
+    +bytes to_bytes()
+    +{static} TemperatureInfoPayload _parse(bytes packet)
+}
+
+class InformationResponseMessage {
+    +transaction_id: Integer
+    +information_type: Integer
+    +payload: InformationPayload
+    
+    +bytes to_bytes()
+    +{static} InformationResponseMessage _parse(bytes packet)
+}
+
+enum DoorState <<Enumeration>> {
+    ALLOWING_ENTRY
+    NOT_ALLOWING_ENTRY
+}
+
+class DoorStateUpdateMessage {
+    +state: DoorState
+
+    +bytes to_bytes()
+    +{static} DoorStateUpdateMessage _parse(bytes packet)
+}
+
+Message <|-- AccessRequestMessage
+Message <|-- AccessResponseMessage
+Message <|-- InformationRequestMessage
+Message <|-- InformationResponseMessage
+Message <|-- DoorStateUpdateMessage
+
+InformationPayload <|-- TemperatureInfoPayload
+
+InformationResponseMessage --> InformationPayload
+InformationResponseMessage --> InformationType
+DoorStateUpdateMessage --> DoorState
+Message --> MessageType
+
+@enduml
+

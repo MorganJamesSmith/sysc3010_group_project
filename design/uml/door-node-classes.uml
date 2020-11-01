@@ -1,0 +1,73 @@
+@startuml
+
+enum LEDColour <<Enumeration>> {
+    RED
+    GREEN
+    YELLOW
+}
+
+class LED {
+    +red_pin_num: Integer
+    +green_pin_num: Integer
+
+    +void set_colour(LEDColour colour)
+}
+
+class RC522 {
+    +read_card_data(addr)
+    +read_card()
+}
+
+class VL6180X {
+    +i2C_device: I2C_Device
+    +address: Integer
+
+    +void __init__(I2C_Device i2c_device, Integer address)
+    +Integer range()
+    +Integer range_lux(Float gain)
+    +Integer range_status()
+    -void _load_setting()
+    -void _write_8(Integer address, Integer data)
+    -void _write_16(Integer address, Integer data)
+    -Integer _read_8(Integer address)
+    -Integer _read_16(Integer address)
+}
+
+class MLX90614 {
+    +bus: SMBus
+    +address: Integer
+
+    +Integer get_ambient_temp()
+    +Integer get_ir_temp()
+}
+
+class ElectronicDoorLock {
+    +servo_pin_num: Integer
+
+    +void set_locked(Boolean locked)
+}
+
+class DoorNodeController {
+    +thingspeak_chan: Channel
+    +server_conn: Connection
+
+    +indicator: LED
+    +nfc_reader: RC522
+    +range_finder: VL6180X
+    +ir_temp_sensor: MLX90614
+    +door_lock: ElectronicDoorLock
+
+    +void main_loop()
+}
+
+DoorNodeController --> LED
+DoorNodeController --> RC522
+DoorNodeController --> VL6180X
+DoorNodeController --> MLX90614
+DoorNodeController --> ElectronicDoorLock
+
+LED .. LEDColour
+
+
+@enduml
+
