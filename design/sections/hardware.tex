@@ -88,6 +88,22 @@ door lock.
 
 \subsection{Time of Flight Range Sensor}
 
+In order for our system to record sufficiently accurate temperature measurements 
+of our users, a range finder will be used to determine if the user is standing 
+at an ideal distance from the temperature sensor. The range finder used for this
+project is the Adafruit VL53L0X time of flight distance ranging sensor. We
+decided that the VL53L0X time of flight sensor is the appropriate sensor for our
+project as it precisely measures the time the light takes to travel to the
+nearest object and reflect back to the sensor (Time-of-Flight), instead of using
+a sensor that would estimate the distance by measuring the amount of light
+reflected back from the object (which is significantly influenced by colour and
+surface).
+
+The VL53L0X time of flight sensor measures absolute distances up to 2m which
+would be an ideal distance to measure the user’s body temperature accurately.
+The VL53L0X can be powered from the Raspberry Pi’s 3.3V power and features and
+I2C serial interface which is suitable for communication with a Raspberry Pi.
+
 \begin{figure}[!htb]
 \centering
 \includegraphics[width=0.6\textwidth]{images/tof-test-circuit.png}

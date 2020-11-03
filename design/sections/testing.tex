@@ -1,14 +1,6 @@
 \subsection{End to End Demo}
 
 \noindent
-Hardware requirements:
-\begin{itemize}
-    \item Setup Raspberry Pi's in headless mode 
-    \item Connect sensors to Raspberry Pi's
-    \item If available, connect LED displays to Raspberry Pi
-\end{itemize}
-
-\noindent
 Software requirements:
 \begin{itemize}
     \item Set up Thingspeak channel 
@@ -20,52 +12,74 @@ Software requirements:
 \subsubsection*{Entry Access}
 
 \paragraph{Scenario 1}
-Employee with valid NFC card, normal body temperature and ideal distance away
-from temperature sensor at entry node.
+Building accepting entries, employee with valid NFC card, authorized status,
+normal body temperature, ideal distance away from temperature sensor and
+building accessible after entry.
 
 \noindent
 Features to be tested:
 \begin{itemize}
-    \item Communication between the NFC card reader and Thingspeak 
     \item Communication between control server and Thingspeak
-    \item Communication between Time of Flight range finder and Thingspeak 
-    \item Communication between Time of Flight range finder and Thingspeak 
-    \item Communication between LED display and Thingspeak 
-    \item Communication between Temperature sensor and Thingspeak 
-    \item Communication between control server and database
-    \item Communication between Thingspeak and the electronic lock at entry node
+    \item Communication between door node and Thingspeak
 \end{itemize}
 
 \noindent
 Test scenario steps:
 \begin{enumerate}
-    \item Control server uses Thingspeak to send the LED display a signal to
-          display green light to indicate door node accepting entries
-    \item NFC reader identifies NFC id card being tapped and notifies control
-          server of access attempt
-    \item NFC reader identifies tapped NFC card id and reports the id to the
-          control server
-    \item Control server recognizes employee id based on NFC card id
-    \item Control server signals the rangefinder to identify if employee in
-          range of temperature sensor through Thingspeak
-    \item Range finder reports back to the control server with the results and
-          displays orange light
-    \item When in range, the control server sends a signal to the temperature
-          sensor to measure employee body temperature through Thingspeak
-    \item Temperature sensor sends the recorded temperature to the control
-          server using Thingspeak
-    \item Control server saves the recorded temperatures and other required
-          information into the database
-    \item Control server compares recorded temperature to acceptable temperature
-          range
-    \item If in acceptable temperature range, control server authorizes employee
-          to enter building through Thingspeak
-    \item Control server sends a signal to the led display to display a flashing
-          green light to indicate employee's access has been authorized
-    \item Control server signals the electronic lock to unlock and adds 1 to
-          number of people on the premises through Thingspeak
-    \item Control server uploads the additional entry attempt recorded data to
-          database
+    \item Control server checks for the number of people in the building and 
+          sends an DOOR\_STATE\_UPDATE to Thingspeak channel
+    \item Door node receives the DOOR\_STATE\_UPDATE from Thingspeak channel and 
+          if available, displays green light to indicate door node accepting 
+          entries on the LED display
+    \item NFC reader identifies NFC id card being tapped and sends 
+          ACCESS\_REQUEST with card id to Thingspeak channel
+    \item Control server receives ACCESS\_REQUEST from Thingspeak channel and 
+          validates NFC card id and identifies employee id by querying the 
+          database for the NFC card id 
+    \item Once acquiring the valid employee id, the control server queries the 
+          database for recent employee status, access type and validity to 
+          consider entry access
+    \item If recent status is authorized, access type was exit and validity is
+          less than 3, control server determines current access type to be 
+          entry and sends INFROMATION\_REQUEST to determine if employee in 
+          distance range to Thingspeak channel
+    \item Door node receives INFROMATION\_REQUEST from the Thingspeak channel
+          and activates the LED display and displays orange to indicate that the
+          access entry process is in progress 
+    \item Door node activates the rangefinder to identify users range from
+          temperature sensor
+    \item Door node records the range value and sends an INFORMATION\_RESPONSE
+          to the Thingspeak channel
+    \item Control server receives the INFORMATION\_RESPONSE and compares the
+          received range value with the ideal range value
+    \item If in ideal range, control server sends an INFORMATION\_REQUEST to
+          measure the user’s body temperature
+    \item Door node receives the INFORMATION\_REQUEST and activates the 
+          temperature sensor to record the user’s body temperature 
+    \item Door node then sends an INFROMATION\_RESPONSE with the recorded
+          temperature measurement to the Thingspeak channel 
+    \item Control server receives the INFORMATION\_RESPONSE from the Thingspeak
+          channel
+    \item Control server compares recorded temperature value to acceptable
+          temperature range and determines the status of the entry request
+    \item If in acceptable temperature range, control server updates the status
+          of the employee to “authorized” and saves all the information for
+          access entry in the database and sets the validity field to 0
+    \item Control server increments the number of people in the building by 1
+    \item Control server sends an ACCESS\_RESPONSE to the Thingspeak channel
+    \item Control server re-evaluates the number of people in the building and
+          sends a DOOR\_STATE\_UPDATE based on the accessibility status of the 
+          building to the Thingspeak channel
+    \item Door node receives the ACCESS\_REPONSE and DOOR\_STATE\_UPDATE from 
+          the Thingspeak channel
+    \item From ACCESS\_RESPONSE received by the door node, if access is
+          authorized, door node activates LED display to display a flashing
+          green light to indicate employee’s access has been authorized 
+    \item Door node also unlocks the electronic lock for 30 seconds
+    \item After 30 sec, Door node locks the electronic lock
+    \item From the DOOR\_STATE\_UPDATE received by the door node, if the
+          building is accessible, door node activates LED display to display a
+          green light to indicate system is accepting entry
 \end{enumerate}
 
 \noindent
@@ -74,132 +88,532 @@ server occurred to authorize employee access to the workplace.
 
 
 \paragraph{Scenario 2}
-Employee with valid NFC card, normal body temperature and not in ideal distance
-range away from temperature sensor at entry node.
+Building accepting entries, employee with valid NFC card, authorized status,
+normal body temperature, ideal distance away from temperature sensor and
+building not accessible after entry
 
 \noindent
 Features to be tested:
 \begin{itemize}
-    \item Communication between the NFC card reader and Thingspeak
     \item Communication between control server and Thingspeak
-    \item Communication between Time of Flight range finder and Thingspeak 
-    \item Communication between LED display and Thingspeak 
-    \item Communication between Thingspeak and the electronic lock at entry node
+    \item Communication between door node and Thingspeak
 \end{itemize}
 
 \noindent
 Test scenario steps:
 \begin{enumerate}
-    \item Control server uses Thingspeak to send the LED display a signal to
-          display green light to indicate door node accepting entries
-    \item NFC reader identifies NFC id card being tapped and notifies control
-          server of access attempt
-    \item NFC reader identifies tapped NFC card id and reports the id to the
-          control server
-    \item Control server recognizes employee id based on NFC card id
-    \item Control server signals the range-finder to identify if employee in
-          range of temperature sensor through Thingspeak
-    \item Range finder reports back to the control server with the results and
-          displays red light to let employee know to stand in ideal range away
-          from the temperature sensor
-    \item Control server signals electronic lock to stay locked through
-          Thingspeak
+    \item Control server checks for the number of people in the building and
+          sends a DOOR\_STATE\_UPDATE to Thingspeak channel
+    \item Door node receives the DOOR\_STATE\_UPDATE from Thingspeak channel and
+          if available, displays green light to indicate door node accepting
+          entries on the LED display
+    \item NFC reader identifies NFC id card being tapped and sends
+          ACCESS\_REQUEST with card id to Thingspeak channel
+    \item Control server receives ACCESS\_REQUEST from Thingspeak channel and
+          validates NFC card id and identifies employee id by querying the
+          database for the NFC card id 
+    \item Once acquiring the valid employee id, the control server queries the
+          database for recent employee status, access type and validity to
+          consider entry access
+    \item If recent status is authorized, access type was exit and validity is
+          less than 3, control server determines current access type to be entry
+          and sends INFROMATION\_REQUEST to determine if employee in distance
+          range to Thingspeak channel
+    \item Door node receives INFROMATION\_REQUEST from the Thingspeak channel
+          and activates the LED display and displays orange to indicate that the
+          access entry process is in progress 
+    \item Door node activates the rangefinder to identify users range from
+          temperature sensor
+    \item Door node records the range value and sends an INFORMATION\_RESPONSE
+          to the Thingspeak channel
+    \item Control server receives the INFORMATION\_RESPONSE and compares the
+          received range value with the ideal range value
+    \item If in ideal range, control server sends an INFORMATION\_REQUEST to
+          measure the user’s body temperature
+    \item Door node receives the INFORMATION\_REQUEST and activates the
+          temperature sensor to record the user’s body temperature 
+    \item Door node then sends an INFROMATION\_RESPONSE with the recorded
+          temperature measurement to the Thingspeak channel 
+    \item Control server receives the INFORMATION\_RESPONSE from the Thingspeak
+          channel
+    \item Control server compares recorded temperature value to acceptable
+          temperature range and determines the status of the entry request
+    \item If in acceptable temperature range, control server updates the status
+          of the employee to “authorized” and saves all the information for
+          access entry in the database and sets the validity field to 0
+    \item Control server increments the number of people in the building by 1
+    \item Control server sends an ACCESS\_RESPONSE to the Thingspeak channel
+    \item Control server re-evaluates the number of people in the building and
+          sends a DOOR\_STATE\_UPDATE based on the accessibility status of the
+          building to the Thingspeak channel
+    \item Door node receives the ACCESS\_REPONSE and DOOR\_STATE\_UPDATE from
+          the Thingspeak channel
+    \item From ACCESS\_RESPONSE received by the door node, if access is
+          authorized, door node activates LED display to display a flashing
+          green light to indicate employee’s access has been authorized 
+    \item Door node also unlocks the electronic lock for 30 seconds
+    \item After 30 sec, Door node locks the electronic lock
+    \item From the DOOR\_STATE\_UPDATE received by the door node, if the
+          building is not accessible, door node activates LED display to display
+          a red light to indicate system is not accepting entry
 \end{enumerate}
 
 \noindent
-Expected test scenario result: proper communication between nodes and control
-server occurred to let the employee know to stand in an ideal distance range
-away from the temperature sensor.
+Expected test scenario result: Proper communication between door node and
+control server occurred to authorize employee access to the workplace and
+restrict entry to additional employees after the process.
 
 \paragraph{Scenario 3}
-Employee with valid NFC card, body temperature over 39.1 °C and in ideal
-distance range away from temperature sensor at entry node.
+Building accepting entries, employee with invalid NFC card, authorized status,
+normal body temperature, in ideal distance range away from temperature sensor at
+entry node and building accessible after entry attempt.
 
 \noindent
 Features to be tested:
 \begin{itemize}
-    \item Communication between the NFC card reader and Thingspeak 
     \item Communication between control server and Thingspeak
-    \item Communication between Time of Flight range finder and Thingspeak 
-    \item Communication between LED display and Thingspeak 
-    \item Communication between Temperature sensor and Thingspeak 
-    \item  Communication between the GUI and Thingspeak
-    \item Communication between control server and database
-    \item Communication between Thingspeak and the electronic lock at entry node
+    \item Communication between door node and Thingspeak
 \end{itemize}
 
 \noindent
 Test scenario steps:
 \begin{enumerate}
-    \item Control server uses Thingspeak to send the LED display a signal to
-          display green light to indicate door node accepting entries
-    \item Identify tapped NFC card id
-    \item Notify control server of access attempt
-    \item NFC reader recognizes employee id based on NFC card id and reports to
-          control server through Thingspeak
-    \item Control server signals the range-finder to identify if employee in
-          range of temperature sensor through Thingspeak
-    \item Range finder reports back to the control server with the results and
-          displays orange light if employee in range of the temperature sensor
-          and red light if employee not in range 
-    \item When in range, the control server sends a signal to the temperature
-          sensor to measure employee body temperature through Thingspeak
-    \item Temperature sensor sends the recorded temperature to the control
-          server using Thingspeak
-    \item Control server saves the recorded temperatures and other required
-          information into the database
-    \item Control server compares recorded temperature to acceptable temperature
-          range
-    \item If not in ideal temperature range, control server restricts employee
-          from entering the building through Thingspeak
-    \item Control server sends a signal to the led display to display a flashing
-          red light to indicate employee's access has been unauthorized
-    \item Control server sends a quarantine approval notification to the GUI
-          through Thingspeak
-    \item User approves the quarantine period notification
-    \item Approval is sent to the control server through Thingspeak from the GUI
-    \item Control server adds the employee information and recorded data to
-          unauthorized employee table in the database and marks entry access
-          date as the start of quarantine date 
-    \item Using Thingspeak the control server signals the electronic lock to
-          stay locked 
-    \item Control server uploads the additional entry attempt recorded data to
-          database
+    \item Control server checks for the number of people in the building and
+          sends an DOOR\_STATE\_UPDATE to Thingspeak channel
+    \item Door node receives the DOOR\_STATE\_UPDATE from Thingspeak channel and
+         if available, displays green light to indicate door node accepting
+         entries on the LED display
+    \item NFC reader identifies NFC id card being tapped and sends
+          ACCESS\_REQUEST with card id to Thingspeak channel
+    \item Control server receives ACCESS\_REQUEST from Thingspeak channel and
+          queries the database for the NFC card id to be associated to the
+          employee id
+    \item If no valid employee id acquired, the control server sends an
+          ACCESS\_RESPONSE indicating invalid id card being scanned to the
+          Thingspeak channel
+    \item Control server re-evaluates the number of people in the building and
+          sends a DOOR\_STATE\_UPDATE based on the accessibility status of the
+          building to the Thingspeak channel
+    \item Door node receives ACCESS\_RESPONSE and DOOR\_STATE\_UPDATE from the
+          Thingspeak channel 
+    \item From the ACCESS\_REPONSE received, door node locks the electronic
+          lock and displays flashing red light to indicate that the access entry
+          attempt is invalid
+    \item From the DOOR]\_STATE\_UPDATE received by the door node, if the
+          building is accessible, door node activates LED display to display a
+          green light to indicate system is accepting entry
 \end{enumerate}
 
 \noindent
 Expected test scenario result: proper communication between nodes and control
 server occurred to unauthorize employee access to workplace.
 
-\subsubsection*{Exit Access}
-
-\paragraph{Scenario 1}
-Employee with valid NFC card and at exit node.
+\paragraph{Scenario 4}
+Building accepting entries, employee with valid NFC card, authorized status,
+normal body temperature, not in ideal distance range away from temperature
+sensor and building accessible after entry attempt.
 
 \noindent
 Features to be tested:
 \begin{itemize}
-    \item Communication between the NFC card reader and Thingspeak
-    \item Communication between the control server and Thingspeak
-    \item Communication between Thingspeak and the electronic lock at exit node 
+    \item Communication between control server and Thingspeak
+    \item Communication between door node and Thingspeak
 \end{itemize}
 
 \noindent
 Test scenario steps:
 \begin{enumerate}
-    \item NFC reader identifies NFC id card being tapped and notifies control
-          server of exit attempt
-    \item NFC reader identifies tapped NFC card id and reports the id to the
-          control server
-    \item Control server recognizes employee id based on NFC card id 
-    \item Control server logs the data recorded for the exit attempt and updates
-          the database 
-    \item Control server signals the electronic lock to unlock and subtracts 1
-          from the number of people on the premises through Thingspeak
+    \item Control server checks for the number of people in the building and
+          sends an DOOR\_STATE\_UPDATE to Thingspeak channel
+    \item Door node receives the DOOR\_STATE\_UPDATE from Thingspeak channel and
+          if available, displays green light to indicate door node accepting
+          entries on the LED display
+    \item NFC reader identifies NFC id card being tapped and sends
+          ACCESS\_REQUEST with card id to Thingspeak channel
+    \item Control server receives ACCESS\_REQUEST from Thingspeak channel and
+          validates NFC card id and identifies employee id by querying the
+          database for the NFC card id 
+    \item Once acquiring the valid employee id, the control server queries the
+          database for recent employee status, access type and validity to
+          consider entry access
+    \item If recent status is authorized, access type was exit and validity is
+          less than 3, control server determines current access type to be entry
+          and sends INFROMATION\_REQUEST to determine if employee in distance
+          range to Thingspeak channel and increments validity by 1
+    \item Door node receives INFROMATION\_REQUEST from the Thingspeak channel
+          and activates the LED display and displays orange to indicate that
+          the access entry process is in progress 
+    \item Door node activates the rangefinder to identify users range from
+          temperature sensor
+    \item Door node records the range value and sends an INFORMATION\_RESPONSE
+          to the Thingspeak channel
+    \item Control server receives the INFORMATION\_RESPONSE and compares the
+          received range value with the ideal range value
+    \item Since not in ideal range, control server checks the validity field to
+          see if its less than 3, if yes then it sends an INFORMATION\_REQUEST
+          to check again if employee in range and increments the validity by 1 
+    \item Door node receives the INFORMATION\_REQUEST from the Thingspeak
+          channel and activates the rangefinder again to identify if employee in
+          range of temperature sensor
+    \item Door node sends an INFORMATION\_RESPONSE with the recorded range value
+    \item Control server receives the INFORMATION\_RESPONSE from the Thingspeak
+          channel and compares the received range value with the ideal range
+          value
+    \item Since not in ideal range, control server checks the validity field to
+          see if its less than 3, if yes then it sends an INFORMATION\_REQUEST
+          to check again if employee in range and increments the validity by 1 
+    \item Door node receives the INFORMATION\_REQUEST and activates the
+          rangefinder again to identify if employee in range of temperature
+          sensor
+    \item Door node sends an INFORMATION\_RESPONSE with recorded range value to
+          the Thingspeak channel
+    \item Control server receives the INFORMATION\_RESPONSE from the Thingspeak
+          channel and compares the received range value with the ideal range
+          value 
+    \item Since not in ideal range, control server checks the validity field to
+          see if its less than 3, if not less than 3 then control serveri
+          determines the access entry is invalid and determines the
+          ACCESS\_RESPONSE to be sent
+    \item control server updates the validity field for the access entry to 3
+          and saves all the information for access entry in the database
+    \item Control server re-evaluates the number of people in the building and
+          sends a DOOR\_STATE\_UPDATE based on the accessibility status of the
+          building to the Thingspeak channel
+    \item Door node receives the ACCESS\_REPONSE and DOOR\_STATE\_UPDATE from
+          the Thingspeak channel
+    \item From ACCESS\_RESPONSE received by the door node, since access is
+          invalid, door node locks the electronic lock and displays a red light
+          to indicate access denied 
+    \item From the DOOR\_STATE\_UPDATE received by the door node, if the
+          building is accessible, door node activates LED display to display a
+          green light to indicate system is accepting entry
 \end{enumerate}
 
 \noindent
-Expected test scenario result: employee successfully exits the building.
+Expected test scenario result: Proper communication between door node and
+control server occurred to let the employee know to stand in an ideal distance
+range away from the temperature sensor.
+
+\paragraph{Scenario 5}
+Building accepting entries, employee with valid NFC card, authorized status, in
+ideal distance range away from temperature sensor, body temperature indicating
+fever and building accessible after entry attempt.
+
+\noindent
+Features to be tested:
+\begin{itemize}
+    \item Communication between control server and Thingspeak
+    \item Communication between door node and Thingspeak
+\end{itemize}
+
+\noindent
+Test scenario steps:
+\begin{enumerate}
+    \item Control server checks for the number of people in the building and
+          sends an DOOR\_STATE\_UPDATE to Thingspeak channel
+    \item Door node receives the DOOR\_STATE\_UPDATE from Thingspeak channel and
+          if available, displays green light to indicate door node accepting
+          entries on the LED display
+    \item NFC reader identifies NFC id card being tapped and sends
+          ACCESS\_REQUEST with card id to Thingspeak channel
+    \item Control server receives ACCESS\_REQUEST from Thingspeak channel and
+          validates NFC card id and identifies employee id by querying the
+          database for the NFC card id 
+    \item Once acquiring the valid employee id, the control server queries the
+          database for recent employee status, access type and validity to
+          consider entry access
+    \item If recent status is authorized, access type was exit and validity is
+          less than 3, control server determines current access type to be entry
+          and sends INFROMATION\_REQUEST to determine if employee in distance
+          range to Thingspeak channel
+    \item Door node receives INFROMATION\_REQUEST from the Thingspeak channel
+          and activates the LED display and displays orange to indicate that the
+          access entry process is in progress 
+    \item Door node activates the rangefinder to identify users range from
+          temperature sensor
+    \item Door node records the range value and sends an INFORMATION\_RESPONSE
+          to the Thingspeak channel
+    \item Control server receives the INFORMATION\_RESPONSE and compares the
+          received range value with the ideal range value
+    \item If in ideal range, control server sends an INFORMATION\_REQUEST to
+          measure the user’s body temperature
+    \item Door node receives the INFORMATION\_REQUEST and activates the
+          temperature sensor to record the user’s body temperature 
+    \item Door node then sends an INFROMATION\_RESPONSE with the recorded
+          temperature measurement to the Thingspeak channel 
+    \item Control server receives the INFORMATION\_RESPONSE from the Thingspeak
+          channel
+    \item Control server compares recorded temperature value to acceptable
+          temperature range and determines the status of the entry request
+    \item If not in acceptable temperature range, control server checks the
+          validity field to see if its less than 3, if yes then it sends an
+          INFORMATION\_REQUEST to measure the user body temperature again and
+          increments the validity by 1 
+    \item Door node receives the INFORMATION\_REQUEST from the Thingspeak
+          channel and activates the temperature sensor again to record user body
+          temperature
+    \item Door node sends an INFORMATION\_RESPONSE with the recorded body
+          temperature value
+    \item Control server receives the INFORMATION\_RESPONSE from the Thingspeak
+          channel and compares the received temperature value with the ideal
+          temperature value
+    \item Since not in ideal range, control server checks the validity field to
+          see if its less than 3, if yes then it sends an INFORMATION\_REQUEST
+          to record user body temperature again and increments the validity by 1 
+    \item Door node receives the INFORMATION\_REQUEST and activates the
+          temperature sensor again to record body temperature of user
+    \item Door node sends an INFORMATION\_RESPONSE with recorded temperature
+          value to the Thingspeak channel
+    \item Control server receives the INFORMATION\_RESPONSE from the Thingspeak
+          channel and compares the received temperature value with the ideal
+          temperature value 
+    \item Since not in ideal range, control server checks the validity field to
+          see if its less than 3, if not less than 3 then control server
+          determines the access entry is invalid and determines the
+          ACCESS\_RESPONSE to be sent
+    \item control server updates the validity field for the access entry to 3,
+          updates the status to unauthorized and saves all the information for
+          access entry in the database
+    \item Control server re-evaluates the number of people in the building and
+          sends a DOOR\_STATE\_UPDATE based on the accessibility status of the
+          building to the Thingspeak channel
+    \item Door node receives the ACCESS\_REPONSE and DOOR\_STATE\_UPDATE from
+          the Thingspeak channel
+    \item From ACCESS\_RESPONSE received by the door node, since access is
+          unauthorized, door node locks the electronic lock and displays a
+          flashing red light to indicate access denied 
+    \item From the DOOR\_STATE\_UPDATE received by the door node, if the
+          building is accessible, door node activates LED display to display a
+          green light to indicate system is accepting entry
+\end{enumerate}
+
+\noindent
+Expected test scenario result: Proper communication between nodes and control
+server occurred to unauthorize employee and restrict access to workplace.
+
+\paragraph{Scenario 6}
+Building not accepting entries, employee with invalid NFC card, authorized
+status, in ideal distance range, normal body temperature and building accessible
+after entry attempt.
+
+\noindent
+Features to be tested:
+\begin{itemize}
+    \item Communication between control server and Thingspeak
+    \item Communication between door node and Thingspeak
+\end{itemize}
+
+\noindent
+Test scenario steps:
+\begin{enumerate}
+    \item Control server checks for the number of people in the building and
+          sends a DOOR\_STATE\_UPDATE to Thingspeak channel
+    \item Door node receives the DOOR\_STATE\_UPDATE from Thingspeak channel and
+          since entry not available, displays red light to indicate door node
+          not accepting entries on the LED display
+    \item NFC reader identifies NFC id card being tapped and sends
+          ACCESS\_REQUEST with card id to Thingspeak channel
+    \item Control server receives ACCESS\_REQUEST from Thingspeak channel and
+          validates NFC card id and identifies employee id by querying the
+          database for the NFC card id 
+    \item Once acquiring the valid employee id, the control server queries the
+          database for recent employee status, access type and validity to
+          consider entry access
+    \item If recent status is authorized, access type was exit and validity is
+          less than 3, control server determines current access type to be entry
+          and sends INFROMATION\_REQUEST to determine if employee in distance
+          range to Thingspeak channel
+    \item Control server receives ACCESS\_REQUEST from Thingspeak channel and
+          since building not the control server sends an ACCESS\_RESPONSE
+          indicating entry not available
+    \item Control server re-evaluates the number of people in the building and
+          sends a DOOR\_STATE\_UPDATE based on the accessibility status of the
+          building to the Thingspeak channel
+    \item Door node receives ACCESS\_RESPONSE and DOOR\_STATE\_UPDATE from the
+          Thingspeak channel 
+    \item From the ACCESS\_REPONSE received, door node locks the electronic lock
+          and displays red light to indicate building not accepting entries 
+    \item From the DOOR\_STATE\_UPDATE received by the door node, since building
+          still not accessible, door node activates LED display to display a red
+          light to indicate system is not accepting entry
+\end{enumerate}
+
+\noindent
+Expected test scenario result: Proper communication between door node and
+control server occurred to let the employee know entry not available.
+
+\paragraph{Scenario 7}
+Building accepting entries, employee with invalid NFC card, unauthorized status 
+(over 14 days ago), in ideal distance range away from temperature sensor, normal
+body temperature and building accessible after entry attempt.
+
+\noindent
+Features to be tested:
+\begin{itemize}
+    \item Communication between control server and Thingspeak
+    \item Communication between door node and Thingspeak
+\end{itemize}
+
+\noindent
+Test scenario steps:
+\begin{enumerate}
+    \item Control server checks for the number of people in the building and
+          sends a DOOR\_STATE\_UPDATE to Thingspeak channel
+    \item Door node receives the DOOR\_STATE\_UPDATE from Thingspeak channel and
+          if available, displays green light to indicate door node accepting
+          entries on the LED display
+    \item NFC reader identifies NFC id card being tapped and sends
+          ACCESS\_REQUEST with card id to Thingspeak channel
+    \item Control server receives ACCESS\_REQUEST from Thingspeak channel and
+          validates NFC card id and identifies employee id by querying the
+          database for the NFC card id 
+    \item Once acquiring the valid employee id, the control server queries the
+          database for recent employee status, access type and validity to
+          consider entry access
+    \item If recent status is unauthorized, access type was entry and validity
+          is 3, control server determines current access type to be entry and
+          queries the database for date of most recent entry attempt
+    \item If most recent entry attempt date over 14 days ago, control server
+          sends INFROMATION\_REQUEST to determine if employee in distance range
+          to Thingspeak channel
+    \item Door node receives INFROMATION\_REQUEST from the Thingspeak channel
+          and activates the LED display and displays orange to indicate that the
+          access entry process is in progress 
+    \item Door node activates the rangefinder to identify users range from
+          temperature sensor
+    \item Door node records the range value and sends an INFORMATION\_RESPONSE 
+          to the Thingspeak channel
+    \item Control server receives the INFORMATION\_RESPONSE and compares the
+          received range value with the ideal range value
+    \item If in ideal range, control server sends an INFORMATION\_REQUEST to
+          measure the user’s body temperature
+    \item Door node receives the INFORMATION\_REQUEST and activates the
+          temperature sensor to record the user’s body temperature 
+    \item Door node then sends an INFROMATION\_RESPONSE with the recorded
+          temperature measurement to the Thingspeak channel 
+    \item Control server receives the INFORMATION\_RESPONSE from the Thingspeak
+          channel
+    \item Control server compares recorded temperature value to acceptable
+          temperature range and determines the status of the entry request
+    \item If in acceptable temperature range, control server updates the status
+          of the employee to “authorized” and saves all the information for
+          access entry in the database and sets the validity field to 0
+    \item Control server increments the number of people in the building by 1
+    \item Control server sends an ACCESS\_RESPONSE to the Thingspeak channel
+    \item Control server re-evaluates the number of people in the building and
+          sends a DOOR\_STATE\_UPDATE based on the accessibility status of the
+          building to the Thingspeak channel
+    \item Door node receives the ACCESS\_REPONSE and DOOR\_STATE\_UPDATE from
+          the Thingspeak channel
+    \item From ACCESS\_RESPONSE received by the door node, if access is
+          authorized, door node activates LED display to display a flashing
+          green light to indicate employee’s access has been authorized 
+    \item Door node also unlocks the electronic lock for 30 seconds
+    \item After 30 sec, Door node locks the electronic lock
+    \item From the DOOR\_STATE\_UPDATE received by the door node, if the
+          building is accessible, door node activates LED display to display a
+          green light to indicate system is accepting entry
+\end{enumerate}
+
+\noindent
+Expected test scenario result: Proper communication between door node and
+control server occurred to authorize employee access to the workplace.
+
+\paragraph{Scenario 8}
+Building accepting entries, employee with invalid NFC card, unauthorized status
+(not over 14 days ago), in ideal distance range away from temperature sensor,
+normal body temperature and building accessible after entry attempt.
+
+\noindent
+Features to be tested:
+\begin{itemize}
+    \item Communication between control server and Thingspeak
+    \item Communication between door node and Thingspeak
+\end{itemize}
+
+\noindent
+Test scenario steps:
+\begin{enumerate}
+    \item Control server checks for the number of people in the building and
+          sends an DOOR\_STATE\_UPDATE to Thingspeak channel
+    \item Door node receives the DOOR\_STATE\_UPDATE from Thingspeak channel and
+          if available, displays green light to indicate door node accepting
+          entries on the LED display
+    \item NFC reader identifies NFC id card being tapped and sends
+          ACCESS\_REQUEST with card id to Thingspeak channel
+    \item Control server receives ACCESS\_REQUEST from Thingspeak channel and
+          validates NFC card id and identifies employee id by querying the
+          database for the NFC card id 
+    \item Once acquiring the valid employee id, the control server queries the
+          database for recent employee status, access type and validity to
+          consider entry access
+    \item If recent status is unauthorized, access type was entry and validity
+          is 3, control server determines current access type to be entry and
+          queries the database for date of most recent entry attempt
+    \item If most recent entry attempt date not over 14 days ago, control server
+          sends ACCESS\_RESPONSE indicated access unauthorized to the Thingspeak
+          channel and no information for the entry attempt is saved in the
+          database
+    \item Control server re-evaluates the number of people in the building and
+          sends a DOOR\_STATE\_UPDATE based on the accessibility status of the
+          building to the Thingspeak channel
+    \item Door node receives the ACCESS\_REPONSE and DOOR\_STATE\_UPDATE from
+          the Thingspeak channel
+    \item From ACCESS\_RESPONSE received by the door node, since access is
+          unauthorized, door node locks the electronic lock and displays a
+          flashing red light to indicate access denied 
+    \item From the DOOR\_STATE\_UPDATE received by the door node, if the
+          building is accessible, door node activates LED display to display a
+          green light to indicate system is accepting entry
+\end{enumerate}
+
+\noindent
+Expected test scenario result: Proper communication between door node and
+control server occurred to let the employee know invalid access entry attempt.
+
+\paragraph{Scenario 9}
+Employee with valid NFC card and at exit node.
+
+\noindent
+Features to be tested:
+\begin{itemize}
+    \item Communication between control server and Thingspeak
+    \item Communication between door node and Thingspeak
+\end{itemize}
+
+\noindent
+Test scenario steps:
+\begin{enumerate}
+    \item NFC reader identifies NFC id card being tapped and sends
+          ACCESS\_REQUEST with card id to Thingspeak channel
+    \item Control server receives ACCESS\_REQUEST from Thingspeak channel and
+          validates NFC card id and identifies employee id by querying the
+          database for the NFC card id 
+    \item Once acquiring the valid employee id, the control server queries the
+          database for recent employee status, access type and validity toi
+          consider entry access
+    \item If recent status is authorized, access type was entry and validity is
+          3 or less than 3, control server determines current access type to be
+          exit 
+    \item If most recent access type is entry attempt control server sends
+          ACCESS\_RESPONSE indicated exit access to the Thingspeak channel, logs
+          information for the exit attempt in the database and subtracts1 from
+          the number of people in the building  
+    \item Control server re-evaluates the number of people in the building and
+          sends a DOOR\_STATE\_UPDATE based on the accessibility status of the
+          building to the Thingspeak channel
+    \item Door node receives the ACCESS\_REPONSE and DOOR\_STATE\_UPDATE from
+          the Thingspeak channel
+    \item From ACCESS\_RESPONSE received by the door node, since access type is
+          exit, door node unlocks the electronic lock at exit node 
+    \item From the DOOR\_STATE\_UPDATE received by the door node, if the
+          building is accessible, door node activates LED display to display a
+          green light to indicate system is accepting entry
+\end{enumerate}
+
+\noindent
+Expected test scenario result:Employee successfully exits the building an
+accessibility of building updated.   
 
 \subsection{Hardware Testing Demo}
 
