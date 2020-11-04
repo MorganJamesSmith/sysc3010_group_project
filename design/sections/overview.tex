@@ -316,8 +316,32 @@ Value               &   Description \\
 
 \subsection{Database Schema}
 
-% This is how you refer to your figure
-As seen in Figure \ref{fig:db-schema}
+The Project Database, shown in figure \ref{fig:db-schema}, consists of six main
+tables. The first table encountered by the system is the nfc\_and\_employee\_id
+table, this table consists of all the list of valid NFC card id’s and their
+corresponding employee id associated to the id’s. The employee id field is the
+primary key in this table as there is only one unique valid NFC id associated to
+an employee id unique to individual employees. The employee\_info table consists
+information about all the employees working for the employer, this table has all
+the sensitive information regarding the employee. The primary key in this table
+is the employee id as it is uniquely associated with individual employees and is
+also a foreign key as it is being referred from the nfc\_and\_employee\_id
+table. The nodes table is a list of all the entry and exit nodes in the system,
+this table consists of a list of node id’s uniquely associated to individual
+entry and exit nodes in the system and also contains information about the
+location of the nodes and their type. 
+
+The access\_entry table is a log of all the employee entry and exit activity for
+at least 14 days. There are no primary keys allocated to this table as all
+fields would have multiple occurrences of similar values. Although, the
+access\_exit table is similar to the access\_entry table and logs all employee
+exit activity for at least 14 days, it is generated and populated by the
+access\_entry table and doesn’t have a unique field associated to the table.
+Lastly, the admin\_log table contains data regarding any activity performed on
+the GUI by employees with admin access. Similar to the other activity log tables
+in the database such as the access\_entry and access\_exit tables, the
+admin\_log table doesn’t have a unique field either as there are many values
+duplicated in every column. 
 
 \begin{figure}[!htb]
 \centering
