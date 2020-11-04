@@ -737,6 +737,35 @@ hand over the sensor \\
 
 \subsubsection{Software Tests}
 
+\paragraph{Message Format}
+
+The unit tests described in table \ref{table:msg-frmt-tests} will be replicated
+for each of the message classes (AccessRequestMessage, AccessResponseMessage,
+InformationRequestMessage, InformationResponseMessage and
+DoorStateUpdateMessage).
+
+\begin{longtable}[htb]{>{\centering\arraybackslash}m{0.75cm}|>{\centering\arraybackslash}m{4cm}|>{\centering\arraybackslash}m{4.5cm}|>{\centering\arraybackslash}m{4cm}}
+\toprule
+Test & Description & Setup & Expected Result \\
+\midrule
+1 & Test the constructor & Create a new message object with the constructor &
+Fields should be set to the values passed into the contructor \\
+\hline
+2 & Test convertion to byte array & Call the to\_bytes() method on a message
+object & The resulting encoded mesage should be in the correct format \\
+\hline
+3 & Test parsing of valid packet & Use the \_parse() method to create a message
+object from a bytes object & The fields of the message object should have been
+parsed properly \\
+\hline
+4 & Test parsing of invalid packet & Attempt to use the \_parse() method to
+create a message object from a bytes object with an incorrect length & A
+MessageException should be thrown \\
+\bottomrule
+\caption{Message Format Class Tests}
+\label{table:msg-frmt-tests}
+\end{longtable}
+
 \subsubsection{Database Tests}
 
 The following features are to be tested in order to test the integrity of the
