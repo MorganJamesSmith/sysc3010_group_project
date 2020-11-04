@@ -18,7 +18,7 @@ class RC522 {
     +read_card()
 }
 
-class VL6180X {
+class VL53L0X {
     +i2C_device: I2C_Device
     +address: Integer
 
@@ -50,19 +50,23 @@ class ElectronicDoorLock {
 class DoorNodeController {
     +thingspeak_chan: Channel
     +server_conn: Connection
+    +current_state: DoorState
 
     +indicator: LED
     +nfc_reader: RC522
-    +range_finder: VL6180X
+    +range_finder: VL53L0X
     +ir_temp_sensor: MLX90614
     +door_lock: ElectronicDoorLock
 
     +void main_loop()
+    +void handle_badge_tap(bytes badge_id)
+    +void handle_information_request(InformationRequestMessage request)
+    +void handle_door_state_update(DoorStateUpdateMessage message)
 }
 
 DoorNodeController --> LED
 DoorNodeController --> RC522
-DoorNodeController --> VL6180X
+DoorNodeController --> VL53L0X
 DoorNodeController --> MLX90614
 DoorNodeController --> ElectronicDoorLock
 

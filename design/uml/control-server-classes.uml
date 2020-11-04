@@ -17,6 +17,8 @@ class ServerController {
     +database: Database
 
     +void main_loop()
+    +void handle_access_request(AccessRequestMessage request)
+    +void handle_information_response(InformationResponseMessage response)
 }
 
 ServerController --> Database
