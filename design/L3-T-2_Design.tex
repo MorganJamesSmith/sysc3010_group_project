@@ -31,6 +31,15 @@
 \DeclareCaptionFont{blue}{\color{LightSteelBlue3}}
 \newcommand{\foo}{\color{LightSteelBlue3}\makebox[0pt]{\textbullet}\hskip-0.5pt\vrule width 1pt\hspace{\labelsep}}
 
+\let\Oldsection\section
+\renewcommand{\section}{\FloatBarrier\Oldsection}
+
+\let\Oldsubsection\subsection
+\renewcommand{\subsection}{\FloatBarrier\Oldsubsection}
+
+\let\Oldsubsubsection\subsubsection
+\renewcommand{\subsubsection}{\FloatBarrier\Oldsubsubsection}
+
 \title{L3-T-2 Design Document}
 \author{Samuel Dewan, Sunjeevani Pujari, Mario Shebib and Morgan Smith}
 
