@@ -615,13 +615,16 @@ Test scenario steps:
 Expected test scenario result:Employee successfully exits the building an
 accessibility of building updated.   
 
-\subsection{Hardware Testing Demo}
+\subsection{Testing Demo}
 
-\subsubsection{Infrared Temperature Sensor}
+\subsubsection{Hardware Tests}
 
-\begin{table*}[htb]
-\centering
-\begin{tabular}{>{\centering\arraybackslash}m{0.75cm}|>{\centering\arraybackslash}m{4cm}|>{\centering\arraybackslash}m{4.5cm}|>{\centering\arraybackslash}m{4cm}}
+\paragraph{Infrared Temperature Sensor}
+
+Table \ref{table:ir-tests} shows the test cases that will be used to test the
+infrared temperature sensor.
+
+\begin{longtable}[htb]{>{\centering\arraybackslash}m{0.75cm}|>{\centering\arraybackslash}m{4cm}|>{\centering\arraybackslash}m{4.5cm}|>{\centering\arraybackslash}m{4cm}}
 \toprule
 Test & Description & Setup & Expected Result \\
 \midrule
@@ -634,19 +637,19 @@ sensor at a pot of water that has been heated to 39 ℃ and take a measurement &
 Measured temperature value should be with 0.5 ℃ of 39 ℃. \\
 \hline
 3 & Measure a temperature below the expected range & Aim the temperature sensor
-at any room temperature surface and take a measurement & The measurement should be
-approximately room temperature. \\
+at any room temperature surface and take a measurement & The measurement should
+be approximately room temperature. \\
 \bottomrule
-\end{tabular}
 \caption{Infrared Temperature Sensor Tests}
 \label{table:ir-tests}
-\end{table*}
+\end{longtable}
 
-\subsubsection{NFC Security Badge Reader}
+\paragraph{NFC Security Badge Reader}
 
-\begin{table*}[htb]
-\centering
-\begin{tabular}{>{\centering\arraybackslash}m{0.75cm}|>{\centering\arraybackslash}m{4cm}|>{\centering\arraybackslash}m{4.5cm}|>{\centering\arraybackslash}m{4cm}}
+Table \ref{table:nfc-tests} shows the test cases that will be used to test the
+NFC security badge reader.
+
+\begin{longtable}[htb]{>{\centering\arraybackslash}m{0.75cm}|>{\centering\arraybackslash}m{4cm}|>{\centering\arraybackslash}m{4.5cm}|>{\centering\arraybackslash}m{4cm}}
 \toprule
 Test & Description & Setup & Expected Result \\
 \midrule
@@ -671,38 +674,37 @@ tag swiped in front. \\
 set up. Have a passive tag ready to wave in front & RGB LED is red and no data
 is printed out by the Pi. \\
 \bottomrule
-\end{tabular}
 \caption{NFC Security Badge Reader Sensor Tests}
 \label{table:nfc-tests}
-\end{table*}
+\end{longtable}
 
-\subsubsection{Electronic Door Lock}
+\paragraph{Electronic Door Lock}
 
-\begin{table*}[htb]
-\centering
-\begin{tabular}{>{\centering\arraybackslash}m{0.75cm}|>{\centering\arraybackslash}m{4cm}|>{\centering\arraybackslash}m{4.5cm}|>{\centering\arraybackslash}m{4cm}}
+Table \ref{table:servo-tests} shows the test cases that will be used to test the
+electronic door lock.
+
+\begin{longtable}[htb]{>{\centering\arraybackslash}m{0.75cm}|>{\centering\arraybackslash}m{4cm}|>{\centering\arraybackslash}m{4.5cm}|>{\centering\arraybackslash}m{4cm}}
 \toprule
 Test & Description & Setup & Expected Result \\
 \midrule
 1 & Test servo Oscillation & Have breadboard set up & Servo alternates between
 0 degrees and 180 degrees every second \\
 \bottomrule
-\end{tabular}
 \caption{Electronic Door Lock Tests}
 \label{table:servo-tests}
-\end{table*}
-
+\end{longtable}
 
 A test program will be written that will initially place the servo at an angle
 of 0 degrees.  Then a loop will run that will move the servo arm to 180 degrees,
 wait a second, move back to 0 degrees, and wait another second.  The operation
 of the servo can be easily verified visually.
 
-\subsubsection{Time of Flight Range Sensor}
+\paragraph{Time of Flight Range Sensor}
 
-\begin{table*}[htb]
-\centering
-\begin{tabular}{>{\centering\arraybackslash}m{0.75cm}|>{\centering\arraybackslash}m{4cm}|>{\centering\arraybackslash}m{4.5cm}|>{\centering\arraybackslash}m{4cm}}
+Table \ref{table:tof-tests} shows the test cases that will be used to test the
+time of flight range sensor.
+
+\begin{longtable}[htb]{>{\centering\arraybackslash}m{0.75cm}|>{\centering\arraybackslash}m{4cm}|>{\centering\arraybackslash}m{4.5cm}|>{\centering\arraybackslash}m{4cm}}
 \toprule
 Test & Description & Setup & Expected Result \\
 \midrule
@@ -729,12 +731,13 @@ Raspberry Pi to a display. Keep moving hand over the sensor to be able to
 measure range. & Display prints out different readings recorded from moving
 hand over the sensor \\
 \bottomrule
-\end{tabular}
 \caption{Time of Flight Sensor Tests}
 \label{table:tof-tests}
-\end{table*}
+\end{longtable}
 
-\subsection{Database Demo}
+\subsubsection{Software Tests}
+
+\subsubsection{Database Tests}
 
 The following features are to be tested in order to test the integrity of the
 database:
@@ -1041,5 +1044,4 @@ temperature sensor \\
 \caption{Final Demo Tests}
 \label{table:final-tests}
 \end{longtable}
-
 
