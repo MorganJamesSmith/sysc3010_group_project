@@ -12,12 +12,12 @@ Operator GUI
 Operator "1..*" -- "1" admin_interface
 
 database Database {
-    collections userlogs [
-    User Logs
-    --
-    ]
     collections user [
     User Profiles
+    --
+    ]
+    collections userlogs [
+    User Logs
     --
     ]
     collections operator [
