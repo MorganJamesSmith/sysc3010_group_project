@@ -21,11 +21,11 @@ recorded in a user log.
 \subsection{Message Sequence Diagrams}
 
 As seen in Figure \ref{fig:message-sequence-diagram}, all message sequences are
-initiated by the Door Node sending an ACCESS\_REQUEST.  The Control Server can
-reply with an ACCESS\_RESPONSE to immediately grant or deny access.  If the
+initiated by the Door Node sending an \verb|ACCESS_REQUEST|.  The Control Server can
+reply with an \verb|ACCESS_RESPONSE| to immediately grant or deny access.  If the
 Control Server doesn't have enough information to make a decision, it will send
-INFORMATION\_REQUEST's until it has enough information to send an
-ACCESS\_RESPONSE message.
+\verb|INFORMATION_REQUEST|'s until it has enough information to send an
+\verb|ACCESS_RESPONSE| message.
 
 These messages are built in a way that additional sensors could easily be added
 to system.
@@ -40,18 +40,18 @@ this Door Node with two NFC Security Badge Readers as two separate Door Nodes.
 When a user is entering the building, the Control Server will consult the
 database to determine if the user is authorized to enter the building.  If the
 the user is not authorized, the Control Server will respond with an
-ACCESS\_RESPONSE message denying the user.  If the user is authorized, the
-Control Server will respond with an INFORMATION\_REQUEST for the user's
-temperature.  The door node will then respond with an INFORMATION\_RESPONSE
+\verb|ACCESS_RESPONSE| message denying the user.  If the user is authorized, the
+Control Server will respond with an \verb|INFORMATION_REQUEST| for the user's
+temperature.  The door node will then respond with an \verb|INFORMATION_RESPONSE|
 containing the user's temperature.  The Control Server will repeat the
-INFORMATION\_REQUEST for temperature until a temperature not indicating a fever
+\verb|INFORMATION_REQUEST| for temperature until a temperature not indicating a fever
 is received, or the maximum number of tries is reached.  The Control Server
-will then respond with an ACCESS\_RESPONSE message denying the user if it is
+will then respond with an \verb|ACCESS_RESPONSE| message denying the user if it is
 determined they might have a fever or granting access to the user if their
 temperature is normal.  The Control server will then update the database.
 
 When a user is exiting the building, the Control Server will immediately respond
-with an ACCESS\_RESPONSE message granting access to the user.  The Control
+with an \verb|ACCESS_RESPONSE| message granting access to the user.  The Control
 Server will then use this information to update the database.
 
 \begin{figure}[!htb]
@@ -97,7 +97,7 @@ The valid message flags are listed in table \ref{tab:ts-transport-flags}.
 \toprule
 Name & Encoded Value & Description\\
 \midrule
-Connection Request & conn\_req & Indicates that the message is a connection
+Connection Request & \verb|conn_req| & Indicates that the message is a connection
 request. If set, any other flags and the payload are ignored.\\
 \bottomrule
 \end{tabular}
@@ -106,9 +106,9 @@ request. If set, any other flags and the payload are ignored.\\
 \end{table*}
 
 In order to establish a connection, a client sends message to the server to
-which it wishes to connect that has the conn\_req flag set. If the server
+which it wishes to connect that has the \verb|conn_req| flag set. If the server
 receives the message and wishes to accept the connection it will respond with a
-messages that has the conn\_req flag set.
+messages that has the \verb|conn_req| flag set.
 
 The second field of a ThingSpeak channel entry contains the application layer
 message content encoded as a base 64 string.
@@ -125,19 +125,19 @@ All message fields are encoded with network endianness (big endian).
 \toprule
 Sender & Receiver & Message & Data Format\\
 \midrule
-Door Node & Control Server & ACCESS\_REQUEST &
+Door Node & Control Server & \verb|ACCESS_REQUEST| &
 Transaction ID \newline Account ID\\
 \hline
-Control Server & Door Node & ACCESS\_RESPONSE &
+Control Server & Door Node & \verb|ACCESS_RESPONSE| &
 Transaction ID \newline Access Request Response\\
 \hline
-Control Server & Door Node & INFORMATION\_REQUEST &
+Control Server & Door Node & \verb|INFORMATION_REQUEST| &
 Transaction ID \newline Information Type\\
 \hline
-Door Node & Control Server & INFORMATION\_RESPONSE &
+Door Node & Control Server & \verb|INFORMATION_RESPONSE| &
 Transaction ID \newline Information Type \newline Information Value\\
 \hline
-Control Server & Door Node & DOOR\_STATE\_UPDATE & New Sate\\
+Control Server & Door Node & \verb|DOOR_STATE_UPDATE| & New Sate\\
 \bottomrule
 \end{tabular}
 \caption{Application Layer Messages}
@@ -173,7 +173,7 @@ transaction ID is a 32 bit integer that should be unique for the door node that
 is initializing the request. The message also contains the 128 bit identifier
 from the NFC security badge that prompted the access request.
 
-The format of an ACCESS\_REQUEST message is shown in figure
+The format of an \verb|ACCESS_REQUEST| message is shown in figure
 \ref{fig:msg-frmt-access-req}.
 
 \begin{figure}[h]
@@ -191,10 +191,10 @@ The format of an ACCESS\_REQUEST message is shown in figure
 \paragraph{ACCESS\_RESPONSE}
 This message is sent by the control server in response to an access request. The
 message contains a 32 bit transaction ID which must correspond to the ID from an
-ACCESS\_REQUEST message send by the door node and a flag which indicates whether
+\verb|ACCESS_REQUEST| message send by the door node and a flag which indicates whether
 access should be granted. Bits 33 to 63 of this message type are unused.
 
-The format of an ACCESS\_RESPONSE message is shown in figure
+The format of an \verb|ACCESS_RESPONSE| message is shown in figure
 \ref{fig:msg-frmt-access-resp}.
 
 \begin{figure}[h]
@@ -216,7 +216,7 @@ order to make an access decision. The message contains a 32 bit transaction ID
 and a 32 bit information type value. The possible information types are listed
 in table \ref{tab:msg-info-req-types}.
 
-The format of an INFORMATION\_REQUEST message is shown in figure
+The format of an \verb|INFORMATION_REQUEST| message is shown in figure
 \ref{fig:msg-frmt-info-req}.
 
 \begin{figure}[h]
@@ -247,7 +247,7 @@ Value                   &   Description \\
 \end{table*}
 
 \paragraph{INFORMATION\_RESPONSE}
-This message is sent by a door node in response to an INFORMATION\_REQUEST
+This message is sent by a door node in response to an \verb|INFORMATION_REQUEST|
 message. The message contains a 32 bit transaction ID, the 32 bit specifier for
 the type of information requested (as specified in table
 \ref{tab:msg-info-req-types}) and the requested data.
@@ -260,7 +260,7 @@ significant bit. The second 16 bits will be a signed integer in two's complement
 format indicating the temperature of the user in units of one hundredth of a
 degree Celsius per least significant bit.
 
-The format of an INFORMATION\_RESPONSE message is shown in figure
+The format of an \verb|INFORMATION_RESPONSE| message is shown in figure
 \ref{fig:msg-frmt-info-resp}.
 
 \begin{figure}[h]
@@ -284,7 +284,7 @@ door node to decide what information to display to users. This state value is
 encoded as a 32 bit unsigned integer. The possible state values are listed in
 table \ref{tab:msg-door-states}.
 
-The format of an DOOR\_STATE\_UPADTE message is shown in figure
+The format of an \verb|DOOR_STATE_UPDATE| message is shown in figure
 \ref{fig:msg-frmt-door-state}.
 
 \begin{figure}[h]
@@ -317,7 +317,7 @@ Value                   &   Description \\
 \subsection{Database Schema}
 
 The Project Database, shown in figure \ref{fig:db-schema}, consists of six main
-tables. The first table encountered by the system is the nfc\_and\_employee\_id
+tables. The first table encountered by the system is the \verb|nfc_and_employee_id|
 table, this table consists of all the list of valid NFC card id’s and their
 corresponding employee id associated to the id’s. The employee id field is the
 primary key in this table as there is only one unique valid NFC id associated to
@@ -325,23 +325,24 @@ an employee id unique to individual employees. The employee\_info table consists
 information about all the employees working for the employer, this table has all
 the sensitive information regarding the employee. The primary key in this table
 is the employee id as it is uniquely associated with individual employees and is
-also a foreign key as it is being referred from the nfc\_and\_employee\_id
+also a foreign key as it is being referred from the \verb|nfc_and_employee_id|
 table. The nodes table is a list of all the entry and exit nodes in the system,
 this table consists of a list of node id’s uniquely associated to individual
 entry and exit nodes in the system and also contains information about the
 location of the nodes and their type. 
 
-The access\_entry table is a log of all the employee entry and exit activity for
-at least 14 days. There are no primary keys allocated to this table as all
-fields would have multiple occurrences of similar values. Although, the
-access\_exit table is similar to the access\_entry table and logs all employee
-exit activity for at least 14 days, it is generated and populated by the
-access\_entry table and doesn’t have a unique field associated to the table.
-Lastly, the admin\_log table contains data regarding any activity performed on
-the GUI by employees with admin access. Similar to the other activity log tables
-in the database such as the access\_entry and access\_exit tables, the
-admin\_log table doesn’t have a unique field either as there are many values
-duplicated in every column. 
+The \verb|access_entry| table is a log of all the employee entry and exit
+activity for at least 14 days. There are no primary keys allocated to this
+table as all fields would have multiple occurrences of similar
+values. Although, the \verb|access_exit| table is similar to the
+\verb|access_entry| table and logs all employee exit activity for at least 14
+days, it is generated and populated by the \verb|access_entry| table and
+doesn’t have a unique field associated to the table.  Lastly, the
+\verb|admin_log| table contains data regarding any activity performed on the
+GUI by employees with admin access. Similar to the other activity log tables in
+the database such as the \verb|access_entry| and \verb|access_exit| tables, the
+\verb|admin_log| table doesn’t have a unique field either as there are many
+values duplicated in every column.
 
 \begin{figure}[!htb]
 \centering

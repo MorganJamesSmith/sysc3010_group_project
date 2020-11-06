@@ -24,25 +24,25 @@ Features to be tested:
 \noindent
 Test scenario steps:
 \begin{enumerate}
-    \item Control server sends a DOOR\_STATE\_UPDATE message request with a new
+    \item Control server sends a \verb|DOOR_STATE_UPDATE| message request with a new
           state to the Thingspeak channel
-    \item Door node receives the DOOR\_STATE\_UPDATE from Thingspeak channel 
-    \item Door node sends ACCESS\_REQUEST with transaction id and NFC security
+    \item Door node receives the \verb|DOOR_STATE_UPDATE| from Thingspeak channel 
+    \item Door node sends \verb|ACCESS_REQUEST| with transaction id and NFC security
           badge id to Thingspeak channel
-    \item Control server receives ACCESS\_REQUEST from Thingspeak channel 
-    \item Control server sends an INFROMATION\_REQUEST with transaction ID and
+    \item Control server receives \verb|ACCESS_REQUEST| from Thingspeak channel 
+    \item Control server sends an \verb|INFROMATION_REQUEST| with transaction ID and
           information type to the Thingspeak channel
-    \item Door node receives INFROMATION\_REQUEST from the Thingspeak channel 
-    \item Door node sends an INFORMATION\_RESPONSE with the transaction ID,
+    \item Door node receives \verb|INFROMATION_REQUEST| from the Thingspeak channel 
+    \item Door node sends an \verb|INFORMATION_RESPONSE| with the transaction ID,
           information type and information value to the Thingspeak channel
-    \item Control server receives the INFORMATION\_RESPONSE from the Thingspeak
+    \item Control server receives the \verb|INFORMATION_RESPONSE| from the Thingspeak
           channel
-    \item Control server sends an ACCESS\_RESPONSE with transaction id and
+    \item Control server sends an \verb|ACCESS_RESPONSE| with transaction id and
           access response type to the Thingspeak channel
-    \item Door node receives the ACCESS\_REPONSE from the Thingspeak channel
-    \item Control server sends a DOOR\_STATE\_UPDATE message request with a new
+    \item Door node receives the \verb|ACCESS_REPONSE| from the Thingspeak channel
+    \item Control server sends a \verb|DOOR_STATE_UPDATE| message request with a new
           state to the Thingspeak channel
-    \item Door node receives the DOOR\_STATE\_UPDATE from Thingspeak channel 
+    \item Door node receives the \verb|DOOR_STATE_UPDATE| from Thingspeak channel 
 \end{enumerate}
 
 \noindent
@@ -62,15 +62,15 @@ Features to be tested:
 \noindent
 Test scenario steps:
 \begin{enumerate}
-    \item Door node sends an ACCESS\_REQUEST with transaction id and NFC
+    \item Door node sends an \verb|ACCESS_REQUEST| with transaction id and NFC
           security badge id to Thingspeak channel
-    \item Control server receives ACCESS\_REQUEST from Thingspeak channel 
-    \item control server sends ACCESS\_RESPONSE with transaction id and access
+    \item Control server receives \verb|ACCESS_REQUEST| from Thingspeak channel 
+    \item control server sends \verb|ACCESS_RESPONSE| with transaction id and access
           response type to the Thingspeak channel
-    \item Door node receives the ACCESS\_REPONSE from the Thingspeak channel
-    \item Control server sends a DOOR\_STATE\_UPDATE message request with a new
+    \item Door node receives the \verb|ACCESS_REPONSE| from the Thingspeak channel
+    \item Control server sends a \verb|DOOR_STATE_UPDATE| message request with a new
           state to the Thingspeak channel
-    \item Door node receives the DOOR\_STATE\_UPDATE from Thingspeak channel 
+    \item Door node receives the \verb|DOOR_STATE_UPDATE| from Thingspeak channel 
 \end{enumerate}
 
 \noindent
@@ -170,10 +170,10 @@ time of flight range sensor.
 \toprule
 Test & Description & Setup & Expected Result \\
 \midrule
-1 & Orange\_LED function activated & Have LED display set up with the Raspberry
+1 & \verb|Orange_LED| function activated & Have LED display set up with the Raspberry
 Pi connected to monitor & RGB LED displays Orange \\
 \hline
-2 & Red\_LED function activated & Have LED display set up with the Raspberry Pi
+2 & \verb|Red_LED| function activated & Have LED display set up with the Raspberry Pi
 connected to monitor & RGB LED displays Red \\
 \hline
 3 & Switch between orange and red LEDs & Have LED display set up with the
@@ -187,7 +187,7 @@ switches to display orange \\
 5 & VL6180X module activated & Have sensor connected to the Raspberry Pi and
 connect Raspberry Pi to a display & Display prints out initial reading \\
 \hline
-6 & VL6180X module activated and Range\_Find class used to display multiple
+6 & VL6180X module activated and \verb|Range_Find| class used to display multiple
 range recordings & Have sensor connected to the Raspberry Pi and connect
 Raspberry Pi to a display. Keep moving hand over the sensor to be able to
 measure range. & Display prints out different readings recorded from moving
@@ -213,14 +213,14 @@ Test & Description & Setup & Expected Result \\
 1 & Test the constructor & Create a new message object with the constructor &
 Fields should be set to the values passed into the contructor \\
 \hline
-2 & Test convertion to byte array & Call the to\_bytes() method on a message
+2 & Test convertion to byte array & Call the \verb|to_bytes()| method on a message
 object & The resulting encoded mesage should be in the correct format \\
 \hline
-3 & Test parsing of valid packet & Use the \_parse() method to create a message
+3 & Test parsing of valid packet & Use the \verb|_parse()| method to create a message
 object from a bytes object & The fields of the message object should have been
 parsed properly \\
 \hline
-4 & Test parsing of invalid packet & Attempt to use the \_parse() method to
+4 & Test parsing of invalid packet & Attempt to use the \verb|_parse()| method to
 create a message object from a bytes object with an incorrect length & A
 MessageException should be thrown \\
 \bottomrule
@@ -241,7 +241,7 @@ database:
 \end{itemize}
 
 \paragraph{Scenario 1}
-Populating sample test data access\_entry table.
+Populating sample test data \verb|access_entry| table.
 
 \noindent
 Features to be tested:
@@ -266,7 +266,7 @@ sqlite3
 .open project_database.db
 \end{minted}
 \end{listing}
-    \item Populate data to employee access\_entry table
+    \item Populate data to employee \verb|access_entry| table
 \begin{listing}[H]
 \begin{minted}[]{sql}
 INSERT INTO access_entry
@@ -303,7 +303,7 @@ outputs.
 \end{lstlisting}
 
 \paragraph{Scenario 2}
-Populating sample test data nfc\_and\_employer\_id table.
+Populating sample test data \verb|nfc_and_employer_id| table.
 
 \noindent
 Features to be tested:
@@ -330,7 +330,7 @@ sqlite3
 .open project_database.db
 \end{minted}
 \end{listing}
-    \item Populate data to employee access\_entry table
+    \item Populate data to employee \verb|access_entry| table
 \begin{listing}[H]
 \begin{minted}[]{sql}
 INSERT INTO access_entry
@@ -369,7 +369,7 @@ outputs.
 \end{listing}
 
 \paragraph{Scenario 3}
-Populating sample test data access\_entry table.
+Populating sample test data \verb|access_entry| table.
 
 \noindent
 Features to be tested:
@@ -397,7 +397,7 @@ sqlite3
 .open project_database.db
 \end{minted}
 \end{listing}
-    \item Populate data to employee access\_entry table
+    \item Populate data to employee \verb|access_entry| table
 \begin{listing}[H]
 \begin{minted}[]{sql}
 INSERT INTO access_entry
