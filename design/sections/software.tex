@@ -75,8 +75,8 @@ The logic employed by the door node is shown in figure
 \subsection{Control Server}
 
 The control server code consists of a class that abstracts over the database
-operations and a singleton class that encapsulates the control server logic. The
-class structure of the control server is shown in figure
+operations, a singleton class that encapsulates the control server logic, and a
+GUI class. The class structure of the control server is shown in figure
 \ref{fig:control-server-classes}.
 
 \begin{figure}[!htb]
@@ -91,3 +91,8 @@ of the Server class and potentially multiple instances of the Connection class
 described in section \ref{subsec:communication-software}. These objects are used
 to facilitate communication between the control server and door nodes.
 
+The ServerController also has an instance of the OperatorGUI.  The settings
+object in the OperatorGUI is queried each time an access request is made to
+determine access permissions.  The Operator can use the GUI the change and save
+the settings.  The Operator can also use the GUI to perform queries on the
+database.

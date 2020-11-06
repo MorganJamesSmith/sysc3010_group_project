@@ -8,6 +8,7 @@ class Database {
     +void: record_user_access(Integer user_id, Integer door_id, Integer user_temp, Integer ambient_temp)
 
     +Integer: num_users_in_building()
+    +db_result: query(db_query query)
 }
 
 class ServerController {
@@ -15,13 +16,22 @@ class ServerController {
     +server_conn: Connection
 
     +database: Database
+    +gui: OperatorGUI
 
     +void main_loop()
     +void handle_access_request(AccessRequestMessage request)
     +void handle_information_response(InformationResponseMessage response)
 }
 
+class OperatorGUI {
+    +settings: Settings
+    +void write_settings_to_file(string path)
+    +void read_settings_from_file(string path)
+}
+
 ServerController --> Database
+ServerController --> OperatorGUI
+OperatorGUI --> Database
 
 @enduml
 
