@@ -151,15 +151,15 @@ message types are listed in table \ref{tab:message-types}.
 \centering
 \begin{tabular}{@{}ll@{}}
 \toprule
-Value               &   Description \\
+Value                   &   Description \\
 \midrule
-0x0                 &   Reserved for future use \\
-0x1                 &   Access Request \\
-0x2                 &   Access Response \\
-0x3                 &   Information Request \\
-0x4                 &   Information Response \\
-0x5                 &   Door State Update \\
-0x6 through 0xFFFF  &   Reserved for future use \\
+0x0                     &   Reserved for future use \\
+0x1                     &   Access Request \\
+0x2                     &   Access Response \\
+0x3                     &   Information Request \\
+0x4                     &   Information Response \\
+0x5                     &   Door State Update \\
+0x6 through 0xFFFFFFFF  &   Reserved for future use \\
 \bottomrule
 \end{tabular}
 \caption{Message Type Values}
@@ -235,11 +235,11 @@ The format of an INFORMATION\_REQUEST message is shown in figure
 \centering
 \begin{tabular}{@{}ll@{}}
 \toprule
-Value               &   Description \\
+Value                   &   Description \\
 \midrule
-0x0                 &   Reserved for future use \\
-0x1                 &   Request user temperature \\
-0x2 through 0xFFFF  &   Reserved for future use \\
+0x0                     &   Reserved for future use \\
+0x1                     &   Request user temperature \\
+0x2 through 0xFFFFFFFF  &   Reserved for future use \\
 \bottomrule
 \end{tabular}
 \caption{Information Request Types}
@@ -302,12 +302,12 @@ The format of an DOOR\_STATE\_UPADTE message is shown in figure
 \centering
 \begin{tabular}{@{}ll@{}}
 \toprule
-Value               &   Description \\
+Value                   &   Description \\
 \midrule
-0x0                 &   Reserved for future use \\
-0x1                 &   Allowing entry \\
-0x2                 &   Not allowing entry \\
-0x3 through 0xFFFF  &   Reserved for future use \\
+0x0                     &   Reserved for future use \\
+0x1                     &   Allowing entry \\
+0x2                     &   Not allowing entry \\
+0x3 through 0xFFFFFFFF  &   Reserved for future use \\
 \bottomrule
 \end{tabular}
 \caption{Door State Values}
