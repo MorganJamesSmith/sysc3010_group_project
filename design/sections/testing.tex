@@ -994,6 +994,57 @@ outputs.
 \end{minted}
 \end{listing}
 
+\subsubsection{GUI Tests}
+
+\paragraph{Generating a settings file}
+
+Table \ref{table:op-gui-settings-tests} shows the test cases that will be used to test the
+ability of the GUI to generate a settings file.  Each test will have a known
+proper settings file that is manually created.  If the test is able to generate
+a file equivalent to the known proper settings file, the test passes.
+
+\begin{longtable}[htb]{>{\centering\arraybackslash}m{0.75cm}|>{\centering\arraybackslash}m{4cm}|>{\centering\arraybackslash}m{4.5cm}|>{\centering\arraybackslash}m{4cm}}
+\toprule
+Test & Description & Setup & Expected Result \\
+\midrule
+1 & Test default settings & Have default settings loaded & Generated
+settings file matches known good settings file \\
+\hline
+2 & Set temperature range to 35-37.5 & Have default settings loaded & Generated
+settings file matches known good settings file \\
+\hline
+3 & Set max users to 100 & Have default settings loaded & Generated
+settings file matches known good settings file \\
+\bottomrule
+\caption{Operator GUI Database Query Tests}
+\label{table:op-gui-settings-tests}
+\end{longtable}
+
+\paragraph{Querying the database}
+
+Table \ref{table:op-gui-db-query-tests} shows the test cases that will be used to test the
+ability of the GUI to query a database. The GUI will be tested using the same
+test database each time.
+
+\begin{longtable}[htb]{>{\centering\arraybackslash}m{0.75cm}|>{\centering\arraybackslash}m{4cm}|>{\centering\arraybackslash}m{4.5cm}|>{\centering\arraybackslash}m{4cm}}
+\toprule
+Test & Description & Setup & Expected Result \\
+\midrule
+1 & Query 100 latest accesses & Have test database setup & 100 latest accesses
+are shown correctly and formatted in an appealing way \\
+\hline
+2 & Query specific user & Have test database setup & All accesses from a specific user
+are shown correctly and formatted in an appealing way \\
+\hline
+3 & Query successful accesses & Have test database setup & All succesful accesses
+are shown correctly and formatted in an appealing way \\
+\hline
+4 & Query failed accesses & Have test database setup & All failed accesses
+are shown correctly and formatted in an appealing way \\
+\bottomrule
+\caption{Operator GUI Database Query Tests}
+\label{table:op-gui-db-query-tests}
+\end{longtable}
 
 \subsection{Final Demo}
 
