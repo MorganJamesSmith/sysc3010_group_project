@@ -37,13 +37,17 @@ The below functional requirements are listed in order of priority.
     \begin{itemize}
         \item The LED should be red when the door is locked
         \item LED should change to green when the door is unlocked
-        \item LED should flash red when the building has reached capacity and
+        \item LED should turn off when the building has reached capacity and
               further users are not being admitted
-        \item LED should be orange when in the process of taking a temperature
+        \item LED should be orange/yellow when in the process of taking a temperature
               reading if the user is not within an appropriate range of the
               temperature sensor.
     \end{itemize}
     \item The door node should have a range sensor to determine whether users
           are in an appropriate position for a temperature reading
+    \item The Graphical User Interface(GUI) of the control server should be able 
+          to interact with the database and control server.
+    \item The GUI should be able to set ranges for temperature and override
+          The LED colours.
 \end{itemize}
 
