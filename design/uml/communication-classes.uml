@@ -75,6 +75,10 @@ class Server {
     +void close()
 }
 
+' Formatting
+Server -[hidden]- ConnectionException
+ConnectionException -[hidden]- TransportLayerFlags
+
 Server --> Channel
 Connection --> Channel
 ThingSpeakPoller --> Channel

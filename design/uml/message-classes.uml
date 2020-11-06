@@ -83,6 +83,11 @@ class DoorStateUpdateMessage {
     +{static} DoorStateUpdateMessage _parse(bytes packet)
 }
 
+' Formatting
+AccessResponseMessage -[hidden]- AccessRequestMessage
+AccessRequestMessage -[hidden]- MessageType
+AccessResponseMessage -[hidden]- InformationResponseMessage
+
 Message <|-- AccessRequestMessage
 Message <|-- AccessResponseMessage
 Message <|-- InformationRequestMessage
