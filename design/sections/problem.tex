@@ -23,25 +23,24 @@ The below functional requirements are listed in order of priority.
     \item Control access to a building using NFC security badges
     \item Require users to present their security badge when they enter or exit
           the building in order to track the number of users in the building
+    \item All attempts to access a building are logged in a database
+    \item Do not allow more users to enter the building if the a preset maximum
+          capacity has been reached
     \item Measure user's temperatures when they are entering the building in
           order to determine if they have possible symptoms
     \item Do not allow users with possible symptoms to enter the building
-    \item Do not allow more users to enter the building if the a preset maximum
-          capacity has been reached
-    \item A central control server should make all access decisions and log
-          information about accesses to the building in a database
     \item Building access requirements can be adjusted by the system operators
           using the operator GUI
     \item Access logs can be viewed by the system operators
           using the operator GUI
-    \item A multicoloured LED at each door node should indicate be used to
+    \item A multicoloured LED at each door node will
           indicate the status of the door node
     \begin{itemize}
-        \item The LED should be red when the door is locked
-        \item LED should change to green when the door is unlocked
-        \item LED should turn off when the building has reached capacity and
+        \item The LED will be red when the door is locked
+        \item LED will change to green when the door is unlocked
+        \item LED will turn off when the building has reached capacity and
               further users are not being admitted
-        \item LED should be orange/yellow when in the process of taking a temperature
+        \item LED will be orange/yellow when in the process of taking a temperature
               reading if the user is not within an appropriate range of the
               temperature sensor.
     \end{itemize}
