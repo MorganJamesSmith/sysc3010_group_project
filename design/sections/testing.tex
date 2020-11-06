@@ -573,7 +573,7 @@ capacity of the system to one users, enter with a valid security badge and
 temperature reading then attempt to enter with a second valid security badge &
 The electronic door lock should not be actuated and entry should not be allowed,
 the attempted access should be logged in the database and the LED at the door
-node should remain red \\
+node should remain off \\
 \hline
 Temperature measurement from incorrect distance & Determine whether users are in
 an appropriate position for a temperature reading & Present a valid security
@@ -582,6 +582,10 @@ from the temperature sensor, slowly move closer until a temperature reading is
 taken & The LED should be illuminated orange and the electronic door lock should
 not be actuated until the user is within an appropriate range of the infrared
 temperature sensor \\
+\hline
+View access logs & Access logs should be visible to users using the operator GUI
+& Open the operator GUI and view access logs & Access logs should be visible,
+accurate and up to date \\
 \bottomrule
 \caption{Final Demo Tests}
 \label{table:final-tests}
