@@ -19,23 +19,23 @@ CLOSED: [2020-09-30 Wed 13:49] SCHEDULED: <2020-09-30 Wed 11:35-13:25>
 CLOSED: [2020-09-30 Wed 17:20] DEADLINE: <2020-10-02 Fri 20:00>
 * DONE Final Submission of Project Proposal (On CULearn)
 CLOSED: [2020-10-02 Fri 18:50] DEADLINE: <2020-10-02 Fri 20:00>
-* TODO Design content
-DEADLINE: <2020-10-26 Mon 23:59>
-* TODO Design formating
-DEADLINE: <2020-10-27 Tue 14:00>
-* TODO Design review
-SCHEDULED: <2020-10-28 Wed 09:30>
-* TODO Synchronous Project Design Peer Review (Mandatory)
-DEADLINE: <2020-11-04 Wed>
-* TODO Design Peer Review Integration
-SCHEDULED: <2020-11-05 Thu 09:30-11:00>
+* DONE Design content
+CLOSED: [2020-11-06 Fri 18:52] DEADLINE: <2020-10-26 Mon 23:59>
+* DONE Design formating
+CLOSED: [2020-11-06 Fri 18:52] DEADLINE: <2020-10-27 Tue 14:00>
+* DONE Design review
+CLOSED: [2020-11-06 Fri 18:52] SCHEDULED: <2020-10-28 Wed 09:30>
+* DONE Synchronous Project Design Peer Review (Mandatory)
+CLOSED: [2020-11-06 Fri 18:52] DEADLINE: <2020-11-04 Wed>
+* DONE Design Peer Review Integration
+CLOSED: [2020-11-06 Fri 18:52] SCHEDULED: <2020-11-05 Thu 09:30-11:00>
 - Post received feedback to group chat
+* DONE Final Submission of Project Design (On CULearn)
+CLOSED: [2020-11-06 Fri 18:53] DEADLINE: <2020-11-06 Fri 20:00>
 * TODO Lab Check-in (End-to-End Demo) (To be scheduled collaboratively with TAs)
-DEADLINE: <2020-11-05 Thu>
-* TODO Final Submission of Project Design (On CULearn)
-DEADLINE: <2020-11-06 Fri 20:00>
+DEADLINE: <2020-11-12 Thu>
 * TODO Lab Check-in (Testing Demo) (To be scheduled collaboratively with TAs)
-DEADLINE: <2020-11-13 Thu>
+DEADLINE: <2020-11-19 Thu>
 * TODO Submission of Technical Memo
 DEADLINE: <2020-11-22 Sun 20:00>
 * TODO Synchronous Code Peer Review (Mandatory)
