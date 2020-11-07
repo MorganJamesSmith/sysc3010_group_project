@@ -5,7 +5,7 @@
 
 import thingspeak
 import base64
-from threading import Thread, Event
+from threading import Thread, Event, Timer
 from enum import Flag, auto
 from multiprocessing import Queue
 from queue import Empty
@@ -76,6 +76,8 @@ class TransportLayerHeader:
 class ThingSpeakPoller(Thread):
     def __init__(self, channel):
         Thread.__init__(self)
+
+        self.daemon = True
 
         self.channel = channel
         self.last_entry = self.channel.get_last_entry_id()
@@ -153,11 +155,14 @@ class Connection:
             self.established.set()
         else:
             self._send_conn_req()
-        
+        # List of messages that we have tried to send and are waiting for confirmation on
+        self.sent_messages = list()
+        # Queue of received messages
         self.in_queue = Queue()
         
         self.closed = False
 
+        self.poll_period = poll_period
         # Set up poller
         if not channel in Connection.channel_pollers:
             # Create a new poller for this channel
@@ -178,7 +183,15 @@ class Connection:
 
     def _handle_entry(self, entry):
         header = TransportLayerHeader.from_string(entry['field1'])
-        if (header.dest_addr != self.address) or (header.source_addr != self.peer_address):
+        if (header.dest_addr == self.peer_address) and (header.source_addr == self.address):
+            # This is a message that we sent, since we know now that it made it to the ThingSpeak
+            # channel, we can safely remove it from our list of outgoing messages
+            message_info = next((i for i in self.sent_messages if i[0] == entry['field2'].encode('utf-8')), None)
+            if message_info:
+                self.sent_messages.remove(message_info)
+                message_info[1].cancel()
+            return
+        elif (header.dest_addr != self.address) or (header.source_addr != self.peer_address):
             # Message is not for this connection
             return
         # Check if this is the start of a new connection
@@ -187,29 +200,21 @@ class Connection:
             return
         # Add received message to in queue
         self.in_queue.put(base64.b64decode(entry['field2']))
-
-    def _decrypt_session_key(self, enc_key):
-        if self.priv_key is None:
-            # Cannot decrypt session key without private key
-            raise ConnectionException("Cannot decrypt session key without private key.")
-
-        cipher_rsa = PKCS1_OAEP.new(self.priv_key)
-        return cipher_rsa.decrypt(enc_session_key)
-    
-    def _verify_sig(self, msg, sig):
-        if self.peer_key is None:
-            # Cannot verify signature without key for peer
-            return False
-
-        sig = base64.b64decode(sig)
-        verifier = pkcs1_15.new(self.peer_key)
-        hasher = SHA384.new()
-        hasher.update(msg)
-        try:
-            verifier.verify(hasher)
-            return True
-        except ValueError:
-            return False
+   
+    def _retry_message(self, message):
+        message_info = next((i for i in self.sent_messages if i[0] == message), None)
+        if message_info:
+            try:
+                self.sent_messages.remove(message_info)
+            except ValueError:
+                return
+            # Our message is still in the list of messages to be resend, we should resend it now
+            header = TransportLayerHeader(self.address, self.peer_address, TransportLayerFlags.NONE)
+            self.channel.write({"field1" : str(header), "field2" : message})
+            # Launch timer to resend message if it fails again
+            t = Timer(self.poll_period * 1.5, self._retry_message, args=[message])
+            t.start()
+            self.sent_messages.append((message, t))
 
     def fileno(self):
         return self.in_queue._reader.fileno()
@@ -225,6 +230,11 @@ class Connection:
         
         self.channel.write({"field1" : str(header), "field2" : payload})
 
+        # Launch timer to resend message if it fails
+        t = Timer(self.poll_period * 1.5, self._retry_message, args=[payload])
+        t.start()
+        self.sent_messages.append((payload, t))
+
 
     def recv(self, block = True, timeout = None):
         try:
@@ -236,6 +246,9 @@ class Connection:
         header = TransportLayerHeader(self.address, self.peer_address, TransportLayerFlags.CONN_REQ)
         self.channel.write({"field1" : str(header)})
 
+
+
+
 class Server:
     def __init__(self, channel, address, poll_period = 5):
         self.channel = channel
@@ -246,7 +259,7 @@ class Server:
 
         self.poller = ThingSpeakPoller(channel)
         self.poller.start()
-        self.poller.register(self._handle_entry, 5)
+        self.poller.register(self._handle_entry, poll_period)
 
     def _handle_entry(self, entry):
         header = TransportLayerHeader.from_string(entry['field1'])

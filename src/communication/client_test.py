@@ -17,7 +17,7 @@ except FileNotFoundError as e:
     exit(1)
 
 # Get ThingSpeak channel object
-channel = thingspeak.Channel(1154788, write_key=write_key, read_key=read_key)
+channel = thingspeak.Channel(1222699, write_key=write_key, read_key=read_key)
 
 c = transport.Connection(channel, "client", "server")
 c.established.wait()
@@ -25,12 +25,17 @@ print("Connection established.")
 
 message = AccessRequestMessage(0, bytes([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]))
 
-sleep(1)
+c.send(message.to_bytes())
+print("Message sent.")
+data = c.recv()
+rsp = Message.from_bytes(data)
+print(f"Received \"{data}\" ({rsp})")
+
+message = AccessRequestMessage(0, bytes([16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1]))
 
 c.send(message.to_bytes())
 print("Message sent.")
 data = c.recv()
 rsp = Message.from_bytes(data)
-
 print(f"Received \"{data}\" ({rsp})")
 

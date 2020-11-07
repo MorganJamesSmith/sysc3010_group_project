@@ -18,7 +18,7 @@ except FileNotFoundError as e:
     exit(1)
 
 # Get ThingSpeak channel object
-channel = thingspeak.Channel(1154788, write_key=write_key, read_key=read_key)
+channel = thingspeak.Channel(1222699, write_key=write_key, read_key=read_key)
 # Create server on channel
 server = transport.Server(channel, "server")
 
@@ -41,7 +41,6 @@ while (True):
             print(f"Received \"{data}\" ({message}) from \"{c.peer_address}\"")
 
             # respond
-            sleep(1)
             resp = AccessResponseMessage(0, True)
             c.send(resp.to_bytes())
 
