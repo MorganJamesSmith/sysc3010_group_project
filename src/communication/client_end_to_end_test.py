@@ -32,13 +32,8 @@ rsp = Message.from_bytes(data)
 print(f"Received \"{data}\" ({rsp})")
 if isinstance(rsp,InformationRequestMessage):
     print(f"Received \"{data}\" ({rsp})")
-    payload = InformationPayload(ABC)
-    temp_payload = TemperatureInfoPayload(payload)
-    info_message = InformationResponseMessage(0,InformationType.USER_TEMPERATURE, temp_payload)
-    c.send(info_message.to_bytes())
-    print("Info sent.")
-elif isinstance(rsp, AccessResponseMessage):
-    print("Door Opened")
+    info_message = InformationResponseMessage(0, bytes([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]))
+
 rsp = Message.from_bytes(data)
 print(f"Received \"{data}\" ({rsp})")
 
