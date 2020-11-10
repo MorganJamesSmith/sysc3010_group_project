@@ -210,5 +210,5 @@ class DoorStateUpdateMessage(Message):
         except ValueError:
             raise MessageException(f"Invalid door state: {state_val}")
         else:
-            return cls(tid, state)
+            return cls(state)
 
