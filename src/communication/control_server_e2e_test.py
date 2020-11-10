@@ -7,7 +7,7 @@
 #
 
 import thingspeak
-import transpcrt
+import transport
 import select
 from time import sleep
 
@@ -28,17 +28,17 @@ channel = thingspeak.Channel(1222699, write_key=write_key, read_key=read_key)
 # Create server on channel
 server = transport.Server(channel, "control_server")
 
-clients = []
+clients = {}
 
 while (True):
-    r, _, _ = select.select(clients + [server], [], [])
+    r, _, _ = select.select(list(clients.keys()) + [server], [], [])
     
     for c in r:
         if c is server:
             connection, address = server.accept(block = False)
             print(f"New connection from \"{address}\".")
-            clients.append(connection)
-        elif c in clients:
+            clients[connection] = [0, None]
+        elif c in clients.keys():
             data = c.recv(block = False)
             try:
                 message = Message.from_bytes(data)
@@ -46,19 +46,44 @@ while (True):
                 print(f"Received invalid message \"{data}\" from \"{c.peer_address}\"")
             print(f"Received \"{data}\" ({message}) from \"{c.peer_address}\"")
 
-            #determining message response
-            
-            #for AccessRequest received, requesting door node for temperature measurement
-            if isinstance(message,AccessRequestMessage): 
-		print(f"Received \"{data}\" ({message}) from \"{c.peer_address}\"")
-                resp = InformationRequestMessage(message.transaction_id,InformationType.USER_TEMPERATURE)
-            
-            #authorizing access if received temperature from InformationResponse is ideal
-            elif isinstance(message,InformationResponseMessage):
-		print(f"Received \"{data}\" ({message}) from \"{c.peer_address}\"")
-                if message.type == InformationType.USER_TEMPERATURE:
-                    if message.payload.user_temp <= 38.5 and message.payload.user_temp >= 36.5:
-			resp = AccessResponseMessage(message.transaction_id, True) 
+            if isinstance(message, AccessRequestMessage):
+                if clients[c][0] != 0:
+                    print("Received unexpected second access request")
+                    exit(1)
+                clients[c][0] = 1
+                clients[c][1] = message.transaction_id
 
-            # sending response to Thingspeak channel
-            c.send(resp.to_bytes())
+                print(f"Access request: tid {message.transaction_id}, badge id {message.badge_id}")
+
+                print(f"Sending information request: tid {message.transaction_id}, type: "
+                      f"{InformationType.USER_TEMPERATURE}")
+                resp = InformationRequestMessage(message.transaction_id,
+                                                 InformationType.USER_TEMPERATURE)
+                c.send(resp.to_bytes())
+            elif isinstance(message,InformationResponseMessage):
+                if clients[c][0] != 1:
+                    print("Received out of sequence information response")
+                    exit(1)
+                elif clients[c][1] != message.transaction_id:
+                    print("Received info response with unexpected transaction id")
+                    exit(1)
+                clients[c][0] = 2
+                
+                if message.information_type != InformationType.USER_TEMPERATURE:
+                    print("Received info response with unexpected type: {message.information_type}")
+                    exit(1)
+
+                print(f"Information response: user temp {message.payload.user_temp}, "
+                      f"ambient temp: {message.payload.ambient_temp}")
+                
+                # Send an access response
+                allow = message.payload.user_temp <= 38.5
+                print(f"Sending access response: tid {message.transaction_id}, allow: {allow}")
+                resp = AccessResponseMessage(message.transaction_id, allow)
+                c.send(resp.to_bytes())
+                # Send door state update
+                new_state = DoorState.NOT_ALLOWING_ENTRY if message.transaction_id == 1 else DoorState.ALLOWING_ENTRY
+                print(f"Sending door state update: state {new_state}")
+                resp = DoorStateUpdateMessage(new_state)
+                c.send(resp.to_bytes())
+
