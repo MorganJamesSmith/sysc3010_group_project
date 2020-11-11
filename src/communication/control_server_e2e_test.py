@@ -50,6 +50,11 @@ while (True):
                 if clients[c][0] != 0:
                     print("Received unexpected second access request")
                     exit(1)
+                elif message.transaction_id == 2:
+                    print(f"Recieved access request with unauthorized transaction id{message.transaction_id}")
+                    resp = AccessResponseMessage(message.transaction_id, False)
+                    c.send(resp.to_bytes())
+                    continue
                 clients[c][0] = 1
                 clients[c][1] = message.transaction_id
 
