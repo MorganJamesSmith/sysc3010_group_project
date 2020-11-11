@@ -72,6 +72,10 @@ class AccessRequestMessage(Message):
         msg_type, tid, bid = struct.unpack("!II16p", packet)
         return cls(tid, bid)
 
+    def __str__(self):
+        return (f"AccessRequestMessage (tid: {self.transaction_id}, "
+                f"badge_id: {''.join('{:X}'.format(i) for i in self.badge_id)})")
+
 #
 #   Access Response
 #
@@ -92,6 +96,9 @@ class AccessResponseMessage(Message):
                                    f"{len(packet)}")
         msg_type, tid, accepted = struct.unpack("!III", packet)
         return cls(tid, accepted != 0)
+
+    def __str__(self):
+        return f"AccessResponseMessage (tid {self.transaction_id}, accepted: {self.accepted})"
 
 #
 #   Information Request
@@ -121,6 +128,10 @@ class InformationRequestMessage(Message):
             raise MessageException(f"Invalid information type: {info_type_val}")
         else:
             return cls(tid, info_type)
+
+    def __str__(self):
+        return (f"InformationRequestMessage (tid {self.transaction_id}, "
+                f"type: {str(self.information_type)})")
 
 #
 #   Information Response
@@ -159,6 +170,10 @@ class TemperatureInfoPayload(InformationPayload):
         ambient_temp, user_temp = struct.unpack("!hh", payload)
         return cls(ambient_temp / 100, user_temp / 100)
 
+    def __str__(self):
+        return (f"[TemperatureInfoPayload (ambient temp: {self.ambient_temp}, "
+                f"user temp: {self.user_temp})]")
+
 
 class InformationResponseMessage(Message):
     def __init__(self, transaction_id, information_type, payload):
@@ -183,6 +198,10 @@ class InformationResponseMessage(Message):
             raise MessageException(f"Invalid information type: {info_type_val}")
         else:
             return cls(tid, info_type, InformationPayload.from_bytes(info_type, packet[12:]))
+
+    def __str__(self):
+        return (f"InformationResponseMessage (tid: {self.transaction_id}, "
+                f"type: {str(self.information_type)}, payload: {self.payload})")
 
 #
 #   Door State Update
@@ -211,4 +230,7 @@ class DoorStateUpdateMessage(Message):
             raise MessageException(f"Invalid door state: {state_val}")
         else:
             return cls(state)
+
+    def __str__(self):
+        return f"DoorStateUpdateMessage (state: {str(self.state)}) "
 
