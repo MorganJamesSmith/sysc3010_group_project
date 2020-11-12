@@ -29,32 +29,28 @@ def access_request(tid, connection):
     message = AccessRequestMessage(tid, bytes([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]))
     connection.send(message.to_bytes())
 
-    # Receive the information request
-    data = connection.recv()
-    try:
-        rsp = Message.from_bytes(data)
-    except:
-        print(f"Received invalid message \"{data}\"")
-        exit(1)
+    while(True):
+        data = connection.recv()
+        try:
+            rsp = Message.from_bytes(data)
+        except:
+            print(f"Received invalid message \"{data}\"")
+            exit(1)
 
-    validate_received(data, rsp, tid)
+        validate_received(data, rsp, tid)
 
-    # Send information response
-    payload = TemperatureInfoPayload(22.0, 37.0)
-    print(f"Sending information response: tid {tid}, type {InformationType.USER_TEMPERATURE}, payload {payload}")
-    info_message = InformationResponseMessage(tid, InformationType.USER_TEMPERATURE, payload)
-    connection.send(info_message.to_bytes())
+        if type(rsp) == InformationRequestMessage:
+            # Send information response
+            payload = TemperatureInfoPayload(22.0, 37.0)
+            print(f"Sending information response: tid {tid}, type {InformationType.USER_TEMPERATURE}, payload {payload}")
+            info_message = InformationResponseMessage(tid, InformationType.USER_TEMPERATURE, payload)
+            connection.send(info_message.to_bytes())
+        elif type(rsp) == AccessResponseMessage:
+            break;
+        else:
+            print(f"Received invalid message \"{data}\"")
+            exit(1)
 
-    # Receive access response
-
-    data = connection.recv()
-    try:
-        rsp = Message.from_bytes(data)
-    except:
-        print(f"Received invalid message \"{data}\"")
-        exit(1)
-
-    validate_received(data, rsp, tid)
 
 if __name__ == "__main__":
     # Get API keys from file
