@@ -57,6 +57,17 @@ while (True):
                 if clients[c][0] != 0:
                     print("Received unexpected second access request")
                     exit(1)
+                #exit scenario
+                if c.peer_address =="exit":
+                    print(f"Access request for exit: tid{message.transaction_id},badge id{message.badge_id}")
+                    resp = AccessResponseMessage(message.transaction_id,True)
+                    print("Sending Access Response")
+                    c.send(resp.to_bytes())
+                    new_state = DoorState.ALLOWING_ENTRY
+                    print(f"Sending Door State Update: state {new_state}\n")
+                    resp = DoorStateUpdateMessage(new_state)
+                    connection.send(resp.to_bytes())
+                    continue
                 elif message.transaction_id == 2:
                     print(f"Recieved access request with unauthorized transaction id{message.transaction_id}")
                     resp = AccessResponseMessage(message.transaction_id, False)
