@@ -30,7 +30,10 @@ class ThingSpeakCSVLine:
         s += f"{self.header.dest_addr:15}\t"
 
         if TransportLayerFlags.CONN_REQ in self.header.flags:
-            s += f"connection request"
+            if self.header.source_addr == "control_server":
+                s += f"connection request"
+            else:
+                s += f"connection accepted"
         else:
             s += str(self.message)
 

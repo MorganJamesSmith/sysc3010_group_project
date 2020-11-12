@@ -44,7 +44,7 @@ while (True):
 
             # Send door state update
             new_state = DoorState.ALLOWING_ENTRY
-            print(f"Sending door state update: state {new_state}\n")
+            print(f"Sending door state update: state {str(new_state)}\n")
             resp = DoorStateUpdateMessage(new_state)
             connection.send(resp.to_bytes())
 
@@ -62,12 +62,12 @@ while (True):
                     exit(1)
                 #exit scenario
                 if c.peer_address =="exit":
-                    print(f"Access request for exit: tid{message.transaction_id},badge id{message.badge_id}")
+                    print(f"Access request for exit: tid {message.transaction_id},badge id {message.badge_id}")
                     resp = AccessResponseMessage(message.transaction_id,True)
                     print("Sending Access Response")
                     c.send(resp.to_bytes())
                     new_state = DoorState.ALLOWING_ENTRY
-                    print(f"Sending Door State Update: state {new_state}\n")
+                    print(f"Sending Door State Update: state {str(new_state)}\n")
                     resp = DoorStateUpdateMessage(new_state)
                     connection.send(resp.to_bytes())
                     continue
@@ -82,7 +82,7 @@ while (True):
                 print(f"Access request: tid {message.transaction_id}, badge id {message.badge_id}")
 
                 print(f"Sending information request: tid {message.transaction_id}, type: "
-                      f"{InformationType.USER_TEMPERATURE}\n")
+                      f"{str(InformationType.USER_TEMPERATURE)}\n")
                 resp = InformationRequestMessage(message.transaction_id,
                                                  InformationType.USER_TEMPERATURE)
                 c.send(resp.to_bytes())
@@ -96,7 +96,7 @@ while (True):
                 clients[c][0] = 0
                 
                 if message.information_type != InformationType.USER_TEMPERATURE:
-                    print("Received info response with unexpected type: {message.information_type}")
+                    print("Received info response with unexpected type: {str(message.information_type)}")
                     exit(1)
 
                 print(f"Information response: user temp {message.payload.user_temp}, "
