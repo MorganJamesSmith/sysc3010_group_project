@@ -79,7 +79,7 @@ while (True):
                 elif clients[c][1] != message.transaction_id:
                     print("Received info response with unexpected transaction id")
                     exit(1)
-                clients[c][0] = 2
+                clients[c][0] = 0
                 
                 if message.information_type != InformationType.USER_TEMPERATURE:
                     print("Received info response with unexpected type: {message.information_type}")

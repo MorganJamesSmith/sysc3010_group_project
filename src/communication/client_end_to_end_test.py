@@ -73,4 +73,14 @@ if __name__ == "__main__":
     c.established.wait()
     print("Connection established.")
 
+    # Hand door state update
+    data = c.recv()
+    try:
+        rsp = Message.from_bytes(data)
+    except:
+        print(f"Received invalid message \"{data}\"")
+        exit(1)
+    validate_received(data, rsp, 0)
+
     access_request(0, c)
+    access_request(2, c)
