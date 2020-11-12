@@ -6,6 +6,9 @@
 # Author(s): Sunjeevani Pujari and Samuel Dewan 
 #
 
+import sys
+sys.path.append("../../communication")
+
 import thingspeak
 import transport
 import select
