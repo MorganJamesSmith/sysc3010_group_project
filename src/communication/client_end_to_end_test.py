@@ -8,14 +8,17 @@ from message import *
 
 def validate_received(data, rsp, tid):
     print(f"Received \"{data}\" ({rsp})")
-    if rsp.transaction_id != tid:
-        print(f"Received message with unexpected transaction id ({rsp.transaction_id})")
-        exit(1)
 
     if type(rsp) == InformationRequestMessage:
         print(f"Information request: tid {rsp.transaction_id}, type {rsp.information_type}")
+        if rsp.transaction_id != tid:
+            print(f"Received message with unexpected transaction id ({rsp.transaction_id})")
+            exit(1)
     elif type(rsp) == AccessResponseMessage:
         print(f"Access request: tid {rsp.transaction_id}, accepted {rsp.accepted}")
+        if rsp.transaction_id != tid:
+            print(f"Received message with unexpected transaction id ({rsp.transaction_id})")
+            exit(1)
     elif type(rsp) == DoorStateUpdateMessage:
         print(f"Door state update: state {rsp.state}")
     else:
