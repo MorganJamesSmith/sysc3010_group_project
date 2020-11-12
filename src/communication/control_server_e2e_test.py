@@ -38,6 +38,13 @@ while (True):
             connection, address = server.accept(block = False)
             print(f"New connection from \"{address}\".")
             clients[connection] = [0, None]
+
+            # Send door state update
+            new_state = DoorState.NOT_ALLOWING_ENTRY
+            print(f"Sending door state update: state {new_state}")
+            resp = DoorStateUpdateMessage(new_state)
+            connection.send(resp.to_bytes())
+
         elif c in clients.keys():
             data = c.recv(block = False)
             try:
@@ -86,9 +93,3 @@ while (True):
                 print(f"Sending access response: tid {message.transaction_id}, allow: {allow}")
                 resp = AccessResponseMessage(message.transaction_id, allow)
                 c.send(resp.to_bytes())
-                # Send door state update
-                new_state = DoorState.NOT_ALLOWING_ENTRY if message.transaction_id == 1 else DoorState.ALLOWING_ENTRY
-                print(f"Sending door state update: state {new_state}")
-                resp = DoorStateUpdateMessage(new_state)
-                c.send(resp.to_bytes())
-
