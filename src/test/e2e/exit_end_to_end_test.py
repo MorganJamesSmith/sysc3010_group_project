@@ -26,8 +26,6 @@ channel = thingspeak.Channel(1222699, write_key=write_key, read_key=read_key)
 c = transport.Connection(channel, "exit", "control_server")
 c.established.wait()
 
-print("Entrance Node Tests\n")
-
 print("Case: 1")
 
 # Hand door state update
