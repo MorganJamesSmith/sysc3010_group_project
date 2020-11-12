@@ -26,6 +26,7 @@ c.established.wait()
 print("Entrance Node Tests\n")
 
 print("Case: 1")
+
 # Hand door state update
 data = c.recv()
 try:
@@ -35,23 +36,23 @@ except:
     exit(1)
 validate_received(data, rsp, 0)
 if(rsp.state == DoorState.ALLOWING_ENTRY):
-    print("Success!")
+    print("Test Successful!")
 else:
     print("Fail: Expected rsp.state == DoorState.ALLOWING_ENTRY")
 print("")
 
-print("Case: 2")
+print("Case: Happy Path")
 rsp = access_request(0, c)
 if(rsp.accepted == True):
     print("Test Successful!")
 else:
-    print("Fail: Expected rsp.state == DoorState.ALLOWING_ENTRY")
+    print("Fail: Received Unexpected Response (expected access to be allowed)")
 print("")
 
-print("Case: 3")
-access_request(2, c)
+print("Case: Access that is Immediately Denied")
+rsp = access_request(2, c)
 if(rsp.accepted == False):
     print("Test Successful!")
 else:
-    print("Fail: Expected rsp.state == DoorState.ALLOWING_ENTRY")
+    print("Fail: Received Unexpected Response (expected access to be denied)")
 print("")
