@@ -117,6 +117,10 @@ class ThingSpeakPoller(Thread):
                 # Call all of the registered callbacks for each entry
                 for cb in self.clients.keys():
                     cb(e)
+            # Call backbacks again to indicate that we have just finished an
+            # update
+            for cb in self.clients.keys():
+                cb(None)
 
             if self.has_client.is_set():
                 # If we have at least one client, then wait for the polling period of the client
@@ -142,7 +146,7 @@ class ConnectionException(Exception):
 class Connection:
     channel_pollers = dict()
 
-    def __init__(self, channel, address, peer_address, preestablished = False, poll_period = 1,
+    def __init__(self, channel, address, peer_address, preestablished = False, poll_period = 0.5,
                 server = None):
         self.channel = channel
         self.server = server
@@ -192,6 +196,12 @@ class Connection:
                 (m[1] == entry['field1']))
 
     def _handle_entry(self, entry):
+        if entry is None:
+            # This call is to inidcate that we are done with entries for this update, resend any
+            # outstanding messages
+            self._resend_outstanding()
+            return
+
         header = TransportLayerHeader.from_string(entry['field1'])
         if (header.dest_addr == self.peer_address) and (header.source_addr == self.address):
             # This is a message that we sent, since we know now that it made it to the ThingSpeak
@@ -200,7 +210,6 @@ class Connection:
                                  Connection._entry_matches_sent_message(entry, i)), None)
             if message_info:
                 self.sent_messages.remove(message_info)
-                message_info[2].cancel()
             return
         elif (header.dest_addr != self.address) or (header.source_addr != self.peer_address):
             # Message is not for this connection
@@ -211,24 +220,21 @@ class Connection:
             return
         # Add received message to in queue
         self.in_queue.put(base64.b64decode(entry['field2']))
-   
-    def _retry_message(self, payload, header):
-        message_info = next((i for i in self.sent_messages if (i[0] == payload) and
-                            (i[1] == header)), None)
-        if message_info:
-            try:
-                self.sent_messages.remove(message_info)
-            except ValueError:
-                return
-            # Our message is still in the list of messages to be resent, we should resend it now
-            if payload is not None:
-                self.channel.write({"field1" : header, "field2" : payload})
+    
+    def _resend_outstanding(self):
+        new_message_list = []
+        for payload, header, count in self.sent_messages:
+            if count != 0:
+                # Not ready to resend this message yet, re-add it to the list
+                new_message_list.append((payload, header, count - 1))
             else:
-                self.channel.write({"field1" : header})
-            # Launch timer to resend message if it fails again
-            t = Timer(self.poll_period * 1.5, self._retry_message, args=[payload, header])
-            t.start()
-            self.sent_messages.append((payload, header, t))
+                # This message should be resent
+                if payload is not None:
+                    self.channel.write({"field1": header, "field2": payload})
+                else:
+                    self.channel.write({"field1": header})
+                new_message_list.append((payload, header, 1))
+        self.sent_messages = new_message_list
 
     def fileno(self):
         return self.in_queue._reader.fileno()
@@ -238,17 +244,15 @@ class Connection:
             raise ConnectionExcpetion("Cannot send on closed connetion.")
         if not self.established.is_set():
             raise ConnectionException("Connetion is not yet established.")
-        
+
         header = TransportLayerHeader(self.address, self.peer_address, TransportLayerFlags.NONE)
         header_str = str(header)
         payload = base64.b64encode(msg)
         
         self.channel.write({"field1" : header_str, "field2" : payload})
 
-        # Launch timer to resend message if it fails
-        t = Timer(self.poll_period * 1.5, self._retry_message, args=[payload, header_str])
-        t.start()
-        self.sent_messages.append((payload, header_str, t))
+        # Add message to our list of outstanding messages
+        self.sent_messages.append((payload, header_str, 1))
 
 
     def recv(self, block = True, timeout = None):
@@ -262,10 +266,8 @@ class Connection:
         header_str = str(header)
         self.channel.write({"field1" : header})
 
-        # Launch timer to resend message if it fails
-        t = Timer(self.poll_period * 5, self._retry_message, args=[None, header_str])
-        t.start()
-        self.sent_messages.append((None, header_str, t))
+        # Add message to our list of outstanding messages
+        self.sent_messages.append((None, header_str, 1))
 
 
 class Server:
@@ -281,6 +283,9 @@ class Server:
         self.poller.register(self._handle_entry, poll_period)
 
     def _handle_entry(self, entry):
+        if entry is None:
+            return
+
         header = TransportLayerHeader.from_string(entry['field1'])
         if not TransportLayerFlags.CONN_REQ in header.flags:
             # Ignore any message that is not a connection request
@@ -292,10 +297,6 @@ class Server:
             # Ignore connection requests when we already have an estabished connection
             return
         # Send a response to start the connection
-        #rsp_header = TransportLayerHeader(self.address, header.source_addr,
-        #                                  TransportLayerFlags.CONN_REQ)
-        #self.channel.write({"field1" : str(rsp_header)})
-        # Add the address to the queue for it to be accepted
         self.connection_queue.put(header.source_addr)
 
     def accept(self, block = True, timeout = None):
