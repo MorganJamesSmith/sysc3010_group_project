@@ -23,7 +23,7 @@ except FileNotFoundError as e:
 # Get ThingSpeak channel object
 channel = thingspeak.Channel(1222699, write_key=write_key, read_key=read_key)
 
-c = transport.Connection(channel, "client", "control_server")
+c = transport.Connection(channel, "entrance", "control_server")
 c.established.wait()
 
 print("Entrance Node Tests\n")
