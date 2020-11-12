@@ -40,7 +40,7 @@ while (True):
             clients[connection] = [0, None]
 
             # Send door state update
-            new_state = DoorState.NOT_ALLOWING_ENTRY
+            new_state = DoorState.ALLOWING_ENTRY
             print(f"Sending door state update: state {new_state}\n")
             resp = DoorStateUpdateMessage(new_state)
             connection.send(resp.to_bytes())
