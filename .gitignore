@@ -3,6 +3,9 @@ __pycache__
 proposal/figures/*.png
 design/uml/*.png
 
+api_read_key.txt
+api_write_key.txt
+
 ##### TeX.gitignore from
 ##### https://github.com/github/gitignore/blob/master/TeX.gitignore
 
