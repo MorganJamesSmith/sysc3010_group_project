@@ -44,8 +44,8 @@ while (True):
 
             # Send door state update
             new_state = DoorState.ALLOWING_ENTRY
-            print(f"Sending door state update: state {str(new_state)}\n")
             resp = DoorStateUpdateMessage(new_state)
+            print(f"Sending door state update ({resp}) to {address}")
             connection.send(resp.to_bytes())
 
         elif c in clients.keys():
@@ -53,8 +53,8 @@ while (True):
             try:
                 message = Message.from_bytes(data)
             except:
-                print(f"Received invalid message \"{data}\" from \"{c.peer_address}\"")
-            print(f"Received \"{data}\"\n    ({message}) from \"{c.peer_address}\"")
+                print(f"Received invalid message from \"{c.peer_address}\"")
+            print(f"Received ({message}) from \"{c.peer_address}\"")
 
             if isinstance(message, AccessRequestMessage):
                 if clients[c][0] != 0:
@@ -62,30 +62,28 @@ while (True):
                     exit(1)
                 #exit scenario
                 if c.peer_address =="exit":
-                    print(f"Access request for exit: tid {message.transaction_id},badge id {message.badge_id}")
                     resp = AccessResponseMessage(message.transaction_id,True)
-                    print("Sending Access Response")
+                    print(f"Sending access response ({resp}) to {c.peer_address}")
                     c.send(resp.to_bytes())
+
                     new_state = DoorState.ALLOWING_ENTRY
-                    print(f"Sending Door State Update: state {str(new_state)}\n")
                     resp = DoorStateUpdateMessage(new_state)
+                    print(f"Sending door state update ({resp}) to {c.peer_address}")
                     connection.send(resp.to_bytes())
                     continue
                 elif message.transaction_id == 2:
                     print(f"Recieved access request with unauthorized transaction id{message.transaction_id}")
                     resp = AccessResponseMessage(message.transaction_id, False)
+                    print(f"Sending access response ({resp}) to {c.peer_address}")
                     c.send(resp.to_bytes())
                     continue
                 clients[c][0] = 1
                 clients[c][1] = message.transaction_id
 
-                print(f"Access request: tid {message.transaction_id}, badge id {message.badge_id}")
-
-                print(f"Sending information request: tid {message.transaction_id}, type: "
-                      f"{str(InformationType.USER_TEMPERATURE)}\n")
                 resp = InformationRequestMessage(message.transaction_id,
                                                  InformationType.USER_TEMPERATURE)
-                c.send(resp.to_bytes())
+                print(f"Sending information request ({resp}) to {c.peer_address}")
+                c.send(resp.to_bytes()) 
             elif isinstance(message,InformationResponseMessage):
                 if clients[c][0] != 1:
                     print("Received out of sequence information response")
@@ -99,11 +97,8 @@ while (True):
                     print("Received info response with unexpected type: {str(message.information_type)}")
                     exit(1)
 
-                print(f"Information response: user temp {message.payload.user_temp}, "
-                      f"ambient temp: {message.payload.ambient_temp}")
-                
                 # Send an access response
                 allow = message.payload.user_temp <= 38.5
-                print(f"Sending access response: tid {message.transaction_id}, allow: {allow}\n")
                 resp = AccessResponseMessage(message.transaction_id, allow)
+                print(f"Sending access response ({resp}) to {c.peer_address}")
                 c.send(resp.to_bytes())
