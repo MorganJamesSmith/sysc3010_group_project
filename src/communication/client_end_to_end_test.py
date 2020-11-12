@@ -7,7 +7,7 @@ from time import sleep
 from message import *
 
 def validate_received(data, rsp, tid):
-    print(f"Received \"{data}\" ({rsp})")
+    print(f"Received \"{data}\"\n    ({rsp})")
 
     if type(rsp) == InformationRequestMessage:
         print(f"Information request: tid {rsp.transaction_id}, type {rsp.information_type}")
@@ -82,5 +82,8 @@ if __name__ == "__main__":
         exit(1)
     validate_received(data, rsp, 0)
 
+    print("")
     access_request(0, c)
+
+    print("")
     access_request(2, c)

@@ -36,12 +36,12 @@ while (True):
     for c in r:
         if c is server:
             connection, address = server.accept(block = False)
-            print(f"New connection from \"{address}\".")
+            print(f"New connection from \"{address}\".\n")
             clients[connection] = [0, None]
 
             # Send door state update
             new_state = DoorState.NOT_ALLOWING_ENTRY
-            print(f"Sending door state update: state {new_state}")
+            print(f"Sending door state update: state {new_state}\n")
             resp = DoorStateUpdateMessage(new_state)
             connection.send(resp.to_bytes())
 
@@ -51,7 +51,7 @@ while (True):
                 message = Message.from_bytes(data)
             except:
                 print(f"Received invalid message \"{data}\" from \"{c.peer_address}\"")
-            print(f"Received \"{data}\" ({message}) from \"{c.peer_address}\"")
+            print(f"Received \"{data}\"\n    ({message}) from \"{c.peer_address}\"")
 
             if isinstance(message, AccessRequestMessage):
                 if clients[c][0] != 0:
@@ -68,7 +68,7 @@ while (True):
                 print(f"Access request: tid {message.transaction_id}, badge id {message.badge_id}")
 
                 print(f"Sending information request: tid {message.transaction_id}, type: "
-                      f"{InformationType.USER_TEMPERATURE}")
+                      f"{InformationType.USER_TEMPERATURE}\n")
                 resp = InformationRequestMessage(message.transaction_id,
                                                  InformationType.USER_TEMPERATURE)
                 c.send(resp.to_bytes())
@@ -90,6 +90,6 @@ while (True):
                 
                 # Send an access response
                 allow = message.payload.user_temp <= 38.5
-                print(f"Sending access response: tid {message.transaction_id}, allow: {allow}")
+                print(f"Sending access response: tid {message.transaction_id}, allow: {allow}\n")
                 resp = AccessResponseMessage(message.transaction_id, allow)
                 c.send(resp.to_bytes())
