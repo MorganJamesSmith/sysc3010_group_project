@@ -61,7 +61,7 @@ class AccessRequestMessage(Message):
         self.badge_id = badge_id
 
     def to_bytes(self):
-        return struct.pack("!II16p", MessageType.ACCESS_REQUEST, self.transaction_id,
+        return struct.pack("!II16s", MessageType.ACCESS_REQUEST, self.transaction_id,
                            self.badge_id)
 
     @classmethod
@@ -69,7 +69,7 @@ class AccessRequestMessage(Message):
         if len(packet) != 24:
             raise MessageException(f"Invalid length for ACCESS_REQUEST message: expected 24, got "
                                    f"{len(packet)}")
-        msg_type, tid, bid = struct.unpack("!II16p", packet)
+        msg_type, tid, bid = struct.unpack("!II16s", packet)
         return cls(tid, bid)
 
     def __str__(self):
