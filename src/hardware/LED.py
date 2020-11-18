@@ -11,7 +11,7 @@ class LEDColour(Enum) :
 class LED:
     
     #Initalizes and sets the pins
-    def __init__(self, red_pin = 17, green_pin = 18):
+    def __init__(self, red_pin, green_pin):
         self.red_pin = red_pin
         self.green_pin = green_pin
     
@@ -38,4 +38,3 @@ class LED:
         else:
             GPIO.output(self.red_pin, False)
             GPIO.output(self.green_pin, False)
-        
