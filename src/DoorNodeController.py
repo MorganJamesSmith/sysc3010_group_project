@@ -1,3 +1,7 @@
+#! /usr/bin/env python3
+
+
+
 
 from communication import thingspeak
 from communication import transport
@@ -8,11 +12,12 @@ from hardware import RC522
 from hardware import LED
 from communication import Channel
 from communication import Connection
+from communication import message
 
 
 from hardware import RangeFinder #VL53L0X
 from hardware import MLX90614
-from hardware import ElectronicDoorLock
+from hardware import DoorActuator
 
 class DoorNodeController:
 
@@ -66,7 +71,7 @@ class DoorNodeController:
                 exit(1)
             if type(rsp) == InformationRequestMessage:
                 if door_type == EXIT:
-                    handle_access_response()
+                    handle_access_response(rsp)
                     continue
                 distance = 0
                 distance = range_finder.get_range()
@@ -95,9 +100,7 @@ class DoorNodeController:
 
         message = AccessRequest(self.tid,badge_id)
         self.connection.send(message.to_bytes())
-
-        
-        
+          
     def handle_information_request(self, message):
 
         ambient_temp = self.ir_temp_sensor.get_ambient_temp()
@@ -109,14 +112,12 @@ class DoorNodeController:
         #server side does temp check numbers
         
     def handle_door_state_update(self, message):
-       
-        self.connection.recv()
-   
-        if(rsp.state == DoorState.ALLOWING_ENTRY):
+          
+        if(message.state == DoorState.ALLOWING_ENTRY):
             self.indicator.set_colour(RED)
             self.door_state = rsp.state
             return self.door_state
-        elif(rsp.state == DoorState.NOT_ALLLOWING_ENTRY):
+        elif(message.state == DoorState.NOT_ALLLOWING_ENTRY):
             self.indicator.set_colour(OFF)
             self.door_state = rsp.state
             return self.door_state
@@ -126,15 +127,14 @@ class DoorNodeController:
 
     def handle_access_response(self, message):
 
-        data = self.connection.recv()
-        rsp = Message.from_bytes(data)
-        
-        if rsp.accepted == True:
+        if message.accepted == True:
             self.indicator.set_colour(GREEN)
-            #door_lock
+            self.door_lock.door_open()
+            return True
         else:
             #door stays locked
-            return false
+            self.door_lock.door_lock()
+            return False
     
 #Enumeration with the for if a DoorNodeController is an entrance or exit
 class DoorType(Enum) :
@@ -143,7 +143,4 @@ class DoorType(Enum) :
 
 
 #unit test for door node code
-
-#have it instead be checking what the response to the access_request message
-
-#focus on having the handlers be the stars/decide what happens next
+#need maximum capacity system
