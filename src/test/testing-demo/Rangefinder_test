@@ -1,0 +1,19 @@
+#! /usr/bin/env python3
+
+#
+# file name: Rangefinder_test
+# Description: Rangefinder functional test code for second test demo 
+# Author(s): Sunjeevani Pujari
+#
+
+import time
+from tof_code_v1 import RangeFinder 
+
+#testing different ranges 
+while (i <= 5):
+    activate = True
+    dist = RangeFinder.get_range(activate)
+    print(f"Range is {}",dist)
+    i++
+    time.sleep(3)
+print("Range Finder test complete")
