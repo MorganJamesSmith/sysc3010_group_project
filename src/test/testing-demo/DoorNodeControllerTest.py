@@ -1,11 +1,13 @@
 import sys
 
 sys.path.append("../../communication")
+sys.path.append("../../")
 
-import thingspeak
-import transport
+from communication import thingspeak
+from communication import transport
 
 import unittest
+
 import DoorNodeController
 
 
