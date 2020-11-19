@@ -19,32 +19,32 @@ class DataBase:
         except sqlite3.Error as error:
                 print("Error while working with SQLite", error)
                 
-        def accessrequest(self,accessType,badge_id):
-            try:
-                self.badge_id = badge_id
-                #Variables needed from database
-                database.execute("SELECT employee_id FROM employee_info WHERE nfc_id =?", self.badge_id)
-                employeeId = database.fetchone()[0]
+    def accessrequest(self,accessType,badge_id):
+        try:
+            self.badge_id = badge_id
+            #Variables needed from database
+            database.execute("SELECT employee_id FROM employee_info WHERE nfc_id =?", self.badge_id)
+            employeeId = database.fetchone()[0]
             
-                if employeeId == NULL:
-                    employeeId = 0
-                    return employeeId
-                elif accessType = 'exit':
-                    #if AccessRequestMessage is from exit node, all we need is to get employee ID
-                    return employeeId
-                #if AccessRequestMessage is from entry node, we need information about employees most recent entry attempt
-                database.execute("SELECT access_date FROM access_entry WHERE employee_id = ? ORDER BY employee_id DESC LIMIT 1", employeeId)
-                accessDate = database.fetchone()[0]
-                database.execute("SELECT status FROM access_entry WHERE employee_id = ? ORDER BY employee_id DESC LIMIT 1", employeeId)
-                statusType = database.fetchone()[0]
-                database.execute("SELECT validity FROM access_entry WHERE employee_id = ? ORDER BY employee_id DESC LIMIT 1", employeeId)
-                validity = database.fetchone()[0]
-                return employeeID, accessDate,statusType, validity
+            if employeeId == NULL:
+                employeeId = 0
+                return employeeId
+            elif accessType == "exit":
+                #if AccessRequestMessage is from exit node, all we need is to get employee ID
+                return employeeId
+            #if AccessRequestMessage is from entry node, we need information about employees most recent entry attempt
+            database.execute("SELECT access_date FROM access_entry WHERE employee_id = ? ORDER BY employee_id DESC LIMIT 1", employeeId)
+            accessDate = database.fetchone()[0]
+            database.execute("SELECT status FROM access_entry WHERE employee_id = ? ORDER BY employee_id DESC LIMIT 1", employeeId)
+            statusType = database.fetchone()[0]
+            database.execute("SELECT validity FROM access_entry WHERE employee_id = ? ORDER BY employee_id DESC LIMIT 1", employeeId)
+            validity = database.fetchone()[0]
+            return employeeID, accessDate,statusType, validity
             
-            finally:
-                if (database):
-                    database.close()
-                    print("sqlite connection is closed")
+        finally:
+            if (database):
+                database.close()
+                print("sqlite connection is closed")
     def exit_log(self,employeeId,exitnode):
         self.employeeID = employeeId #INT value of employee ID acquired from the nfc ID in the AccessRequestMessage 
         self.exitnode = exitnode #TEXT value of the entry node requesting entry
