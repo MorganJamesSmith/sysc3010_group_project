@@ -30,21 +30,17 @@ class DoorActuator:
     def lock(self):
         self.p.ChangeDutyCycle(self.locked)
         sleep(self.servo_delay)
-        print("Door locked!")
 
     # Unlocks the door
     def open(self):
         self.p.ChangeDutyCycle(self.unlocked)
         sleep(self.servo_delay)
-        print("Door unlocked!")
 
     # Unlocks the door for delay seconds and then locks the door
     def open_timed(self, delay):
         self.p.ChangeDutyCycle(self.unlocked)
-        print("Door unlocked for", delay, "seconds!")
         sleep(delay)
         self.p.ChangeDutyCycle(self.locked)
-        print("Door locked!")
         sleep(self.servo_delay)
 
 
