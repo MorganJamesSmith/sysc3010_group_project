@@ -14,7 +14,7 @@ from database_code import DataBase
 
 db = DataBase()
 
-db.creating_db()
+#db.creating_db()
 
 badge_id1 = bytes.fromhex("68091a96e619ad7997099f16c64b5e17")
 
@@ -27,13 +27,13 @@ db.add_entries(badge_id2,2)
 #exit loop
 exitnode = "North exit"
 employee_id = db.accessrequest("exit",badge_id)
-print(f"employee ID of employee requesting exit is:",employee_id)
+print(f"employee ID of employee requesting exit is:",employee_id1)
 #logging information for exit process
 db.exit_log(employee_id,exitnode)
 
 #entry loop
 entrynode = "Sounth entry"
-employee_id ,access_date,status,validity= db.accessrequest("entry",badge_id)
+employee_id ,access_date,status,validity= db.accessrequest("entry",badge_id2)
 print(f"employee ID of employee requesting entry is:",employee_id)
 #logging information for entry process
 temp_reading = 37.0
