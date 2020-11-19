@@ -26,8 +26,8 @@ db.add_entries(badge_id2,2)
 
 #exit loop
 exitnode = "North exit"
-employee_id = db.accessrequest("exit",badge_id)
-print(f"employee ID of employee requesting exit is:",employee_id1)
+employee_id = db.accessrequest("exit",badge_id1)
+print(f"employee ID of employee requesting exit is:",employee_id)
 #logging information for exit process
 db.exit_log(employee_id,exitnode)
 
