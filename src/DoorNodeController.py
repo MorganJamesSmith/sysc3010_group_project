@@ -1,23 +1,17 @@
 #! /usr/bin/env python3
 
-
-
-
-from communication import thingspeak
-from communication import transport
 from time import sleep
+from enum import Enum, auto
 
-from message import *
-from hardware import RC522
-from hardware import LED
-from communication import Channel
-from communication import Connection
-from communication import message
-
+from communication.thingspeak import Channel
+from communication.transport import Connection
+from communication.message import *
 
 from hardware import RangeFinder #VL53L0X
-from hardware import MLX90614
+from hardware import mlx90614
 from hardware import DoorActuator
+from hardware import RC522
+from hardware import LED
 
 class DoorNodeController:
 
@@ -70,7 +64,7 @@ class DoorNodeController:
                 print(f"Received invalid message \"{data}\"")
                 exit(1)
             if type(rsp) == InformationRequestMessage:
-                if door_type == EXIT:
+                if door_type == DoorState.EXIT:
                     handle_access_response(rsp)
                     continue
                 distance = 0
@@ -138,8 +132,8 @@ class DoorNodeController:
     
 #Enumeration with the for if a DoorNodeController is an entrance or exit
 class DoorType(Enum) :
-    ENTRANCE
-    EXIT
+    ENTRANCE = auto()
+    EXIT = auto()
 
 
 #unit test for door node code
