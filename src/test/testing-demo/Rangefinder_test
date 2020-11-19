@@ -6,14 +6,20 @@
 # Author(s): Sunjeevani Pujari
 #
 
-import time
-from tof_code_v1 import RangeFinder 
+import sys
+sys.path.append("../../hardware")
 
-#testing different ranges 
+import time
+from RangeFinder import RangeFinder 
+
+sensor = RangeFinder()
+
+#testing different ranges
+i = 0
 while (i <= 5):
     activate = True
-    dist = RangeFinder.get_range(activate)
-    print(f"Range is {}",dist)
-    i++
+    dist = sensor.get_range(activate)
+    print(f"Range is {dist}")
+    i += 1
     time.sleep(3)
 print("Range Finder test complete")
