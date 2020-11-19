@@ -54,7 +54,7 @@ class DataBase:
         self.employeeId = employeeId #INT value of employee ID acquired from the nfc ID in the AccessRequestMessage 
         self.exitnode = exitnode #TEXT value of the entry node requesting entry
         #fields saved to log exit access of employee
-        self.cursor.execute("INSERT INTO access_exit (employee_id, exit_time,exit_date,exit_node) VALUES (?,?,?,?)",(self.employeeId,"time('now')","date('now')",self.exitnode))
+        self.cursor.execute("INSERT INTO access_exit (employee_id,exit_node) VALUES (?,?)",(self.employeeId,self.exitnode))
         self.database.commit()
         self.cursor.execute("SELECT * FROM access_exit WHERE employee_id = ? ORDER BY employee_id DESC LIMIT 1", (employeeId,))
         print ("data added to the database is:",self.cursor.fetchone())
@@ -70,8 +70,8 @@ class DataBase:
         self.tempReading= tempReading #NUMERIC value of the employees recorded Temp 
         self.status = status #TEXT value of the status of employee 
         #fields saved to log exit access of employee
-        self.cursor.execute("INSERT INTO access_entry (employee_id,access_time,access_date,access_node,in_range,temp_reading,status,validity) VALUES(?,?,?,?,?,?,?,?)",
-                         (self.employeeId,time('now'),date('now'),self.entrynode,'Y',self.tempReading,self.status,0))
+        self.cursor.execute("INSERT INTO access_entry (employee_id,access_node,in_range,temp_reading,status,validity) VALUES(?,?,?,?,?,?)",
+                         (self.employeeId,self.entrynode,'Y',self.tempReading,self.status,0))
         self.database.commit()
         self.cursor.execute("SELECT * FROM access_entry WHERE employee_id = ? ORDER BY employee_id DESC LIMIT 1", (employeeId,))
         print ("data added to the database is:",self.cursor.fetchone())
@@ -88,7 +88,7 @@ class DataBase:
     #adding tables to the database     
     def creating_db(self):
         #creating access_entry table
-        entry = '''CREATE TABLE access_entry(employee_id INTEGER NOT NULL, access_time TIME, access_date DATE,
+        entry = '''CREATE TABLE access_entry(employee_id INTEGER NOT NULL, entry_datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
         access_node TEXT NOT NULL, in_range TEXT NOT NULL, temp_reading NUMERIC NOT NULL, status TEXT NOT NULL,validity INTEGER NOT NULL);'''
         self.cursor.execute(entry)
         self.database.commit()
@@ -100,12 +100,12 @@ class DataBase:
         self.database.commit()
         
         #creating unauthorized_employee table
-        unauthorized = 'CREATE TABLE unauthorized_employee(employee_id INT, temp_reading NUM, start_of_quarantine_date DATE);'
+        unauthorized = 'CREATE TABLE unauthorized_employee(employee_id INT, temp_reading NUM, quaratine_start_date NOT NULL DEFAULT CURRENT_TIMESTAMP);'
         self.cursor.execute(unauthorized)
         self.database.commit()
         
         #creating access_exit table
-        exit = 'CREATE TABLE access_exit(employee_id INTEGER NOT NULL, exit_time TIME, exit_date DATE, exit_node TEXT NOT NULL);'
+        exit = 'CREATE TABLE access_exit(employee_id INTEGER NOT NULL, exit_datetime NOT NULL DEFAULT CURRENT_TIMESTAMP, exit_node TEXT NOT NULL);'
         self.cursor.execute(exit)
         self.database.commit()
         
