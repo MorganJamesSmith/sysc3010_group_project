@@ -18,9 +18,10 @@ class RangeFinder:
         #self.address= address
         # Initialize I2C bus and sensor.
         i2c = busio.I2C(board.SCL, board.SDA)
-        vl53 = adafruit_vl53l0x.VL53L0X(i2c)
+        self.vl53 = adafruit_vl53l0x.VL53L0X(i2c)
+
     def get_range(self,activate):
         self.activate = activate
         if self.activate == True:
-            dist = vl53.range
+            dist = self.vl53.range
             return dist
