@@ -25,31 +25,26 @@ class DataBase:
                 print("Error while working with SQLite", error)
                 
     def accessrequest(self,accessType,badge_id):
-        try:
-            self.badge_id = badge_id
-            #Variables needed from database
-            self.cursor.execute("SELECT employee_id FROM nfc_and_employee_id WHERE nfc_id =?",(self.badge_id,) )
-            employeeId = self.cursor.fetchone()[0]
+        self.badge_id = badge_id
+        #Variables needed from database
+        self.cursor.execute("SELECT employee_id FROM nfc_and_employee_id WHERE nfc_id =?",(self.badge_id,) )
+        employeeId = self.cursor.fetchone()[0]
+        
+        if (employeeId == None):
+            employeeId = 0
+            return employeeId
+        elif accessType == "exit":
+            #if AccessRequestMessage is from exit node, all we need is to get employee ID
+            return employeeId
+        #if AccessRequestMessage is from entry node, we need information about employees most recent entry attempt
+        self.cursor.execute("SELECT access_date FROM access_entry WHERE employee_id = ? ORDER BY employee_id DESC LIMIT 1", (employeeId,))
+        accessDate = self.cursor.fetchone()[0]
+        self.cursor.execute("SELECT status FROM access_entry WHERE employee_id = ? ORDER BY employee_id DESC LIMIT 1", (employeeId,))
+        statusType = self.cursor.fetchone()[0]
+        self.cursor.execute("SELECT validity FROM access_entry WHERE employee_id = ? ORDER BY employee_id DESC LIMIT 1", (employeeId,))
+        validity = self.cursor.fetchone()[0]
+        return employeeID, accessDate,statusType, validity
             
-            if (employeeId == None):
-                employeeId = 0
-                return employeeId
-            elif accessType == "exit":
-                #if AccessRequestMessage is from exit node, all we need is to get employee ID
-                return employeeId
-            #if AccessRequestMessage is from entry node, we need information about employees most recent entry attempt
-            self.cursor.execute("SELECT access_date FROM access_entry WHERE employee_id = ? ORDER BY employee_id DESC LIMIT 1", (employeeId,))
-            accessDate = self.cursor.fetchone()[0]
-            self.cursor.execute("SELECT status FROM access_entry WHERE employee_id = ? ORDER BY employee_id DESC LIMIT 1", (employeeId,))
-            statusType = self.cursor.fetchone()[0]
-            self.cursor.execute("SELECT validity FROM access_entry WHERE employee_id = ? ORDER BY employee_id DESC LIMIT 1", (employeeId,))
-            validity = self.cursor.fetchone()[0]
-            return employeeID, accessDate,statusType, validity
-            
-        finally:
-            if (self.database):
-                self.database.close()
-                print("sqlite connection is closed")
     def exit_log(self,employeeId,exitnode):
         self.employeeId = employeeId #INT value of employee ID acquired from the nfc ID in the AccessRequestMessage 
         self.exitnode = exitnode #TEXT value of the entry node requesting entry
@@ -59,10 +54,6 @@ class DataBase:
         self.cursor.execute("SELECT * FROM access_exit WHERE employee_id = ? ORDER BY employee_id DESC LIMIT 1", (employeeId,))
         print ("data added to the database is:",self.cursor.fetchone())
         
-        if (self.database):
-            self.database.close()
-            print("sqlite connection is closed")
-   
     #entry
     def entry_log(self,employeeId,entrynode,tempReading,status):
         self.employeeId = employeeId #INT value of employee ID acquired from the nfc ID in the AccessRequestMessage 
@@ -75,10 +66,7 @@ class DataBase:
         self.database.commit()
         self.cursor.execute("SELECT * FROM access_entry WHERE employee_id = ? ORDER BY employee_id DESC LIMIT 1", (employeeId,))
         print ("data added to the database is:",self.cursor.fetchone())
-        if (self.database):
-            self.database.close()
-            print("sqlite connection is closed")
-    
+        
     #adding entires to nfc_and_employee_id table
     def add_entries(self,badge_id,employee_id):
         data_tuple =(badge_id,employee_id)
@@ -113,3 +101,8 @@ class DataBase:
         nfc = 'CREATE TABLE nfc_and_employee_id(nfc_id BLOB NOT NULL, employee_id INTEGER NOT NULL);'
         self.cursor.execute(nfc)
         self.database.commit()
+        
+    def close_db(self):
+        if (self.database):
+            self.database.close()
+            print("sqlite connection is closed")
