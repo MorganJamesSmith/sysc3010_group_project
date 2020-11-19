@@ -26,16 +26,16 @@ db.add_entries(badge_id2,2)
 
 #exit loop
 exitnode = "North exit"
-employee_id = db.accessrequest("exit",badge_id1)
-print(f"employee ID of employee requesting exit is:",employee_id)
+employee_id1 = db.accessrequest("exit",badge_id1)
+print(f"employee ID of employee requesting exit is:",employee_id1)
 #logging information for exit process
-db.exit_log(employee_id,exitnode)
+db.exit_log(employee_id1,exitnode)
 
 #entry loop
-entrynode = "Sounth entry"
-employee_id ,access_date,status,validity= db.accessrequest("entry",badge_id2)
-print(f"employee ID of employee requesting entry is:",employee_id)
+entrynode = "South entry"
+employee_id2 ,access_date,status,validity= db.accessrequest("entry",badge_id2)
+print(f"employee ID of employee requesting entry is:",employee_id2)
 #logging information for entry process
 temp_reading = 37.0
 status = "authorized"
-db.entry_log(employee_id,entrynode,temp_reading,status)
+db.entry_log(employee_id2,entrynode,temp_reading,status)
