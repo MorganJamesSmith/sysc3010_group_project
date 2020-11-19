@@ -6,6 +6,10 @@
 # Author(s): Sunjeevani Pujari
 #
 
+import sys
+sys.path.append("../../hardware")
+
+
 from database_code import DataBase
 
 db = DataBase()
