@@ -17,7 +17,8 @@ class DataBase:
             # Connecting to project database
             self.database = sqlite3.connect('project.db')
             self.cursor = self.database.cursor()
-            print('Connection to database successful!')
+            print('SQLite Connection to database successful!')
+            print()
         except sqlite3.Error as error:
                 print("Error while working with SQLite", error)
                 
@@ -34,46 +35,54 @@ class DataBase:
             #if AccessRequestMessage is from exit node, all we need is to get employee ID
             return employeeId
         #if AccessRequestMessage is from entry node, we need information about employees most recent entry attempt
-        self.cursor.execute("SELECT access_date FROM access_entry WHERE employee_id = ? ORDER BY employee_id DESC LIMIT 1", (employeeId,))
-        accessDate = self.cursor.fetchone()[0]
+        self.cursor.execute("SELECT entry_datetime FROM access_entry WHERE employee_id = ? ORDER BY employee_id DESC LIMIT 1", (employeeId,))
+        accessDate = self.cursor.fetchone()
         self.cursor.execute("SELECT status FROM access_entry WHERE employee_id = ? ORDER BY employee_id DESC LIMIT 1", (employeeId,))
-        statusType = self.cursor.fetchone()[0]
+        statusType = self.cursor.fetchone()
         self.cursor.execute("SELECT validity FROM access_entry WHERE employee_id = ? ORDER BY employee_id DESC LIMIT 1", (employeeId,))
-        validity = self.cursor.fetchone()[0]
-        return employeeID, accessDate,statusType, validity
+        validity = self.cursor.fetchone()
+        return employeeId,accessDate,statusType,validity
             
     def exit_log(self,employeeId,exitnode):
         self.employeeId = employeeId #INT value of employee ID acquired from the nfc ID in the AccessRequestMessage 
         self.exitnode = exitnode #TEXT value of the entry node requesting entry
         #fields saved to log exit access of employee
+        print("Inserting Exit data into database")
         self.cursor.execute("INSERT INTO access_exit (employee_id,exit_node) VALUES (?,?)",(self.employeeId,self.exitnode))
         self.database.commit()
         self.cursor.execute("SELECT * FROM access_exit WHERE employee_id = ? ORDER BY employee_id DESC LIMIT 1", (employeeId,))
-        print ("data added to the database is:",self.cursor.fetchone())
+        print ("Following data has been added to the access_exit table in the database:",self.cursor.fetchone())
         
+   
     #entry
     def entry_log(self,employeeId,entrynode,tempReading,status):
         self.employeeId = employeeId #INT value of employee ID acquired from the nfc ID in the AccessRequestMessage 
         self.entrynode = entrynode #TEXT value of the entry node requesting entry
         self.tempReading= tempReading #NUMERIC value of the employees recorded Temp 
         self.status = status #TEXT value of the status of employee 
-        #fields saved to log exit access of employee
+        #fields saved to log entry access of employee
+        print("Inserting Entry data into database")
         self.cursor.execute("INSERT INTO access_entry (employee_id,access_node,in_range,temp_reading,status,validity) VALUES(?,?,?,?,?,?)",
                          (self.employeeId,self.entrynode,'Y',self.tempReading,self.status,0))
         self.database.commit()
         self.cursor.execute("SELECT * FROM access_entry WHERE employee_id = ? ORDER BY employee_id DESC LIMIT 1", (employeeId,))
-        print ("data added to the database is:",self.cursor.fetchone())
+        print ("Following data has been added to the access_entry table in the database:",self.cursor.fetchone())
         
     #adding entires to nfc_and_employee_id table
     def add_entries(self,badge_id,employee_id):
         data_tuple =(badge_id,employee_id)
+        print("Sample previous data being added to database:",data_tuple)
         self.cursor.execute("INSERT INTO nfc_and_employee_id(nfc_id,employee_id) VALUES (?,?)",data_tuple)
         self.database.commit()
-        data_tuple1 =(1,"North exit","Y",36.7,"authorized",0)
-        self.cursor.execute("INSERT INTO access_entry(employee_id,access_node,in_range,temp_reading,status,validity) VALUES (?,?,?,?,?,?)",data_tuple1)
-        data_tuple2 =(2,"South entry")
-        self.cursor.execute("INSERT INTO access_exit(employee_id,exit_node) VALUES (?,?)",data_tuple2)
-        
+        if employee_id ==1:
+            data_tuple1 =(1,"North exit","Y",36.7,"authorized",0)
+            print("Sample previous data being added to access_exit table of the database:",data_tuple1)
+            self.cursor.execute("INSERT INTO access_entry(employee_id,access_node,in_range,temp_reading,status,validity) VALUES (?,?,?,?,?,?)",data_tuple1)
+        elif employee_id == 2:
+            data_tuple2 =(2,"South entry")
+            print("Sample previous data being added to access_entry table of the database:",data_tuple2)
+            self.cursor.execute("INSERT INTO access_exit(employee_id,exit_node) VALUES (?,?)",data_tuple2)
+    
     #adding tables to the database     
     def creating_db(self):
         #creating access_entry table
@@ -102,8 +111,10 @@ class DataBase:
         nfc = 'CREATE TABLE nfc_and_employee_id(nfc_id BLOB NOT NULL, employee_id INTEGER NOT NULL);'
         self.cursor.execute(nfc)
         self.database.commit()
-        
+    
     def close_db(self):
         if (self.database):
             self.database.close()
-            print("sqlite connection is closed")
+            print()
+            print()
+            print("SQLite connection is closed")
