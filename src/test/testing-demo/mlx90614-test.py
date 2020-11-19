@@ -30,7 +30,7 @@ if a_temp == None or a_temp < 10.0 or a_temp > 30.0:
 print("Looks good!\n")
 
 #
-print("Looks good!\n") # Test 2: raise ambient temp
+# Test 2: raise ambient temp
 #
 input("Please hold sensor to raise its temperature. Press enter to continue...")
 
