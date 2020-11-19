@@ -6,7 +6,7 @@
 # Author(s): Sunjeevani Pujari
 #
 
-from database_demo import DataBase
+from database_code import DataBase
 
 badge_id = bytes.fromhex("68091a96e619ad7997099f16c64b5e17")
 
