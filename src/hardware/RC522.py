@@ -12,9 +12,7 @@ class RC522:
 
 
     #method reads security badge and returns the id
-    def read_card():
-        #account_id holds id data outside of try loop
-        account_id
+    def read_card(self):
         try:
             #library includes a read function
             #id holds the unique id of the security card
@@ -29,9 +27,8 @@ class RC522:
             return account_id
 
     #method reads the security badge and returns set text data
-    def read_card_data(adr):
-        #data is a variable to hold data outside of try loop
-        data
+    def read_card_data(self,adr):
+
         try:
             #library includes a read function
             #id holds the unique id of the security card
