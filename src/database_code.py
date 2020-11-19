@@ -14,7 +14,7 @@ class DataBase:
     def __init__(self):
         try:
             # Connecting to project database
-            self.database = sqlite3.connect('projectdatabase.db')
+            self.database = sqlite3.connect('project.db')
             print('Connection to database successful!')
         except sqlite3.Error as error:
                 print("Error while working with SQLite", error)
@@ -23,7 +23,7 @@ class DataBase:
         try:
             self.badge_id = badge_id
             #Variables needed from database
-            self.database.execute("SELECT employee_id FROM employee_info WHERE nfc_id =?", self.badge_id)
+            self.database.execute("SELECT employee_id FROM nfc_and_employee_id WHERE nfc_id =?", self.badge_id)
             employeeId = self.database.fetchone()[0]
             
             if employeeId == NULL:
@@ -74,8 +74,37 @@ class DataBase:
             self.database.close()
             print("sqlite connection is closed")
     
+    #adding entires to nfc_and_employee_id table
     def add_entries(self,badge_id,employee_id):
-        self.badge_id = badge_id
-        self.employee_id = employee_id
-        self.database.execute("INSERT INTO nfc_and_employee_id(nfc_id,employee_id) VALUES (?,?)",self.badge_id, self.employee_id)
+        data_tuple =(badge_id,employee_id)
+        self.database.execute("INSERT INTO nfc_and_employee_id(nfc_id,employee_id) VALUES (?,?)",data_tuple)
+        self.database.commit()
+        
+    #adding tables to the database     
+    def creating_db(self):
+        #creating access_entry table
+        entry = '''CREATE TABLE access_entry(employee_id INTEGER NOT NULL, access_time TIME, access_date DATE,
+        access_node TEXT NOT NULL, in_range TEXT NOT NULL, temp_reading NUMERIC NOT NULL, status TEXT NOT NULL,validity INTEGER NOT NULL);'''
+        self.database.execute(entry)
+        self.database.commit()
+        
+        #creating employee_info table
+        info = '''CREATE TABLE employee_info(employee_id INTEGER NOT NULL, first_name TEXT NOT NULL, middle_name TEXT, last_name TEXT NOT NULL,
+        admin TEXT NOT NULL, FOREIGN KEY(employee_id) REFERENCES nfc_and_employee_id (employee_id));'''
+        self.database.execute(info)
+        self.database.commit()
+        
+        #creating unauthorized_employee table
+        unauthorized = '''CREATE TABLE unauthorized_employee(employee_id INT, temp_reading NUM, start_of_quarantine_date DATE);'''
+        self.database.execute(unauthorized)
+        self.database.commit()
+        
+        #creating access_exit table
+        exit = '''CREATE TABLE access_exit(employee_id INTEGER NOT NULL, exit_time TIME, exit_date DATE, exit_node TEXT NOT NULL);'''
+        self.database.execute(exit)
+        self.database.commit()
+        
+        #creating nfc_and_employee_id table
+        nfc = 'CREATE TABLE nfc_and_employee_id(nfc_id BLOB NOT NULL, employee_id INTEGER NOT NULL);'
+        self.database.execute(nfc)
         self.database.commit()
