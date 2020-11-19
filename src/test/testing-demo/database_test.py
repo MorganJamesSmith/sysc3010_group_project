@@ -5,7 +5,9 @@
 # Description: Database integrity test code second demo 
 # Author(s): Sunjeevani Pujari
 #
-rom database_code import DataBase
+
+import sys
+sys.path.append("../../")
 
 from database_code import DataBase
 
