@@ -83,24 +83,24 @@ class DataBase:
     #adding tables to the database     
     def creating_db(self):
         #creating access_entry table
-        entry = '''CREATE TABLE access_entry(employee_id INTEGER NOT NULL, access_time TIME, access_date DATE,
-        access_node TEXT NOT NULL, in_range TEXT NOT NULL, temp_reading NUMERIC NOT NULL, status TEXT NOT NULL,validity INTEGER NOT NULL);'''
+        entry = 'CREATE TABLE access_entry(employee_id INTEGER NOT NULL, access_time TIME, access_date DATE,
+        access_node TEXT NOT NULL, in_range TEXT NOT NULL, temp_reading NUMERIC NOT NULL, status TEXT NOT NULL,validity INTEGER NOT NULL);'
         self.database.execute(entry)
         self.database.commit()
         
         #creating employee_info table
-        info = '''CREATE TABLE employee_info(employee_id INTEGER NOT NULL, first_name TEXT NOT NULL, middle_name TEXT, last_name TEXT NOT NULL,
-        admin TEXT NOT NULL, FOREIGN KEY(employee_id) REFERENCES nfc_and_employee_id (employee_id));'''
+        info = 'CREATE TABLE employee_info(employee_id INTEGER NOT NULL, first_name TEXT NOT NULL, middle_name TEXT, last_name TEXT NOT NULL,
+        admin TEXT NOT NULL, FOREIGN KEY(employee_id) REFERENCES nfc_and_employee_id (employee_id));'
         self.database.execute(info)
         self.database.commit()
         
         #creating unauthorized_employee table
-        unauthorized = '''CREATE TABLE unauthorized_employee(employee_id INT, temp_reading NUM, start_of_quarantine_date DATE);'''
+        unauthorized = 'CREATE TABLE unauthorized_employee(employee_id INT, temp_reading NUM, start_of_quarantine_date DATE);'
         self.database.execute(unauthorized)
         self.database.commit()
         
         #creating access_exit table
-        exit = '''CREATE TABLE access_exit(employee_id INTEGER NOT NULL, exit_time TIME, exit_date DATE, exit_node TEXT NOT NULL);'''
+        exit = 'CREATE TABLE access_exit(employee_id INTEGER NOT NULL, exit_time TIME, exit_date DATE, exit_node TEXT NOT NULL);'
         self.database.execute(exit)
         self.database.commit()
         
