@@ -7,7 +7,7 @@
 #
 
 import sys
-sys.path.append("../../hardware")
+sys.path.append("../../")
 
 
 from database_code import DataBase
