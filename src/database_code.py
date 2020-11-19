@@ -73,4 +73,9 @@ class DataBase:
         if (database):
             database.close()
             print("sqlite connection is closed")
+    def add_entries(self,badge_id,employee_id):
+        self.badge_id_id = badge_id
+        self.employee_id = employee_id
+        database.excute("INSERT INTO nfc_and_employee_id(nfc_id,employee_id) VALUES (?,?)",self.badge_id, self.employee_id)
+        database.commit()
    
