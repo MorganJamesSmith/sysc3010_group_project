@@ -10,9 +10,6 @@ import sqlite3
 import time
 from datetime import date
 
-import sqlite3
-import time
-from datetime import date
 
 class DataBase:
     def __init__(self):
@@ -72,6 +69,10 @@ class DataBase:
         data_tuple =(badge_id,employee_id)
         self.cursor.execute("INSERT INTO nfc_and_employee_id(nfc_id,employee_id) VALUES (?,?)",data_tuple)
         self.database.commit()
+        data_tuple1 =(1,"North exit","Y",36.7,"authorized",0)
+        self.cursor.execute("INSERT INTO access_entry(employee_id,access_node,in_range,temp_reading,status,validity) VALUES (?,?,?,?,?,?)",data_tuple1)
+        data_tuple2 =(2,"South entry")
+        self.cursor.execute("INSERT INTO access_exit(employee_id,exit_node) VALUES (?,?)",data_tuple2)
         
     #adding tables to the database     
     def creating_db(self):
