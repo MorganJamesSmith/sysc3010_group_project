@@ -10,6 +10,8 @@ from database_code import DataBase
 
 db = DataBase()
 
+db.creating_db()
+
 badge_id1 = bytes.fromhex("68091a96e619ad7997099f16c64b5e17")
 
 badge_id2 = bytes.fromhex("63d584ccd569b75faf69d1a8e230efc7")
