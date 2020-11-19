@@ -22,17 +22,17 @@ class LED:
         GPIO.setup(self.green_pin, GPIO.OUT)
 
     #defined method for setting LED colours
-    def set_colour(colour):        
+    def set_colour(self, colour):        
         #if the selected colour is red make sure that red pin is on and green pin is off
-        if (colour == RED):
+        if (colour == LEDColour.RED):
             GPIO.output(self.red_pin, True)
             GPIO.output(self.green_pin, False)        
         #if the selected colour is red make sure that red pin is on and green pin is off
-        elif (colour == GREEN):
+        elif (colour == LEDColour.GREEN):
             GPIO.output(self.red_pin, False)
             GPIO.output(self.green_pin, True)
         #if the selected colour is red make sure that red pin is on and green pin is on
-        elif (colour == YELLOW):
+        elif (colour == LEDColour.YELLOW):
             GPIO.output(self.red_pin, True)
             GPIO.output(self.green_pin, True)
         else:
