@@ -32,10 +32,10 @@ CLOSED: [2020-11-06 Fri 18:52] SCHEDULED: <2020-11-05 Thu 09:30-11:00>
 - Post received feedback to group chat
 * DONE Final Submission of Project Design (On CULearn)
 CLOSED: [2020-11-06 Fri 18:53] DEADLINE: <2020-11-06 Fri 20:00>
-* TODO Lab Check-in (End-to-End Demo) (To be scheduled collaboratively with TAs)
-DEADLINE: <2020-11-12 Thu>
-* TODO Lab Check-in (Testing Demo) (To be scheduled collaboratively with TAs)
-DEADLINE: <2020-11-19 Thu>
+* DONE Lab Check-in (End-to-End Demo) (To be scheduled collaboratively with TAs)
+CLOSED: [2020-11-12 Thu 10:32] DEADLINE: <2020-11-12 Thu>
+* DONE SYSC3010 Testing Demo
+CLOSED: [2020-11-19 Thu 09:37] SCHEDULED: <2020-11-19 Thu 09:00-09:30>
 * TODO Submission of Technical Memo
 DEADLINE: <2020-11-22 Sun 20:00>
 * TODO Synchronous Code Peer Review (Mandatory)
