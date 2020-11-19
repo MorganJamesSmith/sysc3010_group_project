@@ -14,7 +14,7 @@ class DataBase:
     def __init__(self):
         try:
             # Connecting to project database
-            database = sqlite3.connect('projectdatabase.db')
+            self.database = sqlite3.connect('projectdatabase.db')
             print('Connection to database successful!')
         except sqlite3.Error as error:
                 print("Error while working with SQLite", error)
@@ -23,8 +23,8 @@ class DataBase:
         try:
             self.badge_id = badge_id
             #Variables needed from database
-            database.execute("SELECT employee_id FROM employee_info WHERE nfc_id =?", self.badge_id)
-            employeeId = database.fetchone()[0]
+            self.database.execute("SELECT employee_id FROM employee_info WHERE nfc_id =?", self.badge_id)
+            employeeId = self.database.fetchone()[0]
             
             if employeeId == NULL:
                 employeeId = 0
@@ -33,29 +33,29 @@ class DataBase:
                 #if AccessRequestMessage is from exit node, all we need is to get employee ID
                 return employeeId
             #if AccessRequestMessage is from entry node, we need information about employees most recent entry attempt
-            database.execute("SELECT access_date FROM access_entry WHERE employee_id = ? ORDER BY employee_id DESC LIMIT 1", employeeId)
-            accessDate = database.fetchone()[0]
-            database.execute("SELECT status FROM access_entry WHERE employee_id = ? ORDER BY employee_id DESC LIMIT 1", employeeId)
-            statusType = database.fetchone()[0]
-            database.execute("SELECT validity FROM access_entry WHERE employee_id = ? ORDER BY employee_id DESC LIMIT 1", employeeId)
-            validity = database.fetchone()[0]
+            self.database.execute("SELECT access_date FROM access_entry WHERE employee_id = ? ORDER BY employee_id DESC LIMIT 1", employeeId)
+            accessDate = self.database.fetchone()[0]
+            selfdatabase.execute("SELECT status FROM access_entry WHERE employee_id = ? ORDER BY employee_id DESC LIMIT 1", employeeId)
+            statusType = self.database.fetchone()[0]
+            self.database.execute("SELECT validity FROM access_entry WHERE employee_id = ? ORDER BY employee_id DESC LIMIT 1", employeeId)
+            validity = self.database.fetchone()[0]
             return employeeID, accessDate,statusType, validity
             
         finally:
-            if (database):
-                database.close()
+            if (self.database):
+                self.database.close()
                 print("sqlite connection is closed")
     def exit_log(self,employeeId,exitnode):
         self.employeeID = employeeId #INT value of employee ID acquired from the nfc ID in the AccessRequestMessage 
         self.exitnode = exitnode #TEXT value of the entry node requesting entry
         #fields saved to log exit access of employee
-        database.execute("INSERT INTO access_exit (employee_id, exit_time,exit_date,exit_node) VALUES (?,?,?,?)",self.employeeId,time('now'),date('now'),self.exitnode)
-        database.commit
-        database.execute("SELECT * FROM access_exit WHERE employee_id = ? ORDER BY employee_id DESC LIMIT 1", employeeId)
+        self.database.execute("INSERT INTO access_exit (employee_id, exit_time,exit_date,exit_node) VALUES (?,?,?,?)",self.employeeId,time('now'),date('now'),self.exitnode)
+        self.database.commit()
+        self.database.execute("SELECT * FROM access_exit WHERE employee_id = ? ORDER BY employee_id DESC LIMIT 1", employeeId)
         print ("data added to the database is:",database.fetchone())
         
-        if (database):
-            database.close()
+        if (self.database):
+            self.database.close()
             print("sqlite connection is closed")
    
     #entry
@@ -65,19 +65,17 @@ class DataBase:
         self.tempReading= tempReading #NUMERIC value of the employees recorded Temp 
         self.status = status #TEXT value of the status of employee 
         #fields saved to log exit access of employee
-        database.execute("INSERT INTO access_entry (employee_id,access_time,access_date,access_node,in_range,temp_reading,status,validity) VALUES(?,?,?,?,?,?,?,?)",
+        self.database.execute("INSERT INTO access_entry (employee_id,access_time,access_date,access_node,in_range,temp_reading,status,validity) VALUES(?,?,?,?,?,?,?,?)",
                          self.employeeId,time('now'),date('now'),self.entrynode,'Y',self.tempReading,self.status,0)
-        database.commit
-        database.execute("SELECT * FROM access_entry WHERE employee_id = ? ORDER BY employee_id DESC LIMIT 1", employeeId)
+        self.database.commit()
+        self.database.execute("SELECT * FROM access_entry WHERE employee_id = ? ORDER BY employee_id DESC LIMIT 1", employeeId)
         print ("data added to the database is:",database.fetchone())
-        if (database):
-            database.close()
+        if (self.database):
+            self.database.close()
             print("sqlite connection is closed")
-            
-    #add info
+    
     def add_entries(self,badge_id,employee_id):
-        self.badge_id_id = badge_id
+        self.badge_id = badge_id
         self.employee_id = employee_id
-        database.excute("INSERT INTO nfc_and_employee_id(nfc_id,employee_id) VALUES (?,?)",self.badge_id, self.employee_id) #employee id associated with nfc_id
-        database.commit()
-   
+        self.database.execute("INSERT INTO nfc_and_employee_id(nfc_id,employee_id) VALUES (?,?)",self.badge_id, self.employee_id)
+        self.database.commit()
