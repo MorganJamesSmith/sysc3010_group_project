@@ -168,6 +168,13 @@ be restored.
    of time due to midterms or travel)
 4. Assign work for the next week
 * Project Meeting Notes
+** Meeting <2020-11-24 Tue 09:30>
+*** To be done for this meeting
+- Control Server Code (Morgan + Sunny)
+  - Database integration
+- Door Node Code (Mario)
+  - Handle hardware
+- GUI Research (Sam)
 ** Meeting 9 <2020-10-28 Tue 18:00-22:00>
 *** Minutes
 Worked on design document.
