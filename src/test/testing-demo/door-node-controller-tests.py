@@ -19,7 +19,7 @@ class DoorNodeControllerTest(unittest.TestCase):
         
         
     def test_handle_access_response(self):
-        self.door_node = DoorNodeController(DoorType.ENTRANCE, 1, 0)
+        self.door_node = DoorNodeController(DoorType.ENTRANCE, 1, 0, 1)
         message_true = AccessResponseMessage(1,True)
         
         self.assertTrue(self.door_node.handle_access_response(message_true))
@@ -38,7 +38,7 @@ class DoorNodeControllerTest(unittest.TestCase):
 #         message = InformationResponseMessage(self.tid, InformationType.USER_TEMPERATURE, payload)
 #     
     def test_handle_door_state_update(self):
-        self.door_node = DoorNodeController(DoorType.ENTRANCE, 1, 0)
+        self.door_node = DoorNodeController(DoorType.ENTRANCE, 1, 0, 1)
         message_allow = DoorStateUpdateMessage(DoorState.ALLOWING_ENTRY)
         self.assertEqual(DoorState.ALLOWING_ENTRY, self.door_node.handle_door_state_update(message_allow))
         message_not_allow = DoorStateUpdateMessage(DoorState.NOT_ALLOWING_ENTRY)
