@@ -3,9 +3,12 @@
 from time import sleep
 from enum import Enum, auto
 
-from communication.thingspeak import Channel
-from communication.transport import Connection
-from communication.message import *
+import sys
+sys.path.append("./communication")
+
+from thingspeak import Channel
+from transport import Connection
+from message import *
 
 from hardware import RangeFinder #VL53L0X
 from hardware import mlx90614
@@ -15,14 +18,14 @@ from hardware import LED
 
 class DoorNodeController:
 
-    def __init__(self,door_type, transaction_id,limit_distance, available_hardware):
+    def __init__(self, door_type, transaction_id, limit_distance, available_hardware):
 
         self.hardware = available_hardware
         self.door_type = door_type
         self.thingspeak_chan = Channel
         self.server_conn = Connection
         self.current_state = DoorState
-        self.door_type = DoorType
+        self.door_type = door_type
         #will need to replace p possibly for actuator code
         self.p = 12
         
@@ -51,12 +54,12 @@ class DoorNodeController:
             exit(1)
         
         # Get ThingSpeak channel object
-        channel = thingspeak.Channel(1222699, write_key=write_key, read_key=read_key)
+        channel = Channel(1222699, write_key=write_key, read_key=read_key)
 
-        self.connection = transport.Connection(channel, door_type(str), "control_server")
+        self.connection = Connection(channel, self.door_type.name, "control_server")
         self.connection.established.wait()  
         while True:
-            if(hardware == HardwareSafe(3)):
+            if(self.hardware == HardwareSafe(3)):
                 badge_id = nfc_reader.read_card()
             else:
                 badge_id = 248473432955
@@ -68,7 +71,7 @@ class DoorNodeController:
                 print(f"Received invalid message \"{data}\"")
                 exit(1)
             if type(rsp) == InformationRequestMessage:
-                if door_type == DoorState.EXIT:
+                if self.door_type == DoorState.EXIT:
                     rsp = AccessResponseMessage(self.tid,True)
                     handle_access_response(rsp)
                     continue
@@ -77,8 +80,8 @@ class DoorNodeController:
             elif type(rsp) == AccessResponseMessage:
                 handle_access_response(rsp)
                 continue
-            elif type(rsp) == DoorStateUpdate:
                 handle_door_state_update(rsp)
+            elif type(rsp) == DoorStateUpdateMessage:
             else:
                 print(f"Received invalid message \"{data}\"")
                 exit(1)
