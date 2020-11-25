@@ -1,5 +1,5 @@
 #
-#   Message format.
+#   Code for marshaling and unmarshaling messages.
 #   Samuel Dewan - 2020
 #
 
@@ -8,7 +8,7 @@ from abc import ABC, abstractmethod
 from enum import IntEnum
 
 class MessageException(Exception):
-    """ Exception used for any errors related to message marshalling or unmarshalling """
+    """ Exception used for any errors related to message marshaling or unmarshaling """
 
 class MessageType(IntEnum):
     """ Enum to associate the possible message types in our protocol with their integer values """
@@ -19,7 +19,7 @@ class MessageType(IntEnum):
     DOOR_STATE_UPDATE = 0x5
 
 class Message(ABC):
-    """ Abstract class respresents a communication protocol message """
+    """ Abstract class represents a communication protocol message """
 
     @abstractmethod
     def to_bytes(self):
@@ -28,14 +28,14 @@ class Message(ABC):
     @classmethod
     @abstractmethod
     def _parse(cls, packet):
-        """ Unmarshal message from a bytes object (not ment to be called directly) """
+        """ Unmarshal message from a bytes object (not meant to be called directly) """
 
     @classmethod
     def from_bytes(cls, packet):
         """ Unmarshal a bytes object to appropriate message class """
         if len(packet) < 4:
             raise MessageException(f"Message must be at least 4 bytes long ({len(packet)} bytes "
-                                   f"recieved)")
+                                   f"received)")
 
         message_type_val = struct.unpack("!I", packet[0:4])[0]
         try:
@@ -54,7 +54,7 @@ class Message(ABC):
         if message_type == MessageType.DOOR_STATE_UPDATE:
             return DoorStateUpdateMessage._parse(packet)
 
-        raise MessageException(f"Unkown message type: {message_type}")
+        raise MessageException(f"Unknown message type: {message_type}")
 
 #
 #   Access Request
@@ -118,7 +118,7 @@ class InformationType(IntEnum):
     USER_TEMPERATURE = 0x1
 
 class InformationRequestMessage(Message):
-    """ Message used by server to ask for additonal information to inform access decision """
+    """ Message used by server to ask for additional information to inform access decision """
 
     def __init__(self, transaction_id, information_type):
         self.transaction_id = transaction_id
@@ -167,7 +167,7 @@ class InformationPayload(ABC):
         if info_type == InformationType.USER_TEMPERATURE:
             return TemperatureInfoPayload._parse(payload)
         
-        raise MessageException(f"Unkown information type: {info_type}")
+        raise MessageException(f"Unknown information type: {info_type}")
 
 class TemperatureInfoPayload(InformationPayload):
     """ Information response payload that contains information about ambient and user
