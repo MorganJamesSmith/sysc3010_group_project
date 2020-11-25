@@ -8,9 +8,10 @@ from abc import ABC, abstractmethod
 from enum import IntEnum
 
 class MessageException(Exception):
-    pass
+    """ Exception used for any errors related to message marshalling or unmarshalling """
 
 class MessageType(IntEnum):
+    """ Enum to associate the possible message types in our protocol with their integer values """
     ACCESS_REQUEST = 0x1
     ACCESS_RESPONSE = 0x2
     INFORMATION_REQUEST = 0x3
@@ -18,44 +19,50 @@ class MessageType(IntEnum):
     DOOR_STATE_UPDATE = 0x5
 
 class Message(ABC):
+    """ Abstract class respresents a communication protocol message """
+
     @abstractmethod
     def to_bytes(self):
-        return b''
+        """ Marshal message to a bytes object """
 
     @classmethod
     @abstractmethod
     def _parse(cls, packet):
-        return None
+        """ Unmarshal message from a bytes object (not ment to be called directly) """
 
     @classmethod
     def from_bytes(cls, packet):
+        """ Unmarshal a bytes object to appropriate message class """
         if len(packet) < 4:
             raise MessageException(f"Message must be at least 4 bytes long ({len(packet)} bytes "
                                    f"recieved)")
+
         message_type_val = struct.unpack("!I", packet[0:4])[0]
         try:
             message_type = MessageType(message_type_val)
-        except ValueError:
-            raise MessageException(f"Invalid message type: {message_type_val}")
+        except ValueError as error:
+            raise MessageException(f"Invalid message type: {message_type_val}") from error
 
         if message_type == MessageType.ACCESS_REQUEST:
             return AccessRequestMessage._parse(packet)
-        elif message_type == MessageType.ACCESS_RESPONSE:
+        if message_type == MessageType.ACCESS_RESPONSE:
             return AccessResponseMessage._parse(packet)
-        elif message_type == MessageType.INFORMATION_REQUEST:
+        if message_type == MessageType.INFORMATION_REQUEST:
             return InformationRequestMessage._parse(packet)
-        elif message_type == MessageType.INFORMATION_RESPONSE:
+        if message_type == MessageType.INFORMATION_RESPONSE:
             return InformationResponseMessage._parse(packet)
-        elif message_type == MessageType.DOOR_STATE_UPDATE:
+        if message_type == MessageType.DOOR_STATE_UPDATE:
             return DoorStateUpdateMessage._parse(packet)
-        else:
-            raise MessageException(f"Unkown message type: {message_type}")
+
+        raise MessageException(f"Unkown message type: {message_type}")
 
 #
 #   Access Request
 #
 
 class AccessRequestMessage(Message):
+    """ Representation of message used to start an access request transaction """
+
     def __init__(self, transaction_id, badge_id):
         self.transaction_id = transaction_id
         self.badge_id = badge_id
@@ -69,7 +76,7 @@ class AccessRequestMessage(Message):
         if len(packet) != 24:
             raise MessageException(f"Invalid length for ACCESS_REQUEST message: expected 24, got "
                                    f"{len(packet)}")
-        msg_type, tid, bid = struct.unpack("!II16s", packet)
+        _, tid, bid = struct.unpack("!II16s", packet)
         return cls(tid, bid)
 
     def __str__(self):
@@ -81,6 +88,8 @@ class AccessRequestMessage(Message):
 #
 
 class AccessResponseMessage(Message):
+    """ Representation of message used to close and access response transaction """
+
     def __init__(self, transaction_id, accepted):
         self.transaction_id = transaction_id
         self.accepted = accepted
@@ -94,7 +103,7 @@ class AccessResponseMessage(Message):
         if len(packet) != 12:
             raise MessageException(f"Invalid length for ACCESS_RESPONSE message: expected 12, got "
                                    f"{len(packet)}")
-        msg_type, tid, accepted = struct.unpack("!III", packet)
+        _, tid, accepted = struct.unpack("!III", packet)
         return cls(tid, accepted != 0)
 
     def __str__(self):
@@ -105,9 +114,12 @@ class AccessResponseMessage(Message):
 #
 
 class InformationType(IntEnum):
+    """ Enum to represent possible data types in our message protocol """
     USER_TEMPERATURE = 0x1
 
 class InformationRequestMessage(Message):
+    """ Message used by server to ask for additonal information to inform access decision """
+
     def __init__(self, transaction_id, information_type):
         self.transaction_id = transaction_id
         self.information_type = information_type
@@ -121,11 +133,11 @@ class InformationRequestMessage(Message):
         if len(packet) != 12:
             raise MessageException(f"Invalid length for INFORMATION_REQUEST message: expected 12, "
                                    f"got {len(packet)}")
-        msg_type, tid, info_type_val = struct.unpack("!III", packet)
+        _, tid, info_type_val = struct.unpack("!III", packet)
         try:
             info_type = InformationType(info_type_val)
-        except ValueError:
-            raise MessageException(f"Invalid information type: {info_type_val}")
+        except ValueError as error:
+            raise MessageException(f"Invalid information type: {info_type_val}") from error
         else:
             return cls(tid, info_type)
 
@@ -138,23 +150,29 @@ class InformationRequestMessage(Message):
 #
 
 class InformationPayload(ABC):
+    """ Abstract class to represent the payload for an information response message """
+
     @abstractmethod
     def to_bytes(self):
-        return b''
+        """ Marshal payload to a bytes object """
 
     @classmethod
     @abstractmethod
     def _parse(cls, payload):
-        return None
+        """ Unmarshal payload from a bytes object """
 
     @classmethod
     def from_bytes(cls, info_type, payload):
+        """ Unmarshal payload from a bytes object to the correct class """
         if info_type == InformationType.USER_TEMPERATURE:
             return TemperatureInfoPayload._parse(payload)
-        else:
-            raise MessageException(f"Unkown information type: {info_type}")
+        
+        raise MessageException(f"Unkown information type: {info_type}")
 
 class TemperatureInfoPayload(InformationPayload):
+    """ Information response payload that contains information about ambient and user
+        temperatures """
+
     def __init__(self, ambient_temp, user_temp):
         self.ambient_temp = ambient_temp
         self.user_temp = user_temp
@@ -176,6 +194,8 @@ class TemperatureInfoPayload(InformationPayload):
 
 
 class InformationResponseMessage(Message):
+    """ Message used by door node to return requested information to control server """
+
     def __init__(self, transaction_id, information_type, payload):
         self.transaction_id = transaction_id
         self.information_type = information_type
@@ -191,11 +211,11 @@ class InformationResponseMessage(Message):
         if len(packet) < 12:
             raise MessageException(f"Invalid length for INFORMATION_RESPONSE message: expected at "
                                    f"least 12, got {len(packet)}")
-        msg_type, tid, info_type_val = struct.unpack("!III", packet[0:12])
+        _, tid, info_type_val = struct.unpack("!III", packet[0:12])
         try:
             info_type = InformationType(info_type_val)
-        except ValueError:
-            raise MessageException(f"Invalid information type: {info_type_val}")
+        except ValueError as error:
+            raise MessageException(f"Invalid information type: {info_type_val}") from error
         else:
             return cls(tid, info_type, InformationPayload.from_bytes(info_type, packet[12:]))
 
@@ -208,10 +228,13 @@ class InformationResponseMessage(Message):
 #
 
 class DoorState(IntEnum):
+    """ Possible states for door node, used by door node to select LED colour """
     ALLOWING_ENTRY = 0x1
     NOT_ALLOWING_ENTRY = 0x2
 
 class DoorStateUpdateMessage(Message):
+    """ Message send by server to change state of door node """
+
     def __init__(self, state):
         self.state = state
 
@@ -223,14 +246,13 @@ class DoorStateUpdateMessage(Message):
         if len(packet) != 8:
             raise MessageException(f"Invalid length for DOOR_STATE_UPADTE message: expected 8, got "
                                    f"{len(packet)}")
-        msg_type, state_val = struct.unpack("!II", packet)
+        _, state_val = struct.unpack("!II", packet)
         try:
             state = DoorState(state_val)
-        except ValueError:
-            raise MessageException(f"Invalid door state: {state_val}")
+        except ValueError as error:
+            raise MessageException(f"Invalid door state: {state_val}") from error
         else:
             return cls(state)
 
     def __str__(self):
         return f"DoorStateUpdateMessage (state: {str(self.state)}) "
-
