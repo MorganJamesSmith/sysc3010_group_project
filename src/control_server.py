@@ -4,6 +4,14 @@
 #
 # control_server.py
 #
+# This file is the control server for our door security system. The server is
+# started by running the main loop. The server maintains a list of connected
+# clients. The server continuously polls for new messages.
+#
+# If a client is an exit, then the server will allow the door to open. If the
+# client is an entrance, the server will ask for the users body temperature and
+# only allow them in if their temperature is within a specified range.
+#
 # TODO:
 # - occupancy limits
 # - database interaction
@@ -80,7 +88,8 @@ class ControlServer:
         # Send door state update
         new_state = message.DoorState.ALLOWING_ENTRY
         resp = message.DoorStateUpdateMessage(new_state)
-        print(f"Sending door state update ({resp}) to {address}")
+        if VERBOSE:
+            print(f"Sending door state update ({resp}) to {address}")
         connection.send(resp.to_bytes())
 
     def _new_message(self, client, received_message):
@@ -91,7 +100,7 @@ class ControlServer:
                     received_message.transaction_id, message.InformationType.USER_TEMPERATURE)
 
             # When we receive their temperature let them in if it is within
-            # range. Else ask for it again
+            # range. Else ask for it again. TODO: limit the number of tries
             elif received_message  is message.InformationResponseMessage:
                 if received_message.information_type != message.InformationType.USER_TEMPERATURE:
                     raise Exception("This is not the information I requested!")
