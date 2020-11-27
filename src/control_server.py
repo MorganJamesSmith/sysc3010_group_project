@@ -136,7 +136,7 @@ class ControlServer:
                             validity = 0
                             resp = message.AccessResponseMessage(received_message.transaction_id, True)
                             #save tranasaction information
-                            self.save_entry(employee_id, str(address),'Y',received_message.information_type,'authorized',validity)
+                            self.save_entry(employee_id, str(address),'Y',received_message.payload.user_temp,'authorized',validity)
                             self.current_occupancy = self.current_occupancy + 1
                         else:
                             #incrementing validity to keep track of number of attempts made
@@ -144,19 +144,19 @@ class ControlServer:
                             #if entry attempt is still less than 3
                             if validity < = 3:
                                 #saving info for invalid entry attempt
-                                self.save_entry(employee_id, str(address),'Y',received_message.information_type,'undetermined',validity)
+                                self.save_entry(employee_id, str(address),'Y',rreceived_message.payload.user_temp,'undetermined',validity)
                                 #requesting information again
                                 resp = message.InformationRequestMessage(
                                     received_message.transaction_id, message.InformationType.USER_TEMPERATURE)
                             #if 3rd entry attempt
                             else:
                                 resp = message.AccessResponseMessage(received_message.transaction_id, False)
-                                self.save_entry(employee_id, str(address),'Y',received_message.information_type,'unauthorized',validity)
+                                self.save_entry(employee_id, str(address),'Y',received_message.payload.user_temp,'unauthorized',validity)
                                 print ("Access entry status: unathorized")
                     #if more than 3 entry attempts
                     else:
                         resp = message.AccessResponseMessage(received_message.transaction_id, False)
-                        self.save_entry(employee_id, str(address),'Y',received_message.information_type,'unauthorized',validity)
+                        self.save_entry(employee_id, str(address),'Y',received_message.payload.user_temp,'unauthorized',validity)
                         print ("Access entry status: unauthorized")
             else:
                 raise Exception("I don't like these types of messages")
