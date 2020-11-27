@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 #
-# Copyright (C) 2020 by Morgan Smith and Sunjeevani Pujari
+# Copyright (C) 2020 by Morgan Smith
 #
 # control_server.py
 #
@@ -13,12 +13,8 @@
 # only allow them in if their temperature is within a specified range.
 #
 # TODO:
-# - occupancy limits - done
-# - database interaction - done
-
-import sqlite3
-import time
-from datetime import date
+# - occupancy limits
+# - database interaction
 
 from dataclasses import dataclass
 from select import select
@@ -111,8 +107,13 @@ class ControlServer:
                     #retrieve employee_info here based off of the nfc_badge_id received from the access request message
                     #sending badge id so that information can be retrieved from db
                     employee_id,accessDate,status,validity = self.entry_queries(received_message.badge_id)
-                    resp = message.InformationRequestMessage(
-                        received_message.transaction_id, message.InformationType.USER_TEMPERATURE)
+                    #invalid employee ID
+                    if employee_id == 0:
+                        resp = message.AccessResponseMessage(received_message.transaction_id, False)
+                    #valid employee ID
+                    else:
+                        resp = message.InformationRequestMessage(
+                            received_message.transaction_id, message.InformationType.USER_TEMPERATURE)
                 #if building at maximum occupancy and cannot take entries
                 else:
                     resp = message.AccessResponseMessage(received_message.transaction_id, False)
@@ -121,42 +122,56 @@ class ControlServer:
             # range. Else ask for it again. TODO: limit the number of tries
             elif received_message  is message.InformationResponseMessage:
                 employee_id,accessDate,status,validity = self.entry_queries(received_message.badge_id)
-                if validity <= 3:
-                    if received_message.information_type != message.InformationType.USER_TEMPERATURE:
-                        raise Exception("This is not the information I requested!")
-                    if(self.safe_temperature_range[0] < received_message.payload.user_temp
-                       < self.safe_temperature_range[1]):
-                        #set validity field to 0 because access is authorized which means no more tries to limit
-                        validity = 0
-                        resp = message.AccessResponseMessage(received_message.transaction_id, True)
-                        #save tranasaction information
-                        self.save_entry(employee_id, str(address),'Y',received_message.information_type,'authorized',validity)
-                        self.current_occupancy = self.current_occupancy + 1
-                    else:
-                        #incrementing validity to keep track of number of attempts made
-                        validity = validity+1
-                        if validity < = 3:
-                            #saving info for invalid entry attempt
-                            self.save_entry(employee_id, str(address),'Y',received_message.information_type,'undetermined',validity)
-                            #requesting information again
-                            resp = message.InformationRequestMessage(
-                                received_message.transaction_id, message.InformationType.USER_TEMPERATURE)
-                        else:
-                            resp = message.AccessResponseMessage(received_message.transaction_id, False)
-                            self.save_entry(employee_id, str(address),'Y',received_message.information_type,'unauthorized',validity)
-                            print ("Access entry status: unathorized")
-                else:
+                #invalid employee ID
+                if employee_id == 0:
                     resp = message.AccessResponseMessage(received_message.transaction_id, False)
-                    self.save_entry(employee_id, str(address),'Y',received_message.information_type,'unauthorized',validity)
-                    print ("Access entry status: unauthorized")
+                else:
+                    #if less than 3 entry attempts
+                    if validity <= 3:
+                        if received_message.information_type != message.InformationType.USER_TEMPERATURE:
+                            raise Exception("This is not the information I requested!")
+                        if(self.safe_temperature_range[0] < received_message.payload.user_temp
+                           < self.safe_temperature_range[1]):
+                            #set validity field to 0 because access is authorized which means no more tries to limit
+                            validity = 0
+                            resp = message.AccessResponseMessage(received_message.transaction_id, True)
+                            #save tranasaction information
+                            self.save_entry(employee_id, str(address),'Y',received_message.information_type,'authorized',validity)
+                            self.current_occupancy = self.current_occupancy + 1
+                        else:
+                            #incrementing validity to keep track of number of attempts made
+                            validity = validity+1
+                            #if entry attempt is still less than 3
+                            if validity < = 3:
+                                #saving info for invalid entry attempt
+                                self.save_entry(employee_id, str(address),'Y',received_message.information_type,'undetermined',validity)
+                                #requesting information again
+                                resp = message.InformationRequestMessage(
+                                    received_message.transaction_id, message.InformationType.USER_TEMPERATURE)
+                            #if 3rd entry attempt
+                            else:
+                                resp = message.AccessResponseMessage(received_message.transaction_id, False)
+                                self.save_entry(employee_id, str(address),'Y',received_message.information_type,'unauthorized',validity)
+                                print ("Access entry status: unathorized")
+                    #if more than 3 entry attempts
+                    else:
+                        resp = message.AccessResponseMessage(received_message.transaction_id, False)
+                        self.save_entry(employee_id, str(address),'Y',received_message.information_type,'unauthorized',validity)
+                        print ("Access entry status: unauthorized")
             else:
                 raise Exception("I don't like these types of messages")
             
         #if exit request
         else:
-            resp = message.AccessResponseMessage(received_message.transaction_id, True)
-            self.save_exit(employee_id,str(address))
-            self.current_occupancy = self.current_occupancy - 1
+            employee_id = self.exit_queries(received_message.badge_id)
+            #invalid employee ID
+            if employee_id == 0:
+                resp = message.AccessResponseMessage(received_message.transaction_id, False)
+            #valid employee ID
+            else:
+                resp = message.AccessResponseMessage(received_message.transaction_id, True)
+                self.save_exit(employee_id,str(address))
+                self.current_occupancy = self.current_occupancy - 1
 
         client.connection.send(resp.to_bytes())
 
@@ -174,6 +189,14 @@ class ControlServer:
         self.cursor.execute("SELECT validity FROM access_exit WHERE employee_id = ? ORDER BY employee_id DESC LIMIT 1", (employeeId,))
         validity = self.cursor.fetchone()
         return employeeId,accessDate,statusType,validity
+    
+    def exit_queries(self, badge_id):
+        self.cursor.execute("SELECT employee_id FROM nfc_and_employee_id WHERE nfc_id =?",(self.badge_id,) )
+        employeeId = self.cursor.fetchone()[0]
+        if (employeeId == None):
+            employeeId = 0
+            return employeeId
+        return employeeId
 
     def save_entry(self,employeeId,access_node,in_range,temp_reading,status,validity):
         data_tuple = (employeeId,access_node,in_range,temp_reading,status,validity)
@@ -186,4 +209,3 @@ class ControlServer:
 if __name__ == "__main__":
     server = ControlServer()
     server.main_loop()
-
