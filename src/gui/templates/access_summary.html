@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-3.3.1/dt-1.10.22/b-1.6.5/b-colvis-1.6.5/datatables.min.css"/>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.3.1/dt-1.10.22/b-1.6.5/b-colvis-1.6.5/datatables.min.js"></script>
+
+<div>
+    <h1>Access Summary</h1>
+    
+    <table id="access-table" class="display" style="width:100%"></table>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#access-table').DataTable( {
+            "ajax": '/access_summary/data',
+            "columns": [
+                { "title": "First Name", "data": "first" },
+                { "title": "Last Name", "data": "last" },
+                { "title": "ID", "data": "id" },
+                { "title": "Door", "data": "door" },
+                { "title": "Access Type", "data": "type" },
+                { "title": "Temperature", "data": "temp" },
+                { "title": "Timestamp", "data": "timestamp" }
+            ],
+            "order": [[ 6, "desc" ]]
+        } );
+    } );
+</script>
+
+{% endblock %}

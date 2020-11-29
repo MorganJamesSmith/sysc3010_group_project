@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-3.3.1/dt-1.10.22/b-1.6.5/b-colvis-1.6.5/datatables.min.css"/>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.3.1/dt-1.10.22/b-1.6.5/b-colvis-1.6.5/datatables.min.js"></script>
+
+<div>
+    <h1>Doors</h1>
+    
+    <table id="doors-table" class="display" style="width:100%"></table>
+
+    <br>
+
+    <button type="button">Add Door</button>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#doors-table').DataTable( {
+            "ajax": '/doors/data',
+            "columns": [
+                { "title": "Name", "data": "name" },
+                { "title": "Location", "data": "location" },
+                { "title": "Type", "data": "type" },
+                {
+                    "orderable": false,
+                    "render": function (data, type, row) {
+                        return "<button>Delete</button>"
+                    }
+                }
+            ]
+        } );
+    } );
+</script>
+
+{% endblock %}
