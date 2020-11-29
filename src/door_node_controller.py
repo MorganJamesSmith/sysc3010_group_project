@@ -18,29 +18,42 @@ class DoorNodeController:
     with the control server to decide whether or not to allow entry into
     the building.
     """
-    #hardware imports
-    if self.range_finder != null:
-        import hardware.RangeFinder as RangeFinder #VL53L0X
-    else:
-        import stub.RangeFinder_stub as RangeFinder
-    if self.ir_temp_sensor != null:
-        import hardware.mlx90614 as mlx90614
-    else:
-        import stub.mlx90614_stub as mlx90615
-    if self.door_lock != null:
-        import hardware.DoorActuator as DoorActuator
-    else:
-        import stub.DoorActuator_stub as DoorActuator
-    if self.nfc_reader != null:
-        import hardware.RC522 as RC522
-    else:
-        import stub.RC522_stub as RC522
-    if self.indicator != null:
-        import hardware.LED as LED
-    else:
-        import stub.LED_stub as LED
     def __init__(self, address, limit_distance, led,
                  distance_sensor, door_actuator, temperature_sensor, rc522):
+    #hardware imports
+        if distance_sensor is not None:
+            import hardware.RangeFinder as RangeFinder #VL53L0X
+            self.range_finder = distance_sensor
+        else:
+            import stub.RangeFinder_stub as RangeFinder
+            self.range_finder = RangeFinder.RangeFinder_stub()
+        if temperature_sensor is not None:
+            import hardware.mlx90614 as mlx90614
+            self.ir_temp_sensor = temperature_sensor
+        else:
+            import stub.mlx90614_stub as mlx90614
+            self.ir_temp_sensor = mlx90614.MLX90614_stub()
+        if door_actuator is not None:
+            import hardware.DoorActuator as DoorActuator
+            self.door_lock = door_actuator
+        else:
+            import stub.DoorActuator_stub as DoorActuator
+            self.door_lock = DoorActuator.DoorActuator_stub()
+        if rc522 is not None:
+            import hardware.RC522 as RC522
+            self.nfc_reader = rc522
+        else:
+            import stub.RC522_stub as RC522
+            self.nfc_reader = RC522.RC522_stub()
+        if led is not None:
+            import hardware.LED as LED
+            from hardware.LED import LEDColour as colour
+            self.indicator = led
+        else:
+            import stub.LED_stub as LED
+            from stub.LED_stub import LEDColour as colour
+            self.indicator = LED.LED_stub()
+        self.dist_from_temp_sensor = limit_distance
         """
         Initializes the door node.
         """
@@ -48,17 +61,11 @@ class DoorNodeController:
         #are initialized.
         self.thingspeak_chan = 0
         self.server_conn = 0
-        self.current_state = message.DoorState()
+        self.current_state = message.DoorState(2)
         self.address = address
-        #Hardware variables are initialized.
-        self.indicator = led
-        self.nfc_reader = rc522
-        self.range_finder = distance_sensor
-        self.ir_temp_sensor = temperature_sensor
-        self.door_lock = door_actuator
-        self.dist_from_temp_sensor = limit_distance
         #At the initial state of the door node the door is locked.
-        self.indicator.set_colour(LED.LEDColour.RED)
+        self.colour = colour()
+        self.indicator.set_colour(self.colour.RED)
 #
     def main_loop(self):
         """
@@ -112,7 +119,7 @@ class DoorNodeController:
         """
         sends AccessRequestMessage with badge id
         """
-        badge_message = badge_id.to_bytes(16,byteorder = 'little')
+        badge_message = badge_id.to_bytes(16, byteorder='little')
         response = message.AccessRequestMessage(tid, badge_message)
         self.server_conn.send(response.to_bytes())
 #
@@ -121,7 +128,7 @@ class DoorNodeController:
         responds to InformationRequestMessages
         gathering temperature data.
         """
-        self.indicator.set_colour(LED.LEDColour.YELLOW)
+        self.indicator.set_colour(self.colour.YELLOW)
         distance = self.range_finder.get_range()
         #Constantly checks to make sure the code doesn't proceed until
         #the user is in suitable range from the temperature sensor.
@@ -131,7 +138,7 @@ class DoorNodeController:
         person_temp = self.ir_temp_sensor.get_ir_temp()
         #Contains the data that will be sent to database.
         payload = message.TemperatureInfoPayload(ambient_temp, person_temp)
-        self.indicator.set_colour(LED.LEDColour.RED)
+        self.indicator.set_colour(self.colour.RED)
         response = message.InformationResponseMessage(tid, message.InformationType.USER_TEMPERATURE,
                                                       payload)
         self.server_conn.send(response.to_bytes())
@@ -142,9 +149,9 @@ class DoorNodeController:
         should be allowing entry or if the building is full.
         """
         if response.state == message.DoorState.ALLOWING_ENTRY:
-            self.indicator.set_colour(LED.LEDColour.RED)
+            self.indicator.set_colour(self.colour.RED)
         elif response.state == message.DoorState.NOT_ALLOWING_ENTRY:
-            self.indicator.set_colour(LED.LEDColour.OFF)
+            self.indicator.set_colour(self.colour.OFF)
         else:
             msg = ("Fail, did not receive a valid DoorState "\
                    "update message.")
@@ -160,7 +167,7 @@ class DoorNodeController:
         next user.
         """
         if response.accepted:
-            self.indicator.set_colour(LED.LEDColour.GREEN)
+            self.indicator.set_colour(self.colour.GREEN)
             self.door_lock.open(self)
         else:
             #door stays locked
