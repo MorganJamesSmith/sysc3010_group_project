@@ -154,7 +154,7 @@ class ControlServer:
                             #incrementing validity to keep track of number of attempts made
                             validity = validity+1
                             #if entry attempt is still less than 3
-                            if validity < = 3:
+                            if validity <= 3:
                                 #saving info for invalid entry attempt
                                 self.save_access(employee_id,'entry',node_id,'Y',received_message.payload.user_temp,'undetermined',validity,received_message.transaction_id)
                                 #requesting information again

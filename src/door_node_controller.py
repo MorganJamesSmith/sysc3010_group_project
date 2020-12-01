@@ -64,9 +64,7 @@ class DoorNodeController:
         self.current_state = message.DoorState(2)
         self.address = address
         #At the initial state of the door node the door is locked.
-        self.colour = colour(1)
-        self.indicator.set_colour(self.colour.RED)
-#
+        self.indicator.set_colour(colour.RED)
     def main_loop(self):
         """
         Main function of code that runs through the specific methods.
@@ -128,7 +126,7 @@ class DoorNodeController:
         responds to InformationRequestMessages
         gathering temperature data.
         """
-        self.indicator.set_colour(self.colour.YELLOW)
+        self.indicator.set_colour(colour.YELLOW)
         distance = self.range_finder.get_range()
         #Constantly checks to make sure the code doesn't proceed until
         #the user is in suitable range from the temperature sensor.
@@ -138,7 +136,7 @@ class DoorNodeController:
         person_temp = self.ir_temp_sensor.get_ir_temp()
         #Contains the data that will be sent to database.
         payload = message.TemperatureInfoPayload(ambient_temp, person_temp)
-        self.indicator.set_colour(self.colour.RED)
+        self.indicator.set_colour(colour.RED)
         response = message.InformationResponseMessage(tid, message.InformationType.USER_TEMPERATURE,
                                                       payload)
         self.server_conn.send(response.to_bytes())
@@ -149,9 +147,9 @@ class DoorNodeController:
         should be allowing entry or if the building is full.
         """
         if response.state == message.DoorState.ALLOWING_ENTRY:
-            self.indicator.set_colour(self.colour.RED)
+            self.indicator.set_colour(colour.RED)
         elif response.state == message.DoorState.NOT_ALLOWING_ENTRY:
-            self.indicator.set_colour(self.colour.OFF)
+            self.indicator.set_colour(colour.OFF)
         else:
             msg = ("Fail, did not receive a valid DoorState "\
                    "update message.")
@@ -167,8 +165,13 @@ class DoorNodeController:
         next user.
         """
         if response.accepted:
+<<<<<<< HEAD
             self.indicator.set_colour(self.colour.GREEN)
             self.door_lock.open()
+=======
+            self.indicator.set_colour(colour.GREEN)
+            self.door_lock.open(self)
+>>>>>>> 855055e ([Morgan Smith] chore: fix invalid syntax and import statement)
         else:
             #door stays locked
             self.door_lock.lock()

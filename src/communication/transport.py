@@ -3,7 +3,7 @@
 #   Samuel Dewan - 2020
 #
 
-import thingspeak
+import communication.thingspeak
 import base64
 from threading import Thread, Event, Timer
 from enum import Flag, auto
