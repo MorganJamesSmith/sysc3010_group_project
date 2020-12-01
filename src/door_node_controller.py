@@ -97,8 +97,7 @@ class DoorNodeController:
         """
         sends AccessRequestMessage with badge id
         """
-        badge_message = badge_id.to_bytes(16, byteorder='little')
-        response = message.AccessRequestMessage(tid, badge_message)
+        response = message.AccessRequestMessage(tid, badge_id)
         self.server_conn.send(response.to_bytes())
 #
     def handle_information_request(self, response, tid):

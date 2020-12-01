@@ -9,18 +9,17 @@ class RC522_stub:
         # Get account id and data from file
         try:
             with open("./stub_text/nfc_id_address.txt", "r") as idfile:
-                self.account_id = idfile.read().strip()
+                self.account_id = bytes.fromhex(idfile.read().strip())
             with open("./stub_text/nfc_data.txt", "r") as datafile:
                 self.data = datafile.read().strip()
         except FileNotFoundError as e:
-            print("Could not open testcase files.")
+            print("RC522: Could not open testcase files.")
             exit(1)
 
     #method returns id from file
     def read_card(self):
-        card_id = int(self.account_id)
-        print(card_id)
-        return card_id
+        print(self.account_id.hex())
+        return self.account_id
     #method returns data from file
     def read_card_data(self,adr):
         print(self.data)
