@@ -122,6 +122,10 @@ class ControlServer:
                            None)
 
         if transaction is None:
+            if not isinstance(received_message, message.AccessRequestMessage):
+                print("Invalid message received")
+                return
+
             transaction = Transaction(client,
                                       received_message.transaction_id,
                                       self.badge_id_to_employee_id(received_message.badge_id))
@@ -178,7 +182,7 @@ class ControlServer:
         return self.cursor.fetchone()
     
     def badge_id_to_employee_id(self, badge_id):
-        self.cursor.execute("SELECT employee_id FROM nfc_and_employee_id WHERE nfc_id =?",(badge_id,) )
+        self.cursor.execute("SELECT employee_id FROM employee_info WHERE nfc_id =?",(badge_id,) )
         employeeId = self.cursor.fetchone()[0]
         if (employeeId == None):
             employeeId = 0
