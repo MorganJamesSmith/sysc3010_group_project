@@ -3,8 +3,13 @@
 <div>
     <h1>Settings</h1>
     <form>
-        <label for="setting">A Setting:</label><br>
-        <input type="text" id="setting" name="setting"><br>
+        <label for="setting">Maximum Occupancy:</label><br>
+        <input type="text" id="maximum_occupancy" name="maximum_occupancy" value="{{ max_occ }}"><br>
+
+        <label for="setting">Minimum User Temperature:</label><br>
+        <input type="text" id="min_user_temp" name="min_user_temp" value="{{ min_temp }}"><br>
+        <label for="setting">Maximum User Temperature</label><br>
+        <input type="text" id="max_user_temp" name="max_user_temp" value="{{ max_temp }}"><br>
         <br>
         <input type="submit" value="Update">
     </form>

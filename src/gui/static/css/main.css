@@ -71,3 +71,18 @@ h3 {
     background-color: #111111;
 }
 
+/*
+ *  Flashes
+ */
+.flash-message {
+    border-radius: 15px;
+    background: #4bc20c;
+    padding: 20px; 
+}
+
+.flash-error {
+    border-radius: 15px;
+    background: #c10c0c;
+    padding: 20px; 
+}
+
