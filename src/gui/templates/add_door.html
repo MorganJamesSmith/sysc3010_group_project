@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<div>
+    <h1>Add New Door</h1>
+    <form>
+        <label for="name">name:</label><br>
+        <input type="text" id="name" name="name"><br>
+        <label for="location">location:</label><br>
+        <input type="text" id="location" name="location"><br>
+        <label for="type">type:</label><br>
+        <select id="type" name="type">
+            <option value="entrance">entrance</option>
+            <option value="exit">exit</option>
+        </select>
+        <br>
+        <br>
+        <input type="submit" value="add">
+    </form>
+</div>
+{% endblock %}
