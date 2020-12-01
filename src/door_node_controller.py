@@ -79,18 +79,19 @@ class DoorNodeController:
                 except:
                     print(f"Received invalid message \"{data}\"")
                     exit(1)
-                #Series of if statements to handle the three types
-                #of messages that the DoorNodeController receives
-                if isinstance(rsp, message.InformationRequestMessage):
-                    self.handle_information_request(rsp, tid)
-                elif isinstance(rsp, message.AccessResponseMessage):
-                    current_user = self.handle_access_response(rsp)
-                elif isinstance(rsp, message.DoorStateUpdateMessage):
-                    self.handle_door_state_update(rsp)
                 else:
-                    print(f"Received invalid message \"{data}\"")
-                    exit(1)
-                tid += 1
+                    #Series of if statements to handle the three types
+                    #of messages that the DoorNodeController receives
+                    if isinstance(rsp, message.InformationRequestMessage):
+                        self.handle_information_request(rsp, tid)
+                    elif isinstance(rsp, message.AccessResponseMessage):
+                        current_user = self.handle_access_response(rsp)
+                    elif isinstance(rsp, message.DoorStateUpdateMessage):
+                        self.handle_door_state_update(rsp)
+                    else:
+                        print(f"Received invalid message \"{data}\"")
+                        exit(1)
+            tid += 1
 #
     def handle_badge_tap(self, badge_id, tid):
         """
