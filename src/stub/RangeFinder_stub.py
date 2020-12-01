@@ -5,7 +5,8 @@
 # Author(s): Mario Shebib 
 #
 import time
-import sys 
+import sys
+from pathlib import Path
 class RangeFinder_stub:
     """
     This class is a stub that imitates the range finder sensor for running the code without the hardware
@@ -15,7 +16,7 @@ class RangeFinder_stub:
         Initializes the class reading a text file to determine the starting range
         """
         try:
-            with open("initial_range.txt", "r") as range_file:
+            with open("./stub_text/nfc_id_address.txt", "r") as range_file:
                 self.range = range_file.read().strip()
         except FileNotFoundError as e:
             print("Could not open testcase files.")

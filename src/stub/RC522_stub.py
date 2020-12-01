@@ -8,9 +8,9 @@ class RC522_stub:
     def __init__(self):
         # Get account id and data from file
         try:
-            with open("nfc_id_address.txt", "r") as idfile:
+            with open("./stub_text/nfc_id_address.txt", "r") as idfile:
                 self.account_id = idfile.read().strip()
-            with open("nfc_data.txt", "r") as datafile:
+            with open("./stub_text/nfc_data.txt", "r") as datafile:
                 self.data = datafile.read().strip()
         except FileNotFoundError as e:
             print("Could not open testcase files.")
