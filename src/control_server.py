@@ -12,14 +12,7 @@
 # If a client is an exit, then the server will allow the door to open. If the
 # client is an entrance, the server will ask for the users body temperature and
 # only allow them in if their temperature is within a specified range.
-#
-# TODO:
-# - occupancy limits - done
-# - database interaction - done
-# - change _new_client to add database queries for node id and node type - done
-# - add object to clients - done 
-#   - add a node_id object of int type (client.node_id) - done
-#add exception if status is unauthorized - done
+
 
 import sqlite3
 import time
@@ -49,7 +42,9 @@ class Client:
 class Transaction:
     client: Client
     tid: int
-    temperature_attempts: int
+    employee_id: int
+    status: str = ''
+    temp_reading: int = 99
 
 class ControlServer:
     clients = [] # List of Client objects
@@ -61,26 +56,24 @@ class ControlServer:
                 write_key = keyfile.read().strip()
             with open("api_read_key.txt", "r") as keyfile:
                 read_key = keyfile.read().strip()
-            # Connecting to project database
-            if not os.path.isfile('security_system.db'):
-                self.database = DataBase()
-                self.database_con = sqlite3.connect('security_system.db')
-                self.cursor = self.database_con.cursor()
-                self.database.creating_db()
-            else:
-                self.database = DataBase()
-                self.database_con = sqlite3.connect('security_system.db')
-                self.cursor = self.database_con.cursor()
         except FileNotFoundError:
             raise Exception("Could not open keyfiles.")
-        except ConnectionNotMadeError:
-            print("Error while working with SQLite", error)
+
+        # Connecting to project database
+        if not os.path.isfile('security_system.db'):
+            self.database = DataBase()
+            self.database_con = sqlite3.connect('security_system.db')
+            self.cursor = self.database_con.cursor()
+            self.database.creating_db()
+        else:
+            self.database = DataBase()
+            self.database_con = sqlite3.connect('security_system.db')
+            self.cursor = self.database_con.cursor()
         self.channel = thingspeak.Channel(1222699, write_key=write_key, read_key=read_key)
         self.server = transport.Server(self.channel, "control_server")
         self.safe_temperature_range = (30, 37.5)
         self.maximum_occupancy = 50
         self.current_occupancy = 0
-        self.max_temperature_attempts = 3
 
     def main_loop(self):
         while True:
@@ -125,102 +118,66 @@ class ControlServer:
 
     def _new_message(self, client, received_message):
 
-        #if exit request
-        if not client.entrance:
-            employee_id = self.exit_queries(received_message.badge_id)
-            #invalid employee ID
-            if employee_id == 0:
-                resp = message.AccessResponseMessage(received_message.transaction_id, False)
-            #valid employee ID
-            else:
-                resp = message.AccessResponseMessage(received_message.transaction_id, True)
-                self.save_access(employee_id,'exit',client.node_id,'N/A',0,'authorized',0,received_message.transaction_id)
-                self.current_occupancy = self.current_occupancy - 1
-
-            client.connection.send(resp.to_bytes())
-            return
-
-        # Entry request
         transaction = next((x for x in self.transactions if x.tid == received_message.transaction_id),
                            None)
 
         if transaction is None:
-            transaction = Transaction(client, received_message.transaction_id, 0)
+            transaction = Transaction(client,
+                                      received_message.transaction_id,
+                                      self.badge_id_to_employee_id(received_message.badge_id))
+            transaction.status = self.employee_id_to_status(transaction.employee_id)
             self.transactions.append(transaction)
 
+
+        #invalid employee ID
+        if transaction.employee_id == 0:
+            resp = message.AccessResponseMessage(transaction.tid, False)
+            transaction.status = 'unauthorized'
+
+        #if exit request
+        elif not client.entrance:
+            resp = message.AccessResponseMessage(transaction.tid, True)
+            transaction.status = 'authorized'
+            self.current_occupancy = self.current_occupancy - 1
+
+        # Entry request
         # When we receive an access request, ask for their temperature
-        if isinstance(received_message, message.AccessRequestMessage):
+        elif isinstance(received_message, message.AccessRequestMessage):
             #if building can take entries
             if self.current_occupancy < self.maximum_occupancy:
-                #retrieve employee_info here based off of the nfc_badge_id received from the access request message
-                #sending badge id so that information can be retrieved from db
-                employee_id,accessDate,status = self.entry_queries(received_message.badge_id)
-                #invalid employee ID
-                if employee_id == 0 or status == 'unauthorized' or transaction.temperature_attempts >= self.max_temperature_attempts:
-                    resp = message.AccessResponseMessage(received_message.transaction_id, False)
-                #valid employee ID
-                else:
-                    resp = message.InformationRequestMessage(
-                        received_message.transaction_id, message.InformationType.USER_TEMPERATURE)
-            #if building at maximum occupancy and cannot take entries
+                resp = message.InformationRequestMessage(
+                    transaction.tid, message.InformationType.USER_TEMPERATURE)
+                transaction.status = 'unauthorized'
             else:
-                resp = message.AccessResponseMessage(received_message.transaction_id, False)
+                transaction.status = 'unauthorized'
+                resp = message.AccessResponseMessage(transaction.tid, False)
 
         # When we receive their temperature let them in if it is within
         # range. Else ask for it again.
         elif isinstance(received_message, message.InformationResponseMessage):
-            employee_id,accessDate,status = self.entry_queries(received_message.badge_id)
-            #invalid employee ID
-            if employee_id == 0:
-                resp = message.AccessResponseMessage(received_message.transaction_id, False)
+            if received_message.information_type != message.InformationType.USER_TEMPERATURE:
+                raise Exception("This is not the information I requested!")
+
+            if(self.safe_temperature_range[0] < received_message.payload.user_temp
+               < self.safe_temperature_range[1]):
+                resp = message.AccessResponseMessage(received_message.transaction_id, True)
+                transaction.status = 'authorized'
+                self.current_occupancy = self.current_occupancy + 1
             else:
-                #if less than 3 entry attempts
-                if transaction.temperature_attempts < self.max_temperature_attempts:
-                    if received_message.information_type != message.InformationType.USER_TEMPERATURE:
-                        raise Exception("This is not the information I requested!")
-                    if(self.safe_temperature_range[0] < received_message.payload.user_temp
-                       < self.safe_temperature_range[1]):
-                        resp = message.AccessResponseMessage(received_message.transaction_id, True)
-                        #save transaction information
-                        self.save_access(employee_id, 'entry', client.node_id,'Y',received_message.payload.user_temp,'authorized',received_message.transaction_id)
-                        self.current_occupancy = self.current_occupancy + 1
-                    else:
-                        transaction.temperature_attempts = transaction.temperature_attempts + 1
-                        if transaction.temperature_attempts < self.max_temperature_attempts:
-                            #saving info for invalid entry attempt
-                            self.save_access(employee_id,'entry',client.node_id,'Y',received_message.payload.user_temp,'undetermined',received_message.transaction_id)
-                            #requesting information again
-                            resp = message.InformationRequestMessage(
-                                received_message.transaction_id, message.InformationType.USER_TEMPERATURE)
-                        #if 3rd entry attempt
-                        else:
-                            resp = message.AccessResponseMessage(received_message.transaction_id, False)
-                            self.save_access(employee_id,'entry',client.node_id,'Y',received_message.payload.user_temp,'unauthorized',received_message.transaction_id)
-                            print ("Access entry status: unauthorized")
-                #if more than 3 entry attempts
-                else:
-                    resp = message.AccessResponseMessage(received_message.transaction_id, False)
-                    self.save_access(employee_id, 'entry',client.node_id,'Y',received_message.payload.user_temp,'unauthorized',received_message.transaction_id)
-                    print ("Access entry status: unauthorized")
+                resp = message.AccessResponseMessage(received_message.transaction_id, False)
         else:
             raise Exception(f"I don't like these types of messages: {received_message}")
 
+        self.save_access(transaction)
+        if isinstance(resp, message.AccessResponseMessage):
+            self.transactions.remove(transaction)
         client.connection.send(resp.to_bytes())
 
-    def entry_queries(self,badge_id):
-        self.cursor.execute("SELECT employee_id FROM nfc_and_employee_id WHERE nfc_id =?",(badge_id,) )
-        employeeId = self.cursor.fetchone()[0]
-        if (employeeId == None):
-            employeeId = 0
-            return employeeId,'none','none',0
-        #if employee_id exists in the system then retrieve info of most latest access_type
-        self.cursor.execute("SELECT access_datetime FROM access_summary WHERE employee_id = ? ORDER BY employee_id DESC LIMIT 1", (employeeId,))
-        accessDate = self.cursor.fetchone()
-        self.cursor.execute("SELECT status FROM access_summary WHERE employee_id = ? ORDER BY employee_id DESC LIMIT 1", (employeeId,))
-        statusType = self.cursor.fetchone()
-        return employeeId,accessDate,statusType
+    def employee_id_to_status(self, employee_id):
+        self.cursor.execute("SELECT status FROM access_summary WHERE employee_id = ? ORDER BY employee_id DESC LIMIT 1", (employee_id,))
+        return self.cursor.fetchone()
     
-    def exit_queries(self, badge_id):
+    def badge_id_to_employee_id(self, badge_id):
         self.cursor.execute("SELECT employee_id FROM nfc_and_employee_id WHERE nfc_id =?",(badge_id,) )
         employeeId = self.cursor.fetchone()[0]
         if (employeeId == None):
@@ -228,12 +185,10 @@ class ControlServer:
             return employeeId
         return employeeId
 
-    def save_access(self, employeeId, access_type, access_node, in_range, temp_reading, status,t_ID):
-        #access_summary(transaction_id INTEGER NOT NULL, employee_id INTEGER NOT NULL, access_type TEXT NOT NULL, access_datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        #access_node TEXT NOT NULL, temp_reading NUMERIC NOT NULL, status TEXT NOT NULL)
-        data_tuple = (t_ID,employeeId,access_type,access_node,in_range,temp_reading,status)
-        self.cursor.execute("INSERT INTO access_summary(transaction_id,employee_id,access_type,access_node,in_range,temp_reading,status) VALUES (?,?,?,?,?)",data_tuple)
-
+    def save_access(self, transaction):
+        access_type =  'entry' if transaction.client.entrance else 'exit'
+        data_tuple = (transaction.tid, transaction.employee_id, access_type, transaction.client.node_id, transaction.temp_reading, transaction.status)
+        self.cursor.execute("INSERT INTO access_summary(transaction_id, employee_id, access_type, access_node, temp_reading, status) VALUES (?,?,?,?,?,?)", data_tuple)
 
 if __name__ == "__main__":
     server = ControlServer()
