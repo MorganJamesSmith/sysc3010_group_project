@@ -193,7 +193,7 @@ if __name__ == '__main__':
     led = LED()
 
     # Create and start door node controller
-    controller = DoorNodeController("doornode", 30, led, range_finder, door_lock, temp_sensor,
+    controller = DoorNodeController("Main Entrance", 30, led, range_finder, door_lock, temp_sensor,
                                     badge_reader)
     controller.main_loop()
 
