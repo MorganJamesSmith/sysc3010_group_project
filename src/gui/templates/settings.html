@@ -2,7 +2,7 @@
 {% block content %}
 <div>
     <h1>Settings</h1>
-    <form>
+    <form action="/settings" method="post">
         <label for="setting">Maximum Occupancy:</label><br>
         <input type="text" id="maximum_occupancy" name="maximum_occupancy" value="{{ max_occ }}"><br>
 

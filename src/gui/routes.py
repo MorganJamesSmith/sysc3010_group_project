@@ -63,12 +63,12 @@ def users_ajax():
 
     return jsonify({"data": user_data})
 
-@app.route('/users/add')
+@app.route('/users/add', methods=['GET', 'POST'])
 def add_user():
-    if request.args:
-        first = request.args.get('fname', None)
-        last = request.args.get('lname', None)
-        badge_id = request.args.get('badgeid', None)
+    if request.form:
+        first = request.form.get('fname', None)
+        last = request.form.get('lname', None)
+        badge_id = request.form.get('badgeid', None)
 
         if badge_id is not None:
             try:
@@ -118,12 +118,12 @@ def doors_ajax():
 
     return jsonify({"data": door_data})
 
-@app.route('/doors/add')
+@app.route('/doors/add', methods=['GET', 'POST'])
 def add_door():
-    if request.args:
-        name = request.args.get('name', None)
-        location = request.args.get('location', None)
-        door_type = request.args.get('type', None)
+    if request.forms:
+        name = request.forms.get('name', None)
+        location = request.forms.get('location', None)
+        door_type = request.forms.get('type', None)
 
         if name is None or name.strip() == '':
             flash('Invalid name', 'error')
@@ -154,14 +154,14 @@ def delete_door():
 #   Settings
 #
 
-@app.route('/settings')
+@app.route('/settings', methods=['GET', 'POST'])
 def settings():
-    if request.args:
-        print("Got Form!", request.args)
+    if request.form:
+        print("Got Form!", request.form)
         
-        maximum_occupancy = request.args.get('maximum_occupancy', None)
-        min_user_temp = request.args.get('min_user_temp', None)
-        max_user_temp = request.args.get('max_user_temp', None)
+        maximum_occupancy = request.form.get('maximum_occupancy', None)
+        min_user_temp = request.form.get('min_user_temp', None)
+        max_user_temp = request.form.get('max_user_temp', None)
 
         max_occ_val = None
         min_temp_val = None

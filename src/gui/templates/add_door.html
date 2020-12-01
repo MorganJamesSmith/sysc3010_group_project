@@ -2,7 +2,7 @@
 {% block content %}
 <div>
     <h1>Add New Door</h1>
-    <form>
+    <form action="/doors/add" method="post">
         <label for="name">Name:</label><br>
         <input type="text" id="name" name="name"><br>
         <label for="location">Location:</label><br>
