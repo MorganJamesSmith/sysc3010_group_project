@@ -16,7 +16,7 @@ class RangeFinder_stub:
         Initializes the class reading a text file to determine the starting range
         """
         try:
-            with open("./stub_text/nfc_id_address.txt", "r") as range_file:
+            with open("./stub_text/initial_range.txt", "r") as range_file:
                 self.range = range_file.read().strip()
         except FileNotFoundError as e:
             print("Could not open testcase files.")

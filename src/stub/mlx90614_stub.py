@@ -14,7 +14,7 @@ class MLX90614_stub:
     
     def get_ambient_temp(self):
         amb_temperature = float(self.ambient_temp)
-        print(amb_temperature_temperature)
+        print(amb_temperature)
         return amb_temperature
     def get_ir_temp(self):
         ir_temperature = float(self.ir_temp)

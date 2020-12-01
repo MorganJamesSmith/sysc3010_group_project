@@ -146,7 +146,7 @@ class DoorNodeController:
         """
         if response.accepted:
             self.indicator.set_colour(colour.GREEN)
-            self.door_lock.open(self)
+            self.door_lock.open()
         else:
             #door stays locked
             self.door_lock.lock()
