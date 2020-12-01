@@ -25,6 +25,8 @@ import sqlite3
 import time
 from datetime import date
 
+import os.path
+
 from dataclasses import dataclass
 from select import select
 
@@ -51,7 +53,6 @@ class Client:
 class ControlServer:
     clients = [] # List of Client objects
     def __init__(self):
-        self.database = DataBase()
         # Get API keys from file
         try:
             with open("api_write_key.txt", "r") as keyfile:
@@ -59,8 +60,15 @@ class ControlServer:
             with open("api_read_key.txt", "r") as keyfile:
                 read_key = keyfile.read().strip()
             # Connecting to project database
-            self.database = sqlite3.connect('project.db')
-            self.cursor = self.database.cursor()
+            if not os.path.isfile('security_system.db'):
+                self.database = DataBase()
+                self.database_con = sqlite3.connect('security_system.db')
+                self.cursor = self.database_con.cursor()
+                self.database.creating_db()
+            else:
+                self.database = DataBase()
+                self.database_con = sqlite3.connect('security_system.db')
+                self.cursor = self.database_con.cursor()
         except FileNotFoundError:
             raise Exception("Could not open keyfiles.")
         except ConnectionNotMadeError:
@@ -92,13 +100,16 @@ class ControlServer:
         if VERBOSE:
             print(f"New connection from \"{address}\".\n")
         self.cursor.execute("SELECT node_id, node_type FROM node_info WHERE address = ?", (address,))
-        node_id,node_type = self.cursor.fetchone()
+        try:
+            node_id, node_type = self.cursor.fetchone()
+        except:
+            print("A stranger tried to connect!")
+            return
+
         if node_type == 'entry':
             entrance = True
         elif node_type == 'exit':
             entrance = False
-        else:
-            raise Exception("A stranger tried to connect!")
 
         self.clients.append(Client(connection, address, entrance, node_id))
 
