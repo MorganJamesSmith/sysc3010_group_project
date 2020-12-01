@@ -31,7 +31,7 @@ from select import select
 import communication.thingspeak as thingspeak
 import communication.transport as transport
 import communication.message as message
-from database_code import DataBase
+from db_structure import DataBase
 
 VERBOSE = True
 
