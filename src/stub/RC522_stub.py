@@ -22,5 +22,5 @@ class RC522_stub:
     
     #method returns data from file
     def read_card_data(self):
-        print("SUCCESS")
+        print(self.data.hex())
         return self.data
