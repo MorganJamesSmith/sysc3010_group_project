@@ -13,7 +13,9 @@
 # client is an entrance, the server will ask for the users body temperature and
 # only allow them in if their temperature is within a specified range.
 
-
+import socket
+from queue import Queue
+import json
 import sqlite3
 import time
 from datetime import date
@@ -30,6 +32,17 @@ from db_structure import DataBase
 
 VERBOSE = True
 
+@dataclass
+class Settings:
+    safe_temperature_range = (30, 37.5)
+    maximum_occupancy: int  = 50
+    current_occupancy: int = 0
+
+@dataclass
+class TCP_Client:
+    connection = None
+    address = None
+    queue = Queue()
 
 @dataclass
 class Client:
@@ -48,6 +61,7 @@ class Transaction:
 
 class ControlServer:
     clients = [] # List of Client objects
+    tcp_clients = [] # List of TCP_Client objects
     transactions = [] # List of Transaction objects
     def __init__(self):
         # Get API keys from file
@@ -58,6 +72,13 @@ class ControlServer:
                 read_key = keyfile.read().strip()
         except FileNotFoundError:
             raise Exception("Could not open keyfiles.")
+        try:
+            with open("settings.json", "r") as settingsfile:
+                json_string = settingsfile.read().strip()
+                self.settings = json_to_settings(json_string)
+        except FileNotFoundError:
+            print("No settings file")
+            self.settings = Settings()
 
         # Connecting to project database
         if not os.path.isfile('security_system.db'):
@@ -71,26 +92,66 @@ class ControlServer:
             self.cursor = self.database_con.cursor()
         self.channel = thingspeak.Channel(1222699, write_key=write_key, read_key=read_key)
         self.server = transport.Server(self.channel, "control_server")
-        self.safe_temperature_range = (30, 37.5)
-        self.maximum_occupancy = 50
-        self.current_occupancy = 0
+
+        self.tcp_server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.tcp_server.setblocking(0)
+        self.tcp_server.bind(('localhost', 8888))
+        self.tcp_server.listen(0)
+
+
 
     def main_loop(self):
         while True:
-            new_messages, _, _ = \
-                select([i.connection for i in self.clients] + [self.server], [], [])
+            new_messages, writable, exceptions = \
+                select([i.connection for i in self.clients] +
+                       [i.connection for i in self.tcp_clients] +
+                       [self.server, self.tcp_server],
+                       [i.connection for i in self.tcp_clients if not i.queue.empty()],
+                       [i.connection for i in self.tcp_clients])
 
             for connection in new_messages:
                 if connection is self.server:
                     connection, address = self.server.accept(block=False)
                     self._new_client(connection, address)
-                else:
+                elif connection is self.tcp_server:
+                    connection, address = self.tcp_server.accept()
+                    tcp_clients.append(TCP_Client(connection, address))
+                elif isinstance(connection, transport.Connection):
                     data = connection.recv(block=False)
                     received_message = message.Message.from_bytes(data)
                     if VERBOSE:
                         print(f"Received ({received_message}) from \"{connection.peer_address}\"")
                     client = next((x for x in self.clients if x.connection == connection), None)
                     self._new_message(client, received_message)
+                else: # TCP connections
+                    data = connection.recv(1023)
+                    client = next((x for x in self.clients if x.connection == connection), None)
+                    if data:
+                        data = data.decode('UTF-8')
+                        if data != "request":
+                            self.settings = json_to_settings(data)
+                            try:
+                                with open("settings.json", "w") as settingsfile:
+                                    settingsfile.write(data)
+                            except FileNotFoundError:
+                                print("Could not write settings")
+                        client.queue.enque(setting_to_json(self.settings).encode('UTF-8'))
+                    else:
+                        self.tcp_clients.remove(client)
+                        client.connection.close()
+
+            for write in writable:
+                try:
+                    client =  next((x for x in self.tcp_clients if x.connection == write), None)
+                    msg = client.queue.get_nowait()
+                except queue.Empty:
+                    pass
+                else:
+                    write.send(msg)
+
+            for exception in exceptions:
+                self.tcp_clients = [i for i in self.tcp_clients if i.connection != exception]
+                exception.close()
 
     def _new_client(self, connection, address):
         if VERBOSE:
@@ -113,7 +174,7 @@ class ControlServer:
         new_state = message.DoorState.ALLOWING_ENTRY
         resp = message.DoorStateUpdateMessage(new_state)
         if VERBOSE:
-            print(f"Sending door state update ({resp}) to {address}")
+            print(f"Sending door state update ({resp}) to \"{address}\"")
         connection.send(resp.to_bytes())
 
     def _new_message(self, client, received_message):
@@ -123,7 +184,7 @@ class ControlServer:
 
         if transaction is None:
             if not isinstance(received_message, message.AccessRequestMessage):
-                print("Invalid message received")
+                print(f"Unexpected message received: {received_message}")
                 return
 
             transaction = Transaction(client,
@@ -142,13 +203,13 @@ class ControlServer:
         elif not client.entrance:
             resp = message.AccessResponseMessage(transaction.tid, True)
             transaction.status = 'authorized'
-            self.current_occupancy = self.current_occupancy - 1
+            self.settings.current_occupancy = self.settings.current_occupancy - 1
 
         # Entry request
         # When we receive an access request, ask for their temperature
         elif isinstance(received_message, message.AccessRequestMessage):
             #if building can take entries
-            if self.current_occupancy < self.maximum_occupancy:
+            if self.settings.current_occupancy < self.settings.maximum_occupancy:
                 resp = message.InformationRequestMessage(
                     transaction.tid, message.InformationType.USER_TEMPERATURE)
                 transaction.status = 'unauthorized'
@@ -162,11 +223,11 @@ class ControlServer:
             if received_message.information_type != message.InformationType.USER_TEMPERATURE:
                 raise Exception("This is not the information I requested!")
 
-            if(self.safe_temperature_range[0] < received_message.payload.user_temp
-               < self.safe_temperature_range[1]):
+            if(self.settings.safe_temperature_range[0] < received_message.payload.user_temp
+               < self.settings.safe_temperature_range[1]):
                 resp = message.AccessResponseMessage(received_message.transaction_id, True)
                 transaction.status = 'authorized'
-                self.current_occupancy = self.current_occupancy + 1
+                self.settings.current_occupancy = self.settings.current_occupancy + 1
             else:
                 resp = message.AccessResponseMessage(received_message.transaction_id, False)
         else:
@@ -175,6 +236,8 @@ class ControlServer:
         self.save_access(transaction)
         if isinstance(resp, message.AccessResponseMessage):
             self.transactions.remove(transaction)
+        if VERBOSE:
+            print(f"Sending ({resp}) from \"{transaction.client.connection.peer_address}\"")
         client.connection.send(resp.to_bytes())
 
     def employee_id_to_status(self, employee_id):
@@ -188,6 +251,18 @@ class ControlServer:
             employeeId = 0
             return employeeId
         return employeeId
+
+    def setting_to_json(self, settings):
+        tmp = {"safe_temperature_range": settings.safe_temperature_range,
+               "maximum_occupancy": settings.maximum_occupancy,
+               "current_occupancy": settings.current_occupancy}
+        return json.dumps(tmp)
+
+    def json_to_settings(self, json_string):
+        tmp = json.load(json_string)
+        return Settings(tmp["safe_temperature_range"],
+                        tmp["maximum_occupancy"],
+                        tmp["current_occupancy"])
 
     def save_access(self, transaction):
         access_type =  'entry' if transaction.client.entrance else 'exit'
