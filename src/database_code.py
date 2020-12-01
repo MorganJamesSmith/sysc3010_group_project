@@ -39,9 +39,7 @@ class DataBase:
         accessDate = self.cursor.fetchone()
         self.cursor.execute("SELECT status FROM access_entry WHERE employee_id = ? ORDER BY employee_id DESC LIMIT 1", (employeeId,))
         statusType = self.cursor.fetchone()
-        self.cursor.execute("SELECT validity FROM access_entry WHERE employee_id = ? ORDER BY employee_id DESC LIMIT 1", (employeeId,))
-        validity = self.cursor.fetchone()
-        return employeeId,accessDate,statusType,validity
+        return employeeId,accessDate,statusType
             
     def exit_log(self,employeeId,exitnode):
         self.employeeId = employeeId #INT value of employee ID acquired from the nfc ID in the AccessRequestMessage 
@@ -62,22 +60,22 @@ class DataBase:
         self.status = status #TEXT value of the status of employee 
         #fields saved to log entry access of employee
         print("Inserting Entry data into database")
-        self.cursor.execute("INSERT INTO access_entry (employee_id,access_node,in_range,temp_reading,status,validity) VALUES(?,?,?,?,?,?)",
-                         (self.employeeId,self.entrynode,'Y',self.tempReading,self.status,0))
+        self.cursor.execute("INSERT INTO access_entry (employee_id,access_node,in_range,temp_reading,status) VALUES(?,?,?,?,?)",
+                         (self.employeeId,self.entrynode,'Y',self.tempReading,self.status))
         self.database.commit()
         self.cursor.execute("SELECT * FROM access_entry WHERE employee_id = ? ORDER BY employee_id DESC LIMIT 1", (employeeId,))
         print ("Following data has been added to the access_entry table in the database:",self.cursor.fetchone())
         
     #adding entires to nfc_and_employee_id table
     def add_entries(self,badge_id,employee_id):
-        data_tuple =(badge_id,employee_id)
+        data_tuple = (badge_id,employee_id)
         print("Sample previous data being added to database:",data_tuple)
         self.cursor.execute("INSERT INTO nfc_and_employee_id(nfc_id,employee_id) VALUES (?,?)",data_tuple)
         self.database.commit()
         if employee_id ==1:
             data_tuple1 =(1,"North exit","Y",36.7,"authorized",0)
             print("Sample previous data being added to access_exit table of the database:",data_tuple1)
-            self.cursor.execute("INSERT INTO access_entry(employee_id,access_node,in_range,temp_reading,status,validity) VALUES (?,?,?,?,?,?)",data_tuple1)
+            self.cursor.execute("INSERT INTO access_entry(employee_id,access_node,in_range,temp_reading,status) VALUES (?,?,?,?,?)",data_tuple1)
         elif employee_id == 2:
             data_tuple2 =(2,"South entry")
             print("Sample previous data being added to access_entry table of the database:",data_tuple2)
@@ -87,7 +85,7 @@ class DataBase:
     def creating_db(self):
         #creating access_entry table
         entry = '''CREATE TABLE access_entry(employee_id INTEGER NOT NULL, entry_datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        access_node TEXT NOT NULL, in_range TEXT NOT NULL, temp_reading NUMERIC NOT NULL, status TEXT NOT NULL,validity INTEGER NOT NULL);'''
+        access_node TEXT NOT NULL, in_range TEXT NOT NULL, temp_reading NUMERIC NOT NULL, status TEXT NOT NULL);'''
         self.cursor.execute(entry)
         self.database.commit()
         

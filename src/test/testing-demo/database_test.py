@@ -46,7 +46,7 @@ print("Test3: Entry loop retrieving and uploading data")
 print("Starting Entry Loop")
 print (f"Sample Badge ID being used is:", badge_id2)
 entrynode = "South entry"
-employee_id2,accessDate,status,validity= db.accessrequest("entry",badge_id2)
+employee_id2,accessDate,status= db.accessrequest("entry",badge_id2)
 print(f"Employee ID retrieved is:", employee_id2)
 print(f"Employee ID of employee requesting entry is:",employee_id2)
 #logging information for entry process
