@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 #
 # Copyright (C) 2020 by Morgan Smith
+# Copyright (C) 2020 by Sunjeevani Pujari
 #
 # control_server.py
 #
@@ -13,8 +14,16 @@
 # only allow them in if their temperature is within a specified range.
 #
 # TODO:
-# - occupancy limits
-# - database interaction
+# - occupancy limits - done
+# - database interaction - done
+# - change _new_client to add database queries for node id and node type - done
+# - add object to clients - done 
+#   - add a node_id object of int type (client.node_id) - done
+#add exception if status is unauthorized - done
+
+import sqlite3
+import time
+from datetime import date
 
 from dataclasses import dataclass
 from select import select
@@ -27,16 +36,17 @@ from database_code import DataBase
 VERBOSE = True
 
 # If your address is in this list, I will treat you as an entrance
-entrance_addresses = ["Entrance A", "Entrance B", "Entrance C","Entrance D"]
+#entrance_addresses = ["Entrance A", "Entrance B", "Entrance C","Entrance D"]
 
 # If your address is in this list, I will treat you as an exit
-exit_addresses = ["Exit A", "Exit B", "Exit C", "Exit D"]
+#exit_addresses = ["Exit A", "Exit B", "Exit C", "Exit D"]
 
 @dataclass
 class Client:
     connection: transport.Connection
     address: str
     entrance: bool
+    node_id: int 
 
 class ControlServer:
     clients = [] # List of Client objects
@@ -76,19 +86,21 @@ class ControlServer:
                     if VERBOSE:
                         print(f"Received ({received_message}) from \"{connection.peer_address}\"")
                     client = next((x for x in self.clients if x.connection == connection), None)
-                    self._new_message(client, received_message,address)
+                    self._new_message(client, received_message,node_id)
 
     def _new_client(self, connection, address):
         if VERBOSE:
             print(f"New connection from \"{address}\".\n")
-        if address in entrance_addresses:
+        self.cursor.execute("SELECT node_id, node_type FROM node_info WHERE address = ?", (address,))
+        node_id,node_type = self.cursor.fetchone()
+        if node_type == 'entry':
             entrance = True
-        elif address in exit_addresses:
+        elif node_type == 'exit':
             entrance = False
         else:
             raise Exception("A stranger tried to connect!")
 
-        self.clients.append(Client(connection, address, entrance))
+        self.clients.append(Client(connection, address, entrance, node_id))
 
         # Send door state update
         new_state = message.DoorState.ALLOWING_ENTRY
@@ -97,7 +109,7 @@ class ControlServer:
             print(f"Sending door state update ({resp}) to {address}")
         connection.send(resp.to_bytes())
 
-    def _new_message(self, client, received_message,address):
+    def _new_message(self, client, received_message,node_id):
         #if entry request
         if client.entrance:
             # When we receive an access request, ask for their temperature
@@ -108,7 +120,7 @@ class ControlServer:
                     #sending badge id so that information can be retrieved from db
                     employee_id,accessDate,status,validity = self.entry_queries(received_message.badge_id)
                     #invalid employee ID
-                    if employee_id == 0:
+                    if employee_id == 0 or status == 'unauthorized' or validity > 3:
                         resp = message.AccessResponseMessage(received_message.transaction_id, False)
                     #valid employee ID
                     else:
@@ -136,7 +148,7 @@ class ControlServer:
                             validity = 0
                             resp = message.AccessResponseMessage(received_message.transaction_id, True)
                             #save tranasaction information
-                            self.save_entry(employee_id, str(address),'Y',received_message.payload.user_temp,'authorized',validity)
+                            self.save_access(employee_id, 'entry', node_id,'Y',received_message.payload.user_temp,'authorized',validity,received_message.transaction_id)
                             self.current_occupancy = self.current_occupancy + 1
                         else:
                             #incrementing validity to keep track of number of attempts made
@@ -144,19 +156,19 @@ class ControlServer:
                             #if entry attempt is still less than 3
                             if validity < = 3:
                                 #saving info for invalid entry attempt
-                                self.save_entry(employee_id, str(address),'Y',rreceived_message.payload.user_temp,'undetermined',validity)
+                                self.save_access(employee_id,'entry',node_id,'Y',received_message.payload.user_temp,'undetermined',validity,received_message.transaction_id)
                                 #requesting information again
                                 resp = message.InformationRequestMessage(
                                     received_message.transaction_id, message.InformationType.USER_TEMPERATURE)
                             #if 3rd entry attempt
                             else:
                                 resp = message.AccessResponseMessage(received_message.transaction_id, False)
-                                self.save_entry(employee_id, str(address),'Y',received_message.payload.user_temp,'unauthorized',validity)
+                                self.save_access(employee_id,'entry',node_id,'Y',received_message.payload.user_temp,'unauthorized',validity,received_message.transaction_id)
                                 print ("Access entry status: unathorized")
                     #if more than 3 entry attempts
                     else:
                         resp = message.AccessResponseMessage(received_message.transaction_id, False)
-                        self.save_entry(employee_id, str(address),'Y',received_message.payload.user_temp,'unauthorized',validity)
+                        self.save_access(employee_id, 'entry',node_id,'Y',received_message.payload.user_temp,'unauthorized',validity,received_message.transaction_id)
                         print ("Access entry status: unauthorized")
             else:
                 raise Exception("I don't like these types of messages")
@@ -170,7 +182,7 @@ class ControlServer:
             #valid employee ID
             else:
                 resp = message.AccessResponseMessage(received_message.transaction_id, True)
-                self.save_exit(employee_id,str(address))
+                self.save_access(employee_id,'exit',node_id,'N/A',0,'authorized',0,received_message.transaction_id)
                 self.current_occupancy = self.current_occupancy - 1
 
         client.connection.send(resp.to_bytes())
@@ -182,11 +194,11 @@ class ControlServer:
             employeeId = 0
             return employeeId,'none','none',0
         #if employee_id exists in the system then retrieve info of most latest access_type
-        self.cursor.execute("SELECT entry_datetime FROM access_exit WHERE employee_id = ? ORDER BY employee_id DESC LIMIT 1", (employeeId,))
+        self.cursor.execute("SELECT access_datetime FROM access_summary WHERE employee_id = ? ORDER BY employee_id DESC LIMIT 1", (employeeId,))
         accessDate = self.cursor.fetchone()
-        self.cursor.execute("SELECT status FROM access_exit WHERE employee_id = ? ORDER BY employee_id DESC LIMIT 1", (employeeId,))
+        self.cursor.execute("SELECT status FROM access_summary WHERE employee_id = ? ORDER BY employee_id DESC LIMIT 1", (employeeId,))
         statusType = self.cursor.fetchone()
-        self.cursor.execute("SELECT validity FROM access_exit WHERE employee_id = ? ORDER BY employee_id DESC LIMIT 1", (employeeId,))
+        self.cursor.execute("SELECT validity FROM access_summary WHERE employee_id = ? ORDER BY employee_id DESC LIMIT 1", (employeeId,))
         validity = self.cursor.fetchone()
         return employeeId,accessDate,statusType,validity
     
@@ -198,13 +210,12 @@ class ControlServer:
             return employeeId
         return employeeId
 
-    def save_entry(self,employeeId,access_node,in_range,temp_reading,status,validity):
-        data_tuple = (employeeId,access_node,in_range,temp_reading,status,validity)
-        self.cursor.execute("INSERT INTO access_entry(employee_id,access_node,in_range,temp_reading,status,validity) VALUES (?,?,?,?,?,?)",data_tuple)
+    def save_access(self,employeeId,access_type,access_node,in_range,temp_reading,status,validity,t_ID):
+        #access_summary(transaction_id INTEGER NOT NULL, employee_id INTEGER NOT NULL, access_type TEXT NOT NULL, access_datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        #access_node TEXT NOT NULL, temp_reading NUMERIC NOT NULL, status TEXT NOT NULL,validity INTEGER NOT NULL)
+        data_tuple = (t_ID,employeeId,access_type,access_node,in_range,temp_reading,status,validity)
+        self.cursor.execute("INSERT INTO access_summary(transaction_id,employee_id,access_type,access_node,in_range,temp_reading,status,validity) VALUES (?,?,?,?,?,?)",data_tuple)
 
-    def save_exit(self,employee_id,exit_node):
-        data_tuple = (employee_id,exit_node)
-        self.cursor.execute("INSERT INTO access_exit(employee_id,exit_node) VALUES (?,?)",data_tuple)
 
 if __name__ == "__main__":
     server = ControlServer()
