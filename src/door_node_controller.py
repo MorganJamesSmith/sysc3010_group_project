@@ -171,3 +171,7 @@ class DoorNodeController:
             #door stays locked
             self.door_lock.lock()
         return False
+
+if __name__ == "__main__":
+    door = DoorNodeController("Entrance", 300, None, None, None, None, None)
+    door.main_loop()
