@@ -21,19 +21,14 @@ class DataBase:
     #adding tables to the database     
     def creating_db(self):
         
-        #creating nfc_and_employee_id table
-        nfc = 'CREATE TABLE nfc_and_employee_id(nfc_id BLOB NOT NULL, employee_id INTEGER NOT NULL);'
-        self.cursor.execute(nfc)
-        self.database.commit()
-        
         #creating employee_info table
-        info = '''CREATE TABLE employee_info(employee_id INTEGER NOT NULL, first_name TEXT NOT NULL,
-        middle_name TEXT, last_name TEXT NOT NULL, admin TEXT NOT NULL, FOREIGN KEY(employee_id) REFERENCES nfc_and_employee_id (employee_id));'''
+        info = '''CREATE TABLE employee_info(employee_id INTEGER PRIMARY KEY AUTOINCREMENT, first_name TEXT NOT NULL,
+                  middle_name TEXT, last_name TEXT NOT NULL, admin TEXT NOT NULL, nfc_id BLOB NOT NULL);'''
         self.cursor.execute(info)
         self.database.commit()
 
         #creating node_info table
-        node = 'CREATE TABLE node_info(node_id INTEGER NOT NULL, node_type TEXT NOT NULL, address TEXT NOT NULL, location TEXT NOT NULL);'
+        node = 'CREATE TABLE node_info(node_id INTEGER PRIMARY KEY AUTOINCREMENT, node_type TEXT NOT NULL, address TEXT NOT NULL, location TEXT NOT NULL);'
         self.cursor.execute(node)
         self.database.commit()
 
@@ -53,7 +48,7 @@ class DataBase:
         #self.cursor.execute(exit)
         #self.database.commit()
         
-   #adding entires to nfc_and_employee_id table
+    #adding entires to employee_info table
     def add_entries(self):
         try:
             with open("./stub_text/nfc_id_address.txt", "r") as idfile:
