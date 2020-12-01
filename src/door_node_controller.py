@@ -20,9 +20,16 @@ class DoorNodeController:
     with the control server to decide whether or not to allow entry into
     the building.
     """
-    def __init__(self, address, limit_distance, led,
-                 distance_sensor, door_actuator, temperature_sensor, rc522):
-        #hardware imports
+    def __init__(self, address, limit_distance, indicator, range_finder, door_lock, ir_temp_sensor,
+                 nfc_reader):
+        
+        self.indicator = indicator
+        self.range_finder = range_finder
+        self.door_lock = door_lock
+        self.ir_temp_sensor = ir_temp_sensor
+        self.nfc_reader = nfc_reader
+
+
         self.dist_from_temp_sensor = limit_distance
         """
         Initializes the door node.
@@ -185,7 +192,6 @@ if __name__ == '__main__':
     led = LED()
 
     # Create and start door node controller
-    print('hello!')
     controller = DoorNodeController("doornode", 30, led, range_finder, door_lock, temp_sensor,
                                     badge_reader)
     controller.main_loop()
