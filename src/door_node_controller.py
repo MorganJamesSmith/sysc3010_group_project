@@ -181,7 +181,7 @@ if __name__ == '__main__':
     range_finder = RangeFinder()
     temp_sensor = mlx90614()
     door_lock = DoorActuator()
-    badge_reader = RX522()
+    badge_reader = RC522()
     led = LED()
 
     # Create and start door node controller
