@@ -53,7 +53,47 @@ class DataBase:
         #self.cursor.execute(exit)
         #self.database.commit()
         
+    #adding entires to nfc_and_employee_id table
+    def add_entries(self,badge_id,employee_id):
+        data_tuple =(badge_id,employee_id)
+        self.cursor.execute("INSERT INTO nfc_and_employee_id(nfc_id,employee_id) VALUES (?,?)",data_tuple)
+        self.database.commit()
+        if employee_id ==1:
+            data_tuple1 =(1,employee_id,"exit",3,0,"authorized",0)
+            self.cursor.execute("INSERT INTO access_summary(transaction_id,employee_id,access_type,access_node,temp_reading,status,validity) VALUES (?,?,?,?,?,?)",data_tuple1)
+            self.database.commit()
+        elif employee_id == 2:
+            data_tuple2 =(2,employee_id,"entry",1,36,"authorized",0)
+            self.cursor.execute("INSERT INTO access_summary(transaction_id,employee_id,access_type,access_node,temp_reading,status,validity) VALUES (?,?,?,?,?,?)",data_tuple2)
+            self.database.commit()
+        elif employee_id == 3:
+            data_tuple3 =(3,employee_id,"entry",2,36.5,"authorized",0)
+            self.cursor.execute("INSERT INTO access_summary(transaction_id,employee_id,access_type,access_node,temp_reading,status,validity) VALUES (?,?,?,?,?,?)",data_tuple3)
+            self.database.commit()
+        elif employee_id ==4:
+            data_tuple1 =(4,employee_id,"exit",4,0,"authorized",0)
+            self.cursor.execute("INSERT INTO access_summary(transaction_id,employee_id,access_type,access_node,temp_reading,status,validity) VALUES (?,?,?,?,?,?)",data_tuple4)
+            self.database.commit()
+        elif employee_id ==5:
+            data_tuple1 =(5,employee_id,"entry",1,38,"unauthorized",3)
+            self.cursor.execute("INSERT INTO access_summary(transaction_id,employee_id,access_type,access_node,temp_reading,status,validity) VALUES (?,?,?,?,?,?)",data_tuple5)
+            self.database.commit()
     
+    #adding node info
+    def add_nodes(self):
+        data_tuple = (1,'entry','Main Entrance','North side')
+        self.cursor.execute("INSERT INTO node_info VALUES (?,?,?,?)",data_tuple)
+        self.database.commit()
+        data_tuple = (2,'entry','South Entrance','South side')
+        self.cursor.execute("INSERT INTO node_info VALUES (?,?,?,?)",data_tuple)
+        self.database.commit()
+        data_tuple = (3,'exit','Main Exit','North side')
+        self.cursor.execute("INSERT INTO node_info VALUES (?,?,?,?)",data_tuple)
+        self.database.commit()
+        data_tuple = (4,'exit','South Exit','South side')
+        self.cursor.execute("INSERT INTO node_info VALUES (?,?,?,?)",data_tuple)
+        self.database.commit()
+        
     def close_db(self):
         if (self.database):
             self.database.close()
