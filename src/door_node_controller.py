@@ -64,11 +64,13 @@ class DoorNodeController:
         self.server_conn = transport.Connection(self.thingspeak_chan,
                                                 self.address, "control_server")
         self.server_conn.established.wait()
+
+        #set up transaction id which keeps track of order of messages.
+        tid = 0
+
         #Loop that has the code run indefinitely if needed
         while True:
             current_user = True
-            #set up transaction id which keeps track of order of messages.
-            tid = 0
             badge_id = self.nfc_reader.read_card_data()
             self.handle_badge_tap(badge_id, tid)
             #Checks the server response and handles server messages
