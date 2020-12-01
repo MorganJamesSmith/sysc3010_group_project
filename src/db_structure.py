@@ -54,31 +54,50 @@ class DataBase:
         #self.database.commit()
         
     #adding entires to nfc_and_employee_id table
-    def add_entries(self,badge_id,employee_id):
-        data_tuple =(badge_id,employee_id)
+    def add_entries(self):
+        badge_id1 = bytes.fromhex("68091a96e619ad7997099f16c64b5e17")
+        badge_id2 = bytes.fromhex("63d584ccd569b75faf69d1a8e230efc7")
+        badge_id3 = bytes.fromhex("86878fa2296fdfc32fe278dfd45e6400")
+        badge_id4 = bytes.fromhex("4a5ca17b0fe64b9c8b9859577f9f7960")
+        badge_id5 = bytes.fromhex("3f8319465ef0e3927cd36f29a7f424a1")
+        data_tuple =(badge_id1,1)
         self.cursor.execute("INSERT INTO nfc_and_employee_id(nfc_id,employee_id) VALUES (?,?)",data_tuple)
         self.database.commit()
-        if employee_id ==1:
-            data_tuple1 =(1,employee_id,"exit",3,0,"authorized",0)
-            self.cursor.execute("INSERT INTO access_summary(transaction_id,employee_id,access_type,access_node,temp_reading,status,validity) VALUES (?,?,?,?,?,?)",data_tuple1)
-            self.database.commit()
-        elif employee_id == 2:
-            data_tuple2 =(2,employee_id,"entry",1,36,"authorized",0)
-            self.cursor.execute("INSERT INTO access_summary(transaction_id,employee_id,access_type,access_node,temp_reading,status,validity) VALUES (?,?,?,?,?,?)",data_tuple2)
-            self.database.commit()
-        elif employee_id == 3:
-            data_tuple3 =(3,employee_id,"entry",2,36.5,"authorized",0)
-            self.cursor.execute("INSERT INTO access_summary(transaction_id,employee_id,access_type,access_node,temp_reading,status,validity) VALUES (?,?,?,?,?,?)",data_tuple3)
-            self.database.commit()
-        elif employee_id ==4:
-            data_tuple1 =(4,employee_id,"exit",4,0,"authorized",0)
-            self.cursor.execute("INSERT INTO access_summary(transaction_id,employee_id,access_type,access_node,temp_reading,status,validity) VALUES (?,?,?,?,?,?)",data_tuple4)
-            self.database.commit()
-        elif employee_id ==5:
-            data_tuple1 =(5,employee_id,"entry",1,38,"unauthorized",3)
-            self.cursor.execute("INSERT INTO access_summary(transaction_id,employee_id,access_type,access_node,temp_reading,status,validity) VALUES (?,?,?,?,?,?)",data_tuple5)
-            self.database.commit()
-    
+        data_tuple =(badge_id2,2)
+        self.cursor.execute("INSERT INTO nfc_and_employee_id(nfc_id,employee_id) VALUES (?,?)",data_tuple)
+        self.database.commit()
+        data_tuple =(badge_id3,3)
+        self.cursor.execute("INSERT INTO nfc_and_employee_id(nfc_id,employee_id) VALUES (?,?)",data_tuple)
+        self.database.commit()
+        data_tuple =(badge_id4,4)
+        self.cursor.execute("INSERT INTO nfc_and_employee_id(nfc_id,employee_id) VALUES (?,?)",data_tuple)
+        self.database.commit()
+        data_tuple =(badge_id5,5)
+        self.cursor.execute("INSERT INTO nfc_and_employee_id(nfc_id,employee_id) VALUES (?,?)",data_tuple)
+        self.database.commit()
+        i = 1
+        for i in range (6):
+            if i ==1:
+                data_tuple1 =(1,i,"exit",3,0,"authorized",0)
+                self.cursor.execute("INSERT INTO access_summary(transaction_id,employee_id,access_type,access_node,temp_reading,status,validity) VALUES (?,?,?,?,?,?,?)",data_tuple1)
+                self.database.commit()
+            elif i == 2:
+                data_tuple2 =(2,i,"entry",1,36,"authorized",0)
+                self.cursor.execute("INSERT INTO access_summary(transaction_id,employee_id,access_type,access_node,temp_reading,status,validity) VALUES (?,?,?,?,?,?,?)",data_tuple2)
+                self.database.commit()
+            elif i == 3:
+                data_tuple3 =(3,i,"entry",2,36.5,"authorized",0)
+                self.cursor.execute("INSERT INTO access_summary(transaction_id,employee_id,access_type,access_node,temp_reading,status,validity) VALUES (?,?,?,?,?,?,?)",data_tuple3)
+                self.database.commit()
+            elif i == 4:
+                data_tuple4 =(4,i,"exit",4,0,"authorized",0)
+                self.cursor.execute("INSERT INTO access_summary(transaction_id,employee_id,access_type,access_node,temp_reading,status,validity) VALUES (?,?,?,?,?,?,?)",data_tuple4)
+                self.database.commit()
+            elif i == 5:
+                data_tuple5 =(5,i ,"entry",1,38,"unauthorized",3)
+                self.cursor.execute("INSERT INTO access_summary(transaction_id,employee_id,access_type,access_node,temp_reading,status,validity) VALUES (?,?,?,?,?,?,?)",data_tuple5)
+                self.database.commit()
+                
     #adding node info
     def add_nodes(self):
         data_tuple = (1,'entry','Main Entrance','North side')
