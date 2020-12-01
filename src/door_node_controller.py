@@ -78,10 +78,9 @@ class DoorNodeController:
             while current_user:
                 data = self.server_conn.recv()
                 try:
-                    rsp = Message.from_bytes(data)
-                except:
-                    print(f"Received invalid message \"{data}\"")
-                    exit(1)
+                    rsp = message.Message.from_bytes(data)
+                except MessageException as error:
+                    print(f"Received invalid message \"{error}\"")
                 else:
                     #Series of if statements to handle the three types
                     #of messages that the DoorNodeController receives
@@ -92,8 +91,7 @@ class DoorNodeController:
                     elif isinstance(rsp, message.DoorStateUpdateMessage):
                         self.handle_door_state_update(rsp)
                     else:
-                        print(f"Received invalid message \"{data}\"")
-                        exit(1)
+                        print(f"Received unexpected message \"{rsp}\"")
             tid += 1
 #
     def handle_badge_tap(self, badge_id, tid):
