@@ -13,14 +13,10 @@ from datetime import date
 
 class DataBase:
     def __init__(self):
-        try:
-            # Connecting to project database
-            self.database = sqlite3.connect('security_system.db')
-            self.cursor = self.database.cursor()
-            print('SQLite Connection to database successful!')
-            print()
-        except sqlite3.Error as error:
-                print("Error while working with SQLite", error)
+        # Connecting to project database
+        self.database = sqlite3.connect('security_system.db')
+        self.cursor = self.database.cursor()
+        print('SQLite Connection to database successful!\n')
 
     #adding tables to the database     
     def creating_db(self):
@@ -37,8 +33,8 @@ class DataBase:
         self.database.commit()
 
         #creating node_info table
-        node = 'CREATE TABLE node_info(node_id INTEGER NOT NULL, node_type TEXT NOT NULL, address TEXT NOT NULL, location TEXT NOT NULL):'
-        elf.cursor.execute(node)
+        node = 'CREATE TABLE node_info(node_id INTEGER NOT NULL, node_type TEXT NOT NULL, address TEXT NOT NULL, location TEXT NOT NULL);'
+        self.cursor.execute(node)
         self.database.commit()
 
         #creating access_summary table
@@ -61,7 +57,4 @@ class DataBase:
     def close_db(self):
         if (self.database):
             self.database.close()
-            print()
-            print()
-            print("SQLite connection is closed")
-
+            print("\n\nSQLite connection is closed")
