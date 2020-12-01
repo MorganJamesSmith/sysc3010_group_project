@@ -165,13 +165,8 @@ class DoorNodeController:
         next user.
         """
         if response.accepted:
-<<<<<<< HEAD
-            self.indicator.set_colour(self.colour.GREEN)
-            self.door_lock.open()
-=======
             self.indicator.set_colour(colour.GREEN)
             self.door_lock.open(self)
->>>>>>> 855055e ([Morgan Smith] chore: fix invalid syntax and import statement)
         else:
             #door stays locked
             self.door_lock.lock()
