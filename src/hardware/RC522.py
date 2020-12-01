@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-
+from time import sleep
 import RPi.GPIO as GPIO
 from mfrc522 import SimpleMFRC522
+import sys
 #Code written by Mario Shebib and taken from https://pimylifeup.com/raspberry-pi-rfid-rc522/
 
 class RC522:
@@ -27,7 +28,7 @@ class RC522:
             return account_id
 
     #method reads the security badge and returns set text data
-    def read_card_data(self,adr):
+    def read_card_data(self):
 
         try:
             #library includes a read function
@@ -36,10 +37,14 @@ class RC522:
             id, text = self.reader.read()
             print(id)
             print(text)
-            data = text
+            data = bytes.fromhex(text)
         finally:
             #This resets ports used by the card reader
             GPIO.cleanup()
             #returns text of the card
             return data
 
+if __name__ == "__main__":
+    nfc = RC522()
+    byte_id = nfc.read_card_data()
+    print(byte_id)

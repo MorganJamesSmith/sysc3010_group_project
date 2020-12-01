@@ -5,14 +5,15 @@
 #
 #door_node_controller.py
 #
-# TODO:
-#needs to be tested with different equipment
-#
 #communication imports
 import communication.thingspeak as thingspeak
 import communication.transport as transport
 import communication.message as message
 #
+"""
+This Module contains the interface for the door node to control
+hardware objects and interface with the server through thingspeak
+"""
 class DoorNodeController:
 #
     """
@@ -68,7 +69,7 @@ class DoorNodeController:
             current_user = True
             #set up transaction id which keeps track of order of messages.
             tid = 0
-            badge_id = self.nfc_reader.read_card()
+            badge_id = self.nfc_reader.read_card_data()
             self.handle_badge_tap(badge_id, tid)
             #Checks the server response and handles server messages
             #until a new person comes
