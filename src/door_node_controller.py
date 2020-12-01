@@ -1,3 +1,5 @@
+#! /usr/bin/env python3
+
 #
 #Code written by Mario Shebib
 #
@@ -20,44 +22,13 @@ class DoorNodeController:
     """
     def __init__(self, address, limit_distance, led,
                  distance_sensor, door_actuator, temperature_sensor, rc522):
-    #hardware imports
-        if distance_sensor is not None:
-            import hardware.RangeFinder as RangeFinder #VL53L0X
-            self.range_finder = distance_sensor
-        else:
-            import stub.RangeFinder_stub as RangeFinder
-            self.range_finder = RangeFinder.RangeFinder_stub()
-        if temperature_sensor is not None:
-            import hardware.mlx90614 as mlx90614
-            self.ir_temp_sensor = temperature_sensor
-        else:
-            import stub.mlx90614_stub as mlx90614
-            self.ir_temp_sensor = mlx90614.MLX90614_stub()
-        if door_actuator is not None:
-            import hardware.DoorActuator as DoorActuator
-            self.door_lock = door_actuator
-        else:
-            import stub.DoorActuator_stub as DoorActuator
-            self.door_lock = DoorActuator.DoorActuator_stub()
-        if rc522 is not None:
-            import hardware.RC522 as RC522
-            self.nfc_reader = rc522
-        else:
-            import stub.RC522_stub as RC522
-            self.nfc_reader = RC522.RC522_stub()
-        if led is not None:
-            import hardware.LED as LED
-            from hardware.LED import LEDColour as colour
-            self.indicator = led
-        else:
-            import stub.LED_stub as LED
-            from stub.LED_stub import LEDColour as colour
-            self.indicator = LED.LED_stub()
+        #hardware imports
         self.dist_from_temp_sensor = limit_distance
         """
         Initializes the door node.
         """
         #Communication variables, DoorState, and address of DoorNode
+        temp_sensor = mlx90614()
         #are initialized.
         self.thingspeak_chan = 0
         self.server_conn = 0
@@ -65,6 +36,7 @@ class DoorNodeController:
         self.address = address
         #At the initial state of the door node the door is locked.
         self.indicator.set_colour(colour.RED)
+
     def main_loop(self):
         """
         Main function of code that runs through the specific methods.
@@ -172,6 +144,49 @@ class DoorNodeController:
             self.door_lock.lock()
         return False
 
-if __name__ == "__main__":
-    door = DoorNodeController("Entrance", 300, None, None, None, None, None)
-    door.main_loop()
+
+if __name__ == '__main__':
+    #
+    #   Range Finder
+    #
+    #from hardware.RangeFinder import RangeFinder
+    from stub.RangeFinder_stub import RangeFinder_stub as RangeFinder
+   
+    #
+    #   IR Temperature Sensor
+    #
+    #from hardware.mlx90614 import mlx90614
+    from stub.mlx90614_stub import MLX90614_stub as mlx90614
+
+    #
+    #   Electronic Door Lock
+    #
+    #from hardware.DoorActuator import DoorActuator
+    from stub.DoorActuator_stub import DoorActuator_stub as DoorActuator
+
+    #
+    #   NFC Security badge reader
+    #
+    #from hardware.RC522 import RC522
+    from stub.RC522_stub import RC522_stub as RC522
+
+    #
+    #   LED
+    #
+    #from hardware.LED import LEDColour as colour, LED as LED
+    from stub.LED_stub import LEDColour as colour, LED_stub as LED
+
+    
+    # Create hardware driver objects
+    range_finder = RangeFinder()
+    temp_sensor = mlx90614()
+    door_lock = DoorActuator()
+    badge_reader = RX522()
+    led = LED()
+
+    # Create and start door node controller
+    print('hello!')
+    controller = DoorNodeController("doornode", 30, led, range_finder, door_lock, temp_sensor,
+                                    badge_reader)
+    controller.main_loop()
+
