@@ -64,7 +64,7 @@ class DoorNodeController:
         self.current_state = message.DoorState(2)
         self.address = address
         #At the initial state of the door node the door is locked.
-        self.colour = colour()
+        self.colour = colour(1)
         self.indicator.set_colour(self.colour.RED)
 #
     def main_loop(self):
@@ -168,8 +168,8 @@ class DoorNodeController:
         """
         if response.accepted:
             self.indicator.set_colour(self.colour.GREEN)
-            self.door_lock.open(self)
+            self.door_lock.open()
         else:
             #door stays locked
-            self.door_lock.lock(self)
+            self.door_lock.lock()
         return False
