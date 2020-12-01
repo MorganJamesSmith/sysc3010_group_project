@@ -53,7 +53,7 @@ class DataBase:
         #self.cursor.execute(exit)
         #self.database.commit()
         
-    #adding entires to nfc_and_employee_id table
+   #adding entires to nfc_and_employee_id table
     def add_entries(self):
         try:
             with open("./stub_text/nfc_id_address.txt", "r") as idfile:
@@ -63,28 +63,30 @@ class DataBase:
                 badge_id4 = bytes.fromhex(idfile.readline())
                 badge_id5 = bytes.fromhex(idfile.readline())
         except FileNotFoundError as e:
-            print("RC522: Could not open testcase files.")
+            print("Could not open testcase files.")
             exit(1)
-        
+       
         #badge_id1 = bytes.fromhex("68091a96e619ad7997099f16c64b5e17")
         #badge_id2 = bytes.fromhex("63d584ccd569b75faf69d1a8e230efc7")
         #badge_id3 = bytes.fromhex("86878fa2296fdfc32fe278dfd45e6400")
         #badge_id4 = bytes.fromhex("4a5ca17b0fe64b9c8b9859577f9f7960")
         #badge_id5 = bytes.fromhex("3f8319465ef0e3927cd36f29a7f424a1")
-        data_tuple =(badge_id1,1)
-        self.cursor.execute("INSERT INTO nfc_and_employee_id(nfc_id,employee_id) VALUES (?,?)",data_tuple)
+        #employee_info(nfc_id BLOB NOT NULL, employee_id INTEGER PRIMARY KEY, first_name TEXT NOT NULL,
+        #middle_name TEXT, last_name TEXT NOT NULL, admin TEXT NOT NULL)
+        data_tuple =(badge_id1,'John','Doe','Y')
+        self.cursor.execute("INSERT INTO employee_info(nfc_id,first_name,last_name,admin) VALUES (?,?,?,?)",data_tuple)
         self.database.commit()
-        data_tuple = (badge_id2,2)
-        self.cursor.execute("INSERT INTO nfc_and_employee_id(nfc_id,employee_id) VALUES (?,?)",data_tuple)
+        data_tuple =(badge_id2,'Jane','Doe','N')
+        self.cursor.execute("INSERT INTO employee_info(nfc_id,first_name,last_name,admin) VALUES (?,?,?,?)",data_tuple)
         self.database.commit()
-        data_tuple = (badge_id3,3)
-        self.cursor.execute("INSERT INTO nfc_and_employee_id(nfc_id,employee_id) VALUES (?,?)",data_tuple)
+        data_tuple =(badge_id3,'Mary','Kate','N')
+        self.cursor.execute("INSERT INTO employee_info(nfc_id,first_name,last_name,admin) VALUES (?,?,?,?)",data_tuple)
         self.database.commit()
-        data_tuple = (badge_id4,4)
-        self.cursor.execute("INSERT INTO nfc_and_employee_id(nfc_id,employee_id) VALUES (?,?)",data_tuple)
+        data_tuple =(badge_id4,'Michael','David','Mcmillan','N')
+        self.cursor.execute("INSERT INTO employee_info(nfc_id,first_name,middle_name,last_name,admin) VALUES (?,?,?,?,?)",data_tuple)
         self.database.commit()
-        data_tuple = (badge_id5,5)
-        self.cursor.execute("INSERT INTO nfc_and_employee_id(nfc_id,employee_id) VALUES (?,?)",data_tuple)
+        data_tuple =(badge_id5,'Jake','Derby','N')
+        self.cursor.execute("INSERT INTO employee_info(nfc_id,first_name,last_name,admin) VALUES (?,?,?,?)",data_tuple)
         self.database.commit()
         i = 1
         for i in range (6):
