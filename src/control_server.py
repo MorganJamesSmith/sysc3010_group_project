@@ -189,7 +189,9 @@ class ControlServer:
 
     def _new_message(self, client, received_message):
 
-        transaction = next((x for x in self.transactions if x.tid == received_message.transaction_id),
+        transaction = next((x for x in self.transactions
+                            if x.tid == received_message.transaction_id
+                            and x.client == client),
                            None)
 
         if transaction is None:
