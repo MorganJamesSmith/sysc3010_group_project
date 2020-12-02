@@ -37,6 +37,8 @@ class RC522_stub:
     def close(self):
         self.id_file.close()
         self.data_file.close()
+    def clean_up(self):
+        print("RC522 clean_up called")
 
 class RC522_Interactive_stub:
     def __init__(self):
@@ -74,4 +76,6 @@ class RC522_Interactive_stub:
                         continue
                     else:
                         return self.valid_ids[value][1]
+    def clean_up(self):
+        print("RC522 clean_up called")
 

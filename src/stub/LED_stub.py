@@ -18,3 +18,5 @@ class LED_stub:
     def set_colour(self, colour):
         self.colour = colour
         print(self.colour)
+    def clean_up(self):
+        print("LED clean_up called")    
