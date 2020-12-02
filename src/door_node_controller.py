@@ -221,13 +221,15 @@ if __name__ == '__main__':
     #   Range Finder
     #
     #from hardware.RangeFinder import RangeFinder
-    from stub.RangeFinder_stub import RangeFinder_stub as RangeFinder
+    #from stub.RangeFinder_stub import RangeFinder_stub as RangeFinder
+    from stub.RangeFinder_stub import RangeFinder_Interactive_stub as RangeFinder
    
     #
     #   IR Temperature Sensor
     #
     #from hardware.mlx90614 import mlx90614
-    from stub.mlx90614_stub import MLX90614_stub as mlx90614
+    #from stub.mlx90614_stub import MLX90614_stub as mlx90614
+    from stub.mlx90614_stub import MLX90614_Interactive_stub as mlx90614
 
     #
     #   Electronic Door Lock
@@ -239,7 +241,8 @@ if __name__ == '__main__':
     #   NFC Security badge reader
     #
     #from hardware.RC522 import RC522
-    from stub.RC522_stub import RC522_stub as RC522
+    #from stub.RC522_stub import RC522_stub as RC522
+    from stub.RC522_stub import RC522_Interactive_stub as RC522
 
     #
     #   LED

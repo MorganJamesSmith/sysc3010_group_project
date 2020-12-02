@@ -27,5 +27,17 @@ class RangeFinder_stub:
             if line != '':
                 break
             sleep(2)
-        return int(line) 
+        return int(line)
+
+class RangeFinder_Interactive_stub:
+    def get_range(self):
+        print("Range finder stub")
+        while True:
+            try:
+                range_value = int(input("Range in mm: "))
+            except ValueError:
+                print("Invalid range.")
+                continue
+            else:
+                return range_value
 

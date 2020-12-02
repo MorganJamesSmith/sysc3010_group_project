@@ -24,3 +24,22 @@ class MLX90614_stub:
                 break
             sleep(2)
         return float(line)
+
+class MLX90614_Interactive_stub:
+    @staticmethod
+    def get_temp(name):
+        print(f"MLX90614 Stub - {name} temp")
+        while True:
+            try:
+                temp_value = float(input(f"{name} temp in °C: "))
+            except ValueError:
+                print("Invalid temperature.")
+                continue
+            else:
+                return temp_value
+
+    def get_ambient_temp(self):
+        return MLX90614_Interactive_stub.get_temp("Ambient")
+
+    def get_ir_temp(self):
+        return MLX90614_Interactive_stub.get_temp("IR")
