@@ -9,11 +9,36 @@
 import communication.thingspeak as thingspeak
 import communication.transport as transport
 import communication.message as message
-#
+
+import time
+from threading import Thread, Event
+
 """
 This Module contains the interface for the door node to control
 hardware objects and interface with the server through thingspeak
 """
+
+class NFCReaderPoller(Thread):
+    def __init__(self, nfc_reader, callback):
+        Thread.__init__(self)
+        self.daemon = True
+
+        self.nfc_reader = nfc_reader
+        self.callback = callback
+
+        self.resume_polling = Event()
+
+    def run(self):
+        while True:
+            data = self.nfc_reader.read_card_data()
+            self.callback(data)
+
+            self.resume_polling.wait()
+            self.resume_polling.clear()
+
+    def resume(self):
+        self.resume_polling.set()
+
 class DoorNodeController:
 #
     """
@@ -21,8 +46,9 @@ class DoorNodeController:
     with the control server to decide whether or not to allow entry into
     the building.
     """
-    def __init__(self, address, limit_distance, indicator, range_finder, door_lock, ir_temp_sensor,
-                 nfc_reader):
+    def __init__(self, address, indicator, range_finder, door_lock, ir_temp_sensor, nfc_reader,
+                 temp_sense_min_dist, temp_sense_max_dist):
+        self.address = address
         
         self.indicator = indicator
         self.range_finder = range_finder
@@ -30,25 +56,14 @@ class DoorNodeController:
         self.ir_temp_sensor = ir_temp_sensor
         self.nfc_reader = nfc_reader
 
+        self.temp_sense_min_dist = temp_sense_min_dist
+        self.temp_sense_max_dist = temp_sense_max_dist
 
-        self.dist_from_temp_sensor = limit_distance
-        """
-        Initializes the door node.
-        """
-        #Communication variables, DoorState, and address of DoorNode
-        temp_sensor = mlx90614()
-        #are initialized.
-        self.thingspeak_chan = 0
-        self.server_conn = 0
-        self.current_state = message.DoorState(2)
-        self.address = address
-        #At the initial state of the door node the door is locked.
-        self.indicator.set_colour(colour.RED)
+        self.tid = 0
+        self.transaction_ongoing = False
 
-    def main_loop(self):
-        """
-        Main function of code that runs through the specific methods.
-        """
+        self.nfc_poller = NFCReaderPoller(self.nfc_reader, self.handle_badge_tap)
+
         # Get API keys from file
         try:
             with open("api_write_key.txt", "r") as keyfile:
@@ -58,86 +73,122 @@ class DoorNodeController:
         except FileNotFoundError as error:
             print("Could not open keyfiles.")
             exit(1)
-        # Get ThingSpeak channel object
-        self.thingspeak_chan = thingspeak.Channel(1222699, write_key=write_key,
-                                                  read_key=read_key)
-        self.server_conn = transport.Connection(self.thingspeak_chan,
-                                                self.address, "control_server")
-        self.server_conn.established.wait()
 
-        #set up transaction id which keeps track of order of messages.
-        tid = 0
+        # Connect to server via ThingSpeak channel
+        self.thingspeak_chan = thingspeak.Channel(1222699, write_key=write_key, read_key=read_key)
+        self.server_conn = transport.Connection(self.thingspeak_chan, self.address,
+                                                "control_server")
+        self.current_state = message.DoorState.NOT_ALLOWING_ENTRY
+        # At the initial state of the door node the door is locked.
+        self.indicator.set_colour(colour.RED)
 
-        #Loop that has the code run indefinitely if needed
+    def main_loop(self):
+        """
+        Main function of code that runs through the specific methods.
+        """
+        # Wait for conection to server to be established
+        ret = self.server_conn.established.wait(timeout = 10)
+        if ret != True:
+            print("Connection to control server timed out")
+            exit(1)
+
+        # Start polling for NFC badge taps
+        self.nfc_poller.start()
+
+        # Loop that has the code run indefinitely
         while True:
-            current_user = True
-            badge_id = self.nfc_reader.read_card_data()
-            self.handle_badge_tap(badge_id, tid)
-            #Checks the server response and handles server messages
-            #until a new person comes
-            while current_user:
-                data = self.server_conn.recv()
-                try:
-                    rsp = message.Message.from_bytes(data)
-                except MessageException as error:
-                    print(f"Received invalid message \"{error}\"")
+            data = self.server_conn.recv()
+
+            try:
+                rsp = message.Message.from_bytes(data)
+            except message.MessageException as error:
+                print(f"Received invalid message \"{error}\"")
+            else:
+                if hasattr(rsp, "transaction_id") and (rsp.transaction_id != self.tid):
+                    print(f"Received message for unkown transaction: {rsp}")
+                    continue
+                    
+                if isinstance(rsp, message.InformationRequestMessage):
+                    self.handle_information_request(rsp)
+                elif isinstance(rsp, message.AccessResponseMessage):
+                    current_user = self.handle_access_response(rsp)
+                elif isinstance(rsp, message.DoorStateUpdateMessage):
+                    self.handle_door_state_update(rsp)
                 else:
-                    #Series of if statements to handle the three types
-                    #of messages that the DoorNodeController receives
-                    if isinstance(rsp, message.InformationRequestMessage):
-                        self.handle_information_request(rsp, tid)
-                    elif isinstance(rsp, message.AccessResponseMessage):
-                        current_user = self.handle_access_response(rsp)
-                    elif isinstance(rsp, message.DoorStateUpdateMessage):
-                        self.handle_door_state_update(rsp)
-                    else:
-                        print(f"Received unexpected message \"{rsp}\"")
-            tid += 1
-#
-    def handle_badge_tap(self, badge_id, tid):
+                    print(f"Received unexpected message: {rsp}")
+
+    def handle_badge_tap(self, badge_data):
         """
         sends AccessRequestMessage with badge id
         """
-        response = message.AccessRequestMessage(tid, badge_id)
-        self.server_conn.send(response.to_bytes())
-#
-    def handle_information_request(self, response, tid):
+        if self.transaction_ongoing:
+            return
+
+        try:
+            badge_id = bytes.fromhex(badge_data)
+        except ValueError:
+            print(f"Received invalid badge ID: \"{badge_id}\"")
+        else: 
+            if len(badge_id) != 16:
+                print(f"Received badge ID with invalid length: \"{badge_id}\"")
+                return 
+
+            self.transction_ongoing = True
+            response = message.AccessRequestMessage(self.tid, badge_id)
+            self.server_conn.send(response.to_bytes())
+
+    def handle_information_request(self, request):
         """
         responds to InformationRequestMessages
         gathering temperature data.
         """
+
+        if request.information_type == message.InformationType.USER_TEMPERATURE:
+            payload = self.get_user_temperature()
+        else:
+            print(f"Recevied request for unkown information type: {request}")        
+
+        response = message.InformationResponseMessage(self.tid, request.information_type, payload)
+        print(response)
+        self.server_conn.send(response.to_bytes())
+
+    def get_user_temperature(self):
         self.indicator.set_colour(colour.YELLOW)
-        distance = self.range_finder.get_range()
+
         #Constantly checks to make sure the code doesn't proceed until
         #the user is in suitable range from the temperature sensor.
-        while(self.dist_from_temp_sensor > distance or distance < 300):
+        distance = self.range_finder.get_range()
+        while(distance < self.temp_sense_min_dist or distance > self.temp_sense_max_dist):
+            time.sleep(0.1)
             distance = self.range_finder.get_range()
+
         ambient_temp = self.ir_temp_sensor.get_ambient_temp()
         person_temp = self.ir_temp_sensor.get_ir_temp()
-        #Contains the data that will be sent to database.
-        payload = message.TemperatureInfoPayload(ambient_temp, person_temp)
-        self.indicator.set_colour(colour.RED)
-        response = message.InformationResponseMessage(tid, message.InformationType.USER_TEMPERATURE,
-                                                      payload)
-        self.server_conn.send(response.to_bytes())
-#
-    def handle_door_state_update(self, response):
+        
+        self.indicator.set_colour(colour.OFF)
+        
+        return message.TemperatureInfoPayload(ambient_temp, person_temp)
+        
+
+    def handle_door_state_update(self, update):
         """
         Allows the DoorNodeController to be aware of whether or not it
         should be allowing entry or if the building is full.
         """
-        if response.state == message.DoorState.ALLOWING_ENTRY:
-            self.indicator.set_colour(colour.RED)
-        elif response.state == message.DoorState.NOT_ALLOWING_ENTRY:
-            self.indicator.set_colour(colour.OFF)
-        else:
-            msg = ("Fail, did not receive a valid DoorState "\
-                   "update message.")
-            print(msg)
-            exit(1)
-        self.current_state = response.state
-        return self.current_state
-#
+        if not self.transaction_ongoing:
+            # If we are not in the middle of a transaction change the LED colour to reflect the new
+            # state
+            if update.state == message.DoorState.ALLOWING_ENTRY:
+                self.indicator.set_colour(colour.RED)
+            elif update.state == message.DoorState.NOT_ALLOWING_ENTRY:
+                self.indicator.set_colour(colour.OFF)
+            else:
+                # This should be impossible
+                print(f"Recevied an invalid door state update: {update}")
+                return
+        
+        self.current_state = update.state
+
     def handle_access_response(self, response):
         """
         Handles the AccessResponseMessage by either unlocking the door
@@ -146,11 +197,21 @@ class DoorNodeController:
         """
         if response.accepted:
             self.indicator.set_colour(colour.GREEN)
-            self.door_lock.open()
+            self.door_lock.open_timed(10)
+            self.indicator.set_colour(colour.RED if self.current_state ==
+                                        message.DoorState.ALLOWING_ENTRY else colour.OFF)
         else:
-            #door stays locked
-            self.door_lock.lock()
-        return False
+            # Door stays locked, set LED red for at least 5 seconds
+            self.indicator.set_colour(colour.RED)
+            time.sleep(5)
+            # If we are not allowing entry the LED should go off between transactions
+            if self.current_state == message.DoorState.NOT_ALLOWING_ENTRY:
+                self.indicator.set_colour(colour.OFF)
+
+        # Clean up transaction
+        self.tid += 1
+        self.transaction_ongoing = False
+        self.nfc_poller.resume()
 
 
 if __name__ == '__main__':
@@ -193,7 +254,7 @@ if __name__ == '__main__':
     led = LED()
 
     # Create and start door node controller
-    controller = DoorNodeController("Main Entrance", 30, led, range_finder, door_lock, temp_sensor,
-                                    badge_reader)
+    controller = DoorNodeController("Main Entrance", led, range_finder, door_lock, temp_sensor,
+                                    badge_reader, 20, 150)
     controller.main_loop()
 
