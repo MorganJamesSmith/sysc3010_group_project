@@ -14,8 +14,9 @@ class LED:
     def __init__(self, red_pin, green_pin):
         self.red_pin = red_pin
         self.green_pin = green_pin
-    
-        GPIO.setmode(GPIO.BCM)
+        mode_check = GPIO.getmode()
+        if mode_check is None:
+            GPIO.setmode(GPIO.BOARD)
     
         #GPIO setup will have pin 17 and 18 as outputs controlling red and green
         GPIO.setup(self.red_pin, GPIO.OUT)
