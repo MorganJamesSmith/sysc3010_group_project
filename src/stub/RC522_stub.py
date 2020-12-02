@@ -1,26 +1,37 @@
-#!/usr/bin/env python3
-
-
 #Code written by Mario Shebib and taken from https://pimylifeup.com/raspberry-pi-rfid-rc522/
-import sys
+
+from time import sleep
 
 class RC522_stub:
     def __init__(self):
-        # Get account id and data from file
         try:
-            with open("./stub_text/nfc_id_address.txt", "r") as idfile:
-                self.account_id = bytes.fromhex(idfile.read().strip())
-            with open("./stub_text/nfc_data.txt", "r") as datafile:
-                self.data = bytes.fromhex(datafile.read().strip())
-        except FileNotFoundError as e: 
-            print("RC522: Could not open testcase files.")
-            exit(1)
-    #method returns id from file
+            self.id_file = open("./stub_text/nfc_id_address.txt", "r")
+        except FileNotFoundError:
+            self.id_file = None
+
+        try:
+            self.data_file = open("./stub_text/nfc_data.txt", "r")
+        except FileNotFoundError:
+            self.data_file = None
+
     def read_card(self):
-        print(self.account_id.hex())
-        return self.account_id
+        while True:
+            line = self.id_file.readline().strip() if seld.id_file else ''
+            if line != '':
+                break;
+            else:
+                sleep(2)
+        return line
     
-    #method returns data from file
     def read_card_data(self):
-        print(self.data.hex())
-        return self.data
+        while True:
+            line = self.data_file.readline().strip() if self.data_file else ''
+            if line != '':
+                break
+            else:
+                sleep(2)
+        return line
+
+    def close(self):
+        self.id_file.close()
+        self.data_file.close()
