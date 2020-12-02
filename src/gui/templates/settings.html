@@ -1,5 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
+<script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
+
 <div>
     <h1>Settings</h1>
     <form action="/settings" method="post">
@@ -14,4 +17,16 @@
         <input type="submit" value="Update">
     </form>
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        var socket = io();
+        socket.on('settings', function(msg) {
+            console.log(msg);
+            if (msg == "refresh") {
+                //location.reload();
+            }
+        });
+    });
+</script>
 {% endblock %}

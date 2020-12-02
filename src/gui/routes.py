@@ -2,6 +2,9 @@ from flask import Flask, redirect, render_template, url_for, jsonify, request, f
 from flask_socketio import SocketIO, emit
 
 import sqlite3
+import json
+
+from tcp_client import TCPClientWorker
 
 app = Flask(__name__)
 
@@ -120,10 +123,10 @@ def doors_ajax():
 
 @app.route('/doors/add', methods=['GET', 'POST'])
 def add_door():
-    if request.forms:
-        name = request.forms.get('name', None)
-        location = request.forms.get('location', None)
-        door_type = request.forms.get('type', None)
+    if request.form:
+        name = request.form.get('name', None)
+        location = request.form.get('location', None)
+        door_type = request.form.get('type', None)
 
         if name is None or name.strip() == '':
             flash('Invalid name', 'error')
@@ -154,6 +157,9 @@ def delete_door():
 #   Settings
 #
 
+settings_cache = {"minimum_safe_temperature": 0.0, "maximum_safe_temperature": 0.0,
+                  "maximum_occupancy": 0}
+
 @app.route('/settings', methods=['GET', 'POST'])
 def settings():
     if request.form:
@@ -179,13 +185,36 @@ def settings():
             elif max_temp_val is None:
                 flash('Invalid maximum temperature', 'error')
         else:
+            settings_cache["maximum_occupancy"] = max_occ_val
+            settings_cache["minimum_safe_temperature"] = min_temp_val
+            settings_cache["maximum_safe_temperature"] = max_temp_val
+            tcp_worker.send(json.dumps(settings_cache).encode('utf-8'))
             flash('Settings updated')
     else:
-        maximum_occupancy = 50
-        min_user_temp = 28
-        max_user_temp = 37.5
+        tcp_worker.send('request\n'.encode('utf-8'))
+        maximum_occupancy = settings_cache["maximum_occupancy"]
+        min_user_temp = settings_cache["minimum_safe_temperature"]
+        max_user_temp = settings_cache["maximum_safe_temperature"]
 
     return render_template('settings.html', max_occ = maximum_occupancy,
                            min_temp = min_user_temp, max_temp = max_user_temp)
+
+tcp_worker = None
+
+@app.before_first_request
+def start_tcp_connection():
+    global tcp_worker
+    tcp_worker = TCPClientWorker('localhost', 29504, tcp_callback)
+    tcp_worker.start()
+    tcp_worker.send('request\n'.encode('utf-8'))
+
+def tcp_callback(data):
+    global settings_cache
+    print(data)
+    new_settings = json.loads(data.decode('utf-8'))
+    if (new_settings != settings_cache):
+        print("New settings!")
+        settings_cache = new_settings
+    socketio.emit('settings', 'refresh')
 
 
