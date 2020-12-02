@@ -127,10 +127,12 @@ class DoorNodeController:
         try:
             badge_id = bytes.fromhex(badge_data)
         except ValueError:
-            print(f"Received invalid badge ID: \"{badge_id}\"")
+            print(f"Received invalid badge ID: \"{badge_data}\"")
+            self.nfc_poller.resume()
         else: 
             if len(badge_id) != 16:
                 print(f"Received badge ID with invalid length: \"{badge_id}\"")
+                self.nfc_poller.resume()
                 return 
 
             self.transction_ongoing = True
@@ -247,11 +249,11 @@ if __name__ == '__main__':
 
     
     # Create hardware driver objects
+    led = LED()
     range_finder = RangeFinder()
     temp_sensor = mlx90614()
     door_lock = DoorActuator()
     badge_reader = RC522()
-    led = LED()
 
     # Create and start door node controller
     controller = DoorNodeController("Main Entrance", led, range_finder, door_lock, temp_sensor,
