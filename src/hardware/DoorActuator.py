@@ -46,7 +46,7 @@ class DoorActuator:
 
 # Quick test of functions
 if __name__ == "__main__":
-    door = DoorActuator(12, 50)
+    door = DoorActuator(32, 50)
     door.open()
     door.lock()
     door.open_timed(1)
