@@ -114,7 +114,7 @@ class ControlServer:
             for connection in new_messages:
                 if connection is self.server:
                     socket, address = self.server.accept(block=False)
-                    self._new_client(socket, address, Queue())
+                    self._new_client(socket, address)
                 elif connection is self.tcp_server:
                     connection, address = self.tcp_server.accept()
                     self.tcp_clients.append(TCP_Client(connection, address, Queue()))
@@ -234,7 +234,7 @@ class ControlServer:
                 raise Exception("This is not the information I requested!")
 
             if(self.settings.minimum_safe_temperature < received_message.payload.user_temp
-               < self.settings.safe_maximum_safe_temperature):
+               < self.settings.maximum_safe_temperature):
                 resp = message.AccessResponseMessage(received_message.transaction_id, True)
                 transaction.status = 'authorized'
                 self.current_occupancy = self.current_occupancy + 1
