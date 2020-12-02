@@ -10,10 +10,13 @@ class RC522:
     def __init__(self):
         #creates an instance of a simple MFRC522 class
         self.reader = SimpleMFRC522()
-
+        self.slow_down = 0.5
+    def clean_up(self):
+        GPIO.cleanup()
 
     #method reads security badge and returns the id
     def read_card(self):
+        
         try:
             #library includes a read function
             #id holds the unique id of the security card
@@ -22,8 +25,7 @@ class RC522:
             print(id)
             account_id = id
         finally:
-            #This resets ports used by the card reader
-            GPIO.cleanup()
+            sleep(self.slow_down)
             #returns card id
             return account_id
 
@@ -38,12 +40,12 @@ class RC522:
             print(id)
             print(text)
         finally:
-            #This resets ports used by the card reader
-            GPIO.cleanup()
-            #returns text of the card
+            sleep(self.slow_down)
             return text
 
 if __name__ == "__main__":
     nfc = RC522()
     byte_id = nfc.read_card_data()
     print(byte_id)
+    self.cleanup()
+    

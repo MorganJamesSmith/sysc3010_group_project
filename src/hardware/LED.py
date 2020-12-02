@@ -10,6 +10,9 @@ class LEDColour(Enum) :
 #Class that controls the LED
 class LED:
     
+    def clean_up(self):
+        GPIO.cleanup()    
+    
     #Initalizes and sets the pins
     def __init__(self, red_pin, green_pin):
         self.red_pin = red_pin
