@@ -214,7 +214,6 @@ class ControlServer:
         #if exit request
         elif not client.entrance:
             resp = message.AccessResponseMessage(transaction.tid, True)
-            self.save_access(transaction)
             transaction.status = 'authorized'
             self.current_occupancy = self.current_occupancy - 1
 
@@ -229,7 +228,6 @@ class ControlServer:
             else:
                 transaction.status = 'unauthorized'
                 resp = message.AccessResponseMessage(transaction.tid, False)
-                self.save_access(transaction)
 
         # When we receive their temperature let them in if it is within
         # range. Else ask for it again.
@@ -246,12 +244,13 @@ class ControlServer:
                 self.current_occupancy = self.current_occupancy + 1
             else:
                 resp = message.AccessResponseMessage(received_message.transaction_id, False)
-            self.save_access(transaction)
         else:
             raise Exception(f"I don't like these types of messages: {received_message}")
 
         if isinstance(resp, message.AccessResponseMessage):
             self.transactions.remove(transaction)
+            self.save_access(transaction)
+
         if VERBOSE:
             print(f"Sending ({resp}) from \"{transaction.client.connection.peer_address}\"")
         client.connection.send(resp.to_bytes())
