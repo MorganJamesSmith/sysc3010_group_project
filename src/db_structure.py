@@ -33,7 +33,7 @@ class DataBase:
         self.database.commit()
 
         #creating access_summary table
-        summary = '''CREATE TABLE access_summary(transaction_id INTEGER NOT NULL, employee_id INTEGER NOT NULL,
+        summary = '''CREATE TABLE access_summary(transaction_id INTEGER NOT NULL, employee_id INTEGER,
         access_type TEXT NOT NULL, access_datetime NOT NULL DEFAULT CURRENT_TIMESTAMP, access_node INTEGER NOT NULL, temp_reading NUMERIC NOT NULL, status TEXT NOT NULL)'''
         self.cursor.execute(summary)
         self.database.commit()
