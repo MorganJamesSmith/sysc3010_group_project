@@ -37,12 +37,11 @@ class RC522:
             id, text = self.reader.read()
             print(id)
             print(text)
-            data = bytes.fromhex(text)
         finally:
             #This resets ports used by the card reader
             GPIO.cleanup()
             #returns text of the card
-            return data
+            return text
 
 if __name__ == "__main__":
     nfc = RC522()
