@@ -1,7 +1,7 @@
 from time import sleep
 
 class MLX90614_stub:
-    def __init__(self):
+    def __init__(self, bus):
         try:
             self.ambient_temp_file = open("./stub_text/ambient_temperature.txt", "r")
             self.ir_temp_file = open("./stub_text/ir_temperature.txt", "r")
@@ -26,6 +26,9 @@ class MLX90614_stub:
         return float(line)
 
 class MLX90614_Interactive_stub:
+    def __init__(self, bus):
+        pass
+
     @staticmethod
     def get_temp(name):
         print(f"MLX90614 Stub - {name} temp")

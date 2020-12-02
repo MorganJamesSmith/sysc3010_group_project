@@ -11,12 +11,13 @@ class LED_stub:
     
     #Initalizes the class and creates the internal colour
     #variable
-    def __init__(self):
+    def __init__(self, red_pin, green_pin):
         self.colour = LEDColour(1)
 
     #defined method for setting LED colours
     def set_colour(self, colour):
         self.colour = colour
         print(self.colour)
+    
     def clean_up(self):
         print("LED clean_up called")    

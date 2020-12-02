@@ -9,7 +9,7 @@
 from time import sleep
 
 class DoorActuator_stub:
-    def __init__(self):
+    def __init__(self, servo_pin, frequency):
         self.servo_delay = 0.5
         sleep(self.servo_delay)
 

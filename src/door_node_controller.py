@@ -217,6 +217,8 @@ class DoorNodeController:
 
 
 if __name__ == '__main__':
+    bus = None
+
     #
     #   Range Finder
     #
@@ -227,7 +229,9 @@ if __name__ == '__main__':
     #
     #   IR Temperature Sensor
     #
-    #from hardware.mlx90614 import mlx90614
+    #import smbus
+    #bus = smbus.SMBus(1)
+    #from hardware.mlx90614 import MLX90614 as mlx90614
     #from stub.mlx90614_stub import MLX90614_stub as mlx90614
     from stub.mlx90614_stub import MLX90614_Interactive_stub as mlx90614
 
@@ -252,10 +256,10 @@ if __name__ == '__main__':
 
     
     # Create hardware driver objects
-    led = LED()
+    led = LED(11, 12)
     range_finder = RangeFinder()
-    temp_sensor = mlx90614()
-    door_lock = DoorActuator()
+    temp_sensor = mlx90614(bus)
+    door_lock = DoorActuator(32, 50)
     badge_reader = RC522()
 
     # Create and start door node controller
