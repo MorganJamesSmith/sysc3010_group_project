@@ -14,7 +14,7 @@ class DoorActuator:
 
     def clean_up(self):
         self.p.stop()
-        GPIO.cleanup()
+        GPIO.setup(servo_pin, GPIO.IN)
 
     def __init__(self, servo_pin, frequency):
         self.locked = 12.5

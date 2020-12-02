@@ -11,6 +11,7 @@ class RC522:
         #creates an instance of a simple MFRC522 class
         self.reader = SimpleMFRC522()
         self.slow_down = 0.5
+    
     def clean_up(self):
         GPIO.cleanup()
 
