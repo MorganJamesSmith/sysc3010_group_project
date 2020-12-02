@@ -61,8 +61,10 @@ def users():
 @app.route('/users/data')
 def users_ajax():
     user_data = []
-    for row in g.db.execute('SELECT employee_id, first_name, last_name, nfc_id FROM employee_info'):
-        user_data.append({"DT_RowID": row[0], "first": row[1], "last": row[2], "id": row[3].hex()})
+    for row in g.db.execute('SELECT employee_id, first_name, middle_name, last_name, nfc_id FROM ' +
+                            'employee_info'):
+        user_data.append({"DT_RowID": row[0], "first": row[1], "middle": row[2], "last": row[3],
+                          "id": row[4].hex()})
 
     return jsonify({"data": user_data})
 
@@ -70,6 +72,7 @@ def users_ajax():
 def add_user():
     if request.form:
         first = request.form.get('fname', None)
+        middle = request.form.get('mname', None)
         last = request.form.get('lname', None)
         badge_id = request.form.get('badgeid', None)
 
@@ -81,14 +84,18 @@ def add_user():
 
         if first is None or first.strip() == '':
             flash('Invalid first name', 'error')
+        elif middle is None or middle.strip() == '':
+            middle = None
         elif last is None or last.strip() == '':
-            flash('Invalid last anme', 'error')
+            flash('Invalid last name', 'error')
         elif badge_id is None or len(badge_id) != 16:
             flash('Invalid badge ID', 'error')
         else:
             with g.db:
-                g.db.execute('INSERT INTO employee_info (first_name, last_name, admin, nfc_id) ' + 
-                             'VALUES (?, ?, "N", ?)', (first.strip(), last.strip(), badge_id))
+                g.db.execute('INSERT INTO employee_info (first_name, middle_name, last_name, ' + 
+                             'admin, nfc_id) VALUES (?, ?, ?, "N", ?)', (first.strip(),
+                             (middle.strip() if middle is not None else None), last.strip(),
+                             badge_id))
             return redirect('/users')
 
     return render_template('add_user.html')
