@@ -85,13 +85,14 @@ def add_user():
 
         if first is None or first.strip() == '':
             flash('Invalid first name', 'error')
-        elif middle is None or middle.strip() == '':
-            middle = None
         elif last is None or last.strip() == '':
             flash('Invalid last name', 'error')
         elif badge_id is None or len(badge_id) != 16:
             flash('Invalid badge ID', 'error')
         else:
+            if middle is None or middle.strip() == '':
+                middle = None
+
             with g.db:
                 g.db.execute('INSERT INTO employee_info (first_name, middle_name, last_name, ' + 
                              'admin, nfc_id) VALUES (?, ?, ?, "N", ?)', (first.strip(),
