@@ -207,13 +207,14 @@ class ControlServer:
 
 
         #invalid employee ID
-        if transaction.employee_id == 0:
+        if transaction.employee_id == None:
             resp = message.AccessResponseMessage(transaction.tid, False)
             transaction.status = 'unauthorized'
 
         #if exit request
         elif not client.entrance:
             resp = message.AccessResponseMessage(transaction.tid, True)
+            self.save_access(transaction)
             transaction.status = 'authorized'
             self.current_occupancy = self.current_occupancy - 1
 
@@ -228,12 +229,15 @@ class ControlServer:
             else:
                 transaction.status = 'unauthorized'
                 resp = message.AccessResponseMessage(transaction.tid, False)
+                self.save_access(transaction)
 
         # When we receive their temperature let them in if it is within
         # range. Else ask for it again.
         elif isinstance(received_message, message.InformationResponseMessage):
             if received_message.information_type != message.InformationType.USER_TEMPERATURE:
                 raise Exception("This is not the information I requested!")
+
+            transaction.temp_reading = received_message.payload.user_temp
 
             if(self.settings.minimum_safe_temperature < received_message.payload.user_temp
                < self.settings.maximum_safe_temperature):
@@ -242,10 +246,10 @@ class ControlServer:
                 self.current_occupancy = self.current_occupancy + 1
             else:
                 resp = message.AccessResponseMessage(received_message.transaction_id, False)
+            self.save_access(transaction)
         else:
             raise Exception(f"I don't like these types of messages: {received_message}")
 
-        self.save_access(transaction)
         if isinstance(resp, message.AccessResponseMessage):
             self.transactions.remove(transaction)
         if VERBOSE:
@@ -258,11 +262,10 @@ class ControlServer:
     
     def badge_id_to_employee_id(self, badge_id):
         self.cursor.execute("SELECT employee_id FROM employee_info WHERE nfc_id =?",(badge_id,) )
-        employeeId = self.cursor.fetchone()[0]
-        if (employeeId == None):
-            employeeId = 0
-            return employeeId
-        return employeeId
+        result = self.cursor.fetchone()
+        if (result == None):
+            return None
+        return result[0]
 
     @staticmethod
     def settings_to_json(settings):
@@ -281,7 +284,8 @@ class ControlServer:
     def save_access(self, transaction):
         access_type =  'entry' if transaction.client.entrance else 'exit'
         data_tuple = (transaction.tid, transaction.employee_id, access_type, transaction.client.node_id, transaction.temp_reading, transaction.status)
-        self.cursor.execute("INSERT INTO access_summary(transaction_id, employee_id, access_type, access_node, temp_reading, status) VALUES (?,?,?,?,?,?)", data_tuple)
+        with self.database_con:
+            self.database_con.execute("INSERT INTO access_summary(transaction_id, employee_id, access_type, access_node, temp_reading, status) VALUES (?,?,?,?,?,?)", data_tuple)
 
 if __name__ == "__main__":
     server = ControlServer()
