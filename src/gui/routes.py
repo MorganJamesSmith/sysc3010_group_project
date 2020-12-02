@@ -41,12 +41,13 @@ def access_ajax():
     for row in g.db.execute('SELECT employee_info.first_name, employee_info.middle_name, ' +
                             ' employee_info.last_name, node_info.address, ' +
                             'access_summary.access_type, access_summary.temp_reading, ' + 
-                            'access_summary.access_datetime FROM access_summary INNER JOIN ' +
-                            'employee_info ON employee_info.employee_id == ' + 
-                            'access_summary.employee_id INNER JOIN node_info ON ' +
-                            'node_info.node_id = access_summary.access_node'):
+                            'access_summary.status, access_summary.access_datetime FROM ' +
+                            'access_summary INNER JOIN employee_info ON ' + 
+                            'employee_info.employee_id == access_summary.employee_id INNER JOIN ' + 
+                            'node_info ON node_info.node_id = access_summary.access_node'):
         access_data.append({"first": row[0], "middle": row[1], "last": row[2], "door": row[3],
-                            "type": row[4], "temp": row[5], "timestamp": row[6]})
+                            "type": row[4], "temp": row[5], "status": "allowed" if row[6] ==
+                            "authorized" else "denied", "timestamp": row[7]})
 
     return jsonify({"data": access_data})
 
