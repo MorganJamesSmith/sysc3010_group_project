@@ -99,7 +99,7 @@ class DoorNodeController:
                 except message.MessageException as error:
                     print(f"Received invalid message \"{error}\"")
                 else:
-                    print(f"Received unexpected message: \{rsp}\")
+                    print(f"Received unexpected message: \"{rsp}\"")
                     
                     if hasattr(rsp, "transaction_id") and (rsp.transaction_id != self.tid):
                         print(f"Received message for unkown transaction: {rsp}")
