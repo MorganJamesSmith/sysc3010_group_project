@@ -2,6 +2,7 @@
 * Table of Contents                                          :TOC_1:noexport:
 - [[#links][Links]]
 - [[#project-description][Project Description]]
+- [[#how-to-run-the-code][How to run the code]]
 - [[#group-roles][Group Roles]]
 - [[#style-guide][Style Guide]]
 
@@ -42,6 +43,35 @@ server will know how many people are in the building.
 The central server also provides a GUI available to the building's security
 team.
 
+* How to run the code
+** Dependencies
+- python >= 3.7
+- python-requests
+- python-flask
+- python-flask-socketio
+- python-gevent
+** Control Server
+You will need to run two separate processes.
+
+The first is the Control Server which is responsible for the control logic.
+
+#+begin_src sh
+cd src
+./control_server.py
+#+end_src
+
+The second is the GUI which can be used to view and modify the settings of the
+Control Server. It can also be used to view access logs.
+
+#+begin_src sh
+cd src
+./gui/run_gui.py
+#+end_src
+** Door Node
+#+begin_src sh
+cd src
+./door_node_controller.py
+#+end_src
 
 * Group Roles
 ** Sam
