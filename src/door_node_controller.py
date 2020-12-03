@@ -230,18 +230,18 @@ if __name__ == '__main__':
     #
     #   Range Finder
     #
-    from hardware.RangeFinder import RangeFinder
+    #from hardware.RangeFinder import RangeFinder
     #from stub.RangeFinder_stub import RangeFinder_stub as RangeFinder
-    #from stub.RangeFinder_stub import RangeFinder_Interactive_stub as RangeFinder   
+    from stub.RangeFinder_stub import RangeFinder_Interactive_stub as RangeFinder   
 
     #
     #   IR Temperature Sensor
     #
-    import smbus
-    bus = smbus.SMBus(1)
-    from hardware.mlx90614 import MLX90614 as mlx90614
+    #import smbus
+    #bus = smbus.SMBus(1)
+    #from hardware.mlx90614 import MLX90614 as mlx90614
     #from stub.mlx90614_stub import MLX90614_stub as mlx90614
-    #from stub.mlx90614_stub import MLX90614_Interactive_stub as mlx90614
+    from stub.mlx90614_stub import MLX90614_Interactive_stub as mlx90614
 
     #
     #   Electronic Door Lock
@@ -259,8 +259,8 @@ if __name__ == '__main__':
     #
     #   LED
     #
-    from hardware.LED import LEDColour as colour, LED as LED
-    #from stub.LED_stub import LEDColour as colour, LED_stub as LED
+    #from hardware.LED import LEDColour as colour, LED as LED
+    from stub.LED_stub import LEDColour as colour, LED_stub as LED
     
     # Create hardware driver objects
     led = LED(17, 18)
@@ -270,6 +270,6 @@ if __name__ == '__main__':
     badge_reader = RC522()
 
     # Create and start door node controller
-    controller = DoorNodeController("Sam's Entrance", led, range_finder, door_lock, temp_sensor,
+    controller = DoorNodeController("Main Entrance", led, range_finder, door_lock, temp_sensor,
                                     badge_reader, 20, 150)
     controller.main_loop()
