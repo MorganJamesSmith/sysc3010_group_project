@@ -2,7 +2,6 @@
 * Table of Contents                                          :TOC_1:noexport:
 - [[#links][Links]]
 - [[#project-description][Project Description]]
-- [[#group-expectations][Group Expectations]]
 - [[#group-roles][Group Roles]]
 - [[#style-guide][Style Guide]]
 
@@ -44,8 +43,6 @@ The central server also provides a GUI available to the building's security
 team.
 
 
-* Group Expectations
-- Slack messages will be responded to within 1 work day.
 * Group Roles
 ** Sam
 - Submit deliverables
