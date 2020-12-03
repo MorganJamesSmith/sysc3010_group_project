@@ -3,7 +3,7 @@
 - [[#links][Links]]
 - [[#project-description][Project Description]]
 - [[#how-to-run-the-code][How to run the code]]
-- [[#group-roles][Group Roles]]
+- [[#group-contributions][Group Contributions]]
 - [[#style-guide][Style Guide]]
 
 * Links
@@ -73,13 +73,22 @@ cd src
 ./door_node_controller.py
 #+end_src
 
-* Group Roles
+* Group Contributions
 ** Sam
 - Submit deliverables
 ** Sunny
 ** Mario
 ** Morgan
 - Meeting Secretary
+- Server hosting
+  - Created and hosted HTML pages to aid in demos
+  - Hosted the control server so the GUI could be accessible by anyone
+*** Code Contributions
+- Control Server control flow
+- Control Server & Door Node testing and debugging
+- Control Server unit
+- Door Actuator hardware code
+
 * Style Guide
 ** Terminology
 To keep a consistent style please use the following terms. No synonyms please
