@@ -250,6 +250,8 @@ class ControlServer:
         if isinstance(resp, message.AccessResponseMessage):
             self.transactions.remove(transaction)
             self.save_access(transaction)
+            for tcp_client in self.tcp_clients:
+                tcp_client.queue.put(b'update\n')
 
         if VERBOSE:
             print(f"Sending ({resp}) from \"{transaction.client.connection.peer_address}\"")

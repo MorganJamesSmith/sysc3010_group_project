@@ -1,6 +1,8 @@
 from flask import Flask, redirect, render_template, url_for, jsonify, request, flash, g
 from flask_socketio import SocketIO, emit
 
+import sys
+import signal
 import sqlite3
 import json
 
@@ -8,7 +10,7 @@ from tcp_client import TCPClientWorker
 
 app = Flask(__name__)
 
-app.config['SECRET_KEY'] = 'secret!'
+app.config['SECRET_KEY'] = 'ajfslkfjweiorqae5u394'
 socketio = SocketIO(app)
 
 @app.before_request
@@ -218,12 +220,18 @@ def start_tcp_connection():
     tcp_worker.send('request\n'.encode('utf-8'))
 
 def tcp_callback(data):
-    global settings_cache
-    print(data)
-    new_settings = json.loads(data.decode('utf-8'))
-    if (new_settings != settings_cache):
-        print("New settings!")
-        settings_cache = new_settings
-    socketio.emit('settings', 'refresh')
-
+    if data == b'update':
+        socketio.start_background_task(target = lambda: socketio.emit('access',
+                                       'refresh'))
+    else:
+        global settings_cache
+        try:
+            new_settings = json.loads(data.decode('utf-8'))
+        except json.decoder.JSONDecodeError:
+            print(f"Error parsing settings update: {data}")
+        else:
+            if (new_settings != settings_cache):
+                settings_cache = new_settings
+            socketio.start_background_task(target = lambda:
+                                           socketio.emit('settings', 'refresh'))
 

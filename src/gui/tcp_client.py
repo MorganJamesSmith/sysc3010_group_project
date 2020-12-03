@@ -42,7 +42,9 @@ class TCPClientWorker(gevent.Greenlet):
             if self.sock in r:
                 data = self.sock.recv(1024)
                 if data:
-                    self.callback(data)
+                    for line in data.split(b'\n'):
+                        if line != b'':
+                            self.callback(line)
                 else:
                     self.sock.close()
                     self.should_stop.set()
