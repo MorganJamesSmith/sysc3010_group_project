@@ -6,6 +6,7 @@
 - [[#group-roles][Group Roles]]
 
 * Links
+- [[https://morgansmith.xyz/stats.html][Git Contribution Stats]]
 - [[file:meeting-notes.org][Meeting Notes]]
 
 * Symptom monitoring Door System
