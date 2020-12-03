@@ -144,6 +144,8 @@ class ControlServer:
                                             settingsfile.write(command)
                                     except FileNotFoundError:
                                         print("Could not write settings")
+
+                                    self.send_door_state_update()
                         client.queue.put(ControlServer.settings_to_json(self.settings)
                                             .encode('UTF-8') + b'\n')
                     else:
@@ -188,6 +190,7 @@ class ControlServer:
         connection.send(resp.to_bytes())
 
     def _new_message(self, client, received_message):
+        send_state_update = False
 
         transaction = next((x for x in self.transactions
                             if x.tid == received_message.transaction_id
@@ -215,6 +218,7 @@ class ControlServer:
         elif not client.entrance:
             resp = message.AccessResponseMessage(transaction.tid, True)
             transaction.status = 'authorized'
+            send_state_update = self.current_occupancy == self.settings.maximum_occupancy
             self.current_occupancy = self.current_occupancy - 1
 
         # Entry request
@@ -241,6 +245,7 @@ class ControlServer:
                < self.settings.maximum_safe_temperature):
                 resp = message.AccessResponseMessage(received_message.transaction_id, True)
                 transaction.status = 'authorized'
+                send_state_update = self.current_occupancy == (self.settings.maximum_occupancy - 1)
                 self.current_occupancy = self.current_occupancy + 1
             else:
                 resp = message.AccessResponseMessage(received_message.transaction_id, False)
@@ -257,6 +262,9 @@ class ControlServer:
             print(f"Sending ({resp}) from \"{transaction.client.connection.peer_address}\"")
         client.connection.send(resp.to_bytes())
 
+        if send_state_update:
+            self.send_door_state_update()
+
     def employee_id_to_status(self, employee_id):
         self.cursor.execute("SELECT status FROM access_summary WHERE employee_id = ? ORDER BY employee_id DESC LIMIT 1", (employee_id,))
         return self.cursor.fetchone()
@@ -267,6 +275,17 @@ class ControlServer:
         if (result == None):
             return None
         return result[0]
+
+    def send_door_state_update(self):
+        state = (message.DoorState.ALLOWING_ENTRY if self.current_occupancy <
+                    self.settings.maximum_occupancy else
+                    message.DoorState.NOT_ALLOWING_ENTRY)
+        update = message.DoorStateUpdateMessage(state)
+
+        if VERBOSE:
+            print(f"Sending door state update ({update}) to all clients")
+        for client in self.clients:
+            client.connection.send(update.to_bytes())
 
     @staticmethod
     def settings_to_json(settings):
