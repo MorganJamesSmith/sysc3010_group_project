@@ -42,8 +42,8 @@ def access_ajax():
                             ' employee_info.last_name, node_info.address, ' +
                             'access_summary.access_type, access_summary.temp_reading, ' + 
                             'access_summary.status, access_summary.access_datetime FROM ' +
-                            'access_summary INNER JOIN employee_info ON ' + 
-                            'employee_info.employee_id == access_summary.employee_id INNER JOIN ' + 
+                            'access_summary LEFT JOIN employee_info ON ' + 
+                            'employee_info.employee_id == access_summary.employee_id LEFT JOIN ' + 
                             'node_info ON node_info.node_id = access_summary.access_node'):
         access_data.append({"first": row[0], "middle": row[1], "last": row[2], "door": row[3],
                             "type": row[4], "temp": row[5], "status": "allowed" if row[6] ==
