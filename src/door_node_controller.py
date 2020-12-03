@@ -12,6 +12,8 @@ import communication.thingspeak as thingspeak
 import communication.transport as transport
 import communication.message as message
 
+VERBOSE = True
+
 """
 This Module contains the interface for the door node to control
 hardware objects and interface with the server through thingspeak
@@ -130,7 +132,10 @@ class DoorNodeController:
             if len(badge_id) != 16:
                 print(f"Received badge ID with invalid length: \"{badge_id}\"")
                 self.nfc_poller.resume()
-                return 
+                return
+
+            if VERBOSE:
+                print(f"NFC Security Badge Tapped: {badge_id.hex()}")
 
             self.transction_ongoing = True
             response = message.AccessRequestMessage(self.tid, badge_id)
@@ -148,10 +153,12 @@ class DoorNodeController:
             print(f"Recevied request for unkown information type: {request}")        
 
         response = message.InformationResponseMessage(self.tid, request.information_type, payload)
-        print(response)
         self.server_conn.send(response.to_bytes())
 
     def get_user_temperature(self):
+        if VERBOSE:
+            print("Getting user temperature")
+
         self.indicator.set_colour(colour.YELLOW)
         #Constantly checks to make sure the code doesn't proceed until
         #the user is in suitable range from the temperature sensor.
@@ -193,11 +200,17 @@ class DoorNodeController:
         next user.
         """
         if response.accepted:
+            if VERBOSE:
+                print("Access granted.")
+
             self.indicator.set_colour(colour.GREEN)
             self.door_lock.open_timed(10)
             self.indicator.set_colour(colour.RED if self.current_state ==
                                       message.DoorState.ALLOWING_ENTRY else colour.OFF)
         else:
+            if VERBOSE:
+                print("Access denied.")
+
             # Door stays locked, set LED red for at least 5 seconds
             self.indicator.set_colour(colour.RED)
             time.sleep(5)
@@ -217,18 +230,18 @@ if __name__ == '__main__':
     #
     #   Range Finder
     #
-    #from hardware.RangeFinder import RangeFinder
+    from hardware.RangeFinder import RangeFinder
     #from stub.RangeFinder_stub import RangeFinder_stub as RangeFinder
-    from stub.RangeFinder_stub import RangeFinder_Interactive_stub as RangeFinder   
+    #from stub.RangeFinder_stub import RangeFinder_Interactive_stub as RangeFinder   
 
     #
     #   IR Temperature Sensor
     #
-    #import smbus
-    #bus = smbus.SMBus(1)
-    #from hardware.mlx90614 import MLX90614 as mlx90614
+    import smbus
+    bus = smbus.SMBus(1)
+    from hardware.mlx90614 import MLX90614 as mlx90614
     #from stub.mlx90614_stub import MLX90614_stub as mlx90614
-    from stub.mlx90614_stub import MLX90614_Interactive_stub as mlx90614
+    #from stub.mlx90614_stub import MLX90614_Interactive_stub as mlx90614
 
     #
     #   Electronic Door Lock
@@ -246,8 +259,8 @@ if __name__ == '__main__':
     #
     #   LED
     #
-    #from hardware.LED import LEDColour as colour, LED as LED
-    from stub.LED_stub import LEDColour as colour, LED_stub as LED
+    from hardware.LED import LEDColour as colour, LED as LED
+    #from stub.LED_stub import LEDColour as colour, LED_stub as LED
     
     # Create hardware driver objects
     led = LED(17, 18)
@@ -257,6 +270,6 @@ if __name__ == '__main__':
     badge_reader = RC522()
 
     # Create and start door node controller
-    controller = DoorNodeController("Main Entrance", led, range_finder, door_lock, temp_sensor,
+    controller = DoorNodeController("Sam's Entrance", led, range_finder, door_lock, temp_sensor,
                                     badge_reader, 20, 150)
     controller.main_loop()
