@@ -99,6 +99,8 @@ class DoorNodeController:
                 except message.MessageException as error:
                     print(f"Received invalid message \"{error}\"")
                 else:
+                    print(f"Received unexpected message: \{rsp}\")
+                    
                     if hasattr(rsp, "transaction_id") and (rsp.transaction_id != self.tid):
                         print(f"Received message for unkown transaction: {rsp}")
                         continue
@@ -257,6 +259,6 @@ if __name__ == '__main__':
     badge_reader = RC522()
 
     # Create and start door node controller
-    controller = DoorNodeController("Mario's Entrance", led, range_finder, door_lock, temp_sensor,
+    controller = DoorNodeController("Main Entrance", led, range_finder, door_lock, temp_sensor,
                                     badge_reader, 20, 150)
     controller.main_loop()
