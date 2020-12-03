@@ -1,0 +1,47 @@
+#+TITLE: Test Demo
+#+AUTHOR: Morgan Smith
+* Schedule
+
+|    |   | Presenter  |   | Item                      |
+|----+---+------------+---+---------------------------|
+| 1. |   | Morgan     |   | Introduction              |
+| 2. |   | Morgan     |   | Door Actuator test        |
+| 3. |   | Sam        |   | Message tests             |
+| 4. |   | Sam        |   | Infrared Temperature test |
+| 5. |   | Sunny      |   | Range Finder test         |
+| 6. |   | Sunny      |   | Database test             |
+| 7. |   | Mario      |   | Door Node Controller test |
+| 8. |   | Mario      |   | RFID test                 |
+| 9. |   | Questions? |   |                           |
+
+* Diagrams
+#+attr_html: :width 500px
+#+CAPTION: System Overview
+[[file:architecture.png]]
+
+#+begin_comment
+#+attr_html: :width 500px
+#+CAPTION: Schematic
+[[file:door-node-schematic.png]]
+#+end_comment
+
+#+attr_html: :width 500px
+#+CAPTION: Lock Schematic
+[[file:lock-test-circuit.png]]
+
+#+attr_html: :width 500px
+#+CAPTION: Infrared Temperature Sensor Schematic
+[[file:ir-test-circuit.png]]
+
+#+attr_html: :width 500px
+#+CAPTION: Range Finder Schematic
+[[file:tof-test-circuit.png]]
+
+#+attr_html: :width 500px
+#+CAPTION: Database Schema
+[[file:db-schema.png]]
+
+#+attr_html: :width 500px
+#+CAPTION: NFC Sensor Schematic
+[[file:nfc-test-circuit.png]]
+

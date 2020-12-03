@@ -1,0 +1,92 @@
+#+TITLE: Final Demo
+#+AUTHOR: Morgan Smith
+* Schedule
+
+1. Introduction
+2. Show off GUI
+3. Run tests
+4. Questions?
+
+
+[[file:architecture.png]]
+
+* Tests
+** Test 1: Ideal building entry
+Camera setup: Mario showing hardware
+
+- Mario attempts to enter the building
+   - Taps card
+   - Inputs distance and temperature
+   - LED turns green (Door unlocked)
+   - after a delay, LED turns red (Door locked)
+
+** Test 2: Invalid Security Badge ID
+Camera setup: Mario showing hardware
+
+- Mario attempts to enter the building
+   - Taps card
+   - LED stay red (Door locked)
+
+** Test 3: Attempted building entry with fever
+Camera setup: Mario showing hardware
+
+- Mario attempts to enter the building
+   - Taps card
+   - Inputs distance and temperature
+   - LED stay red (Door locked)
+
+** Test 4: Ideal entry with temperature and range sensor
+Camera setup: Sam shows his hardware
+
+- Sam attempts to enter the building
+   - Inputs badge ID
+   - Shows temperature isn't taken until in range
+   - Takes temperature
+   - LED turns green (Door unlocked)
+   - after a delay, LED turns red (Door locked)
+
+** Test 5: Attempted building entry with low temperature
+Camera setup: Sam shows his screen and hardware
+
+- Sam attempts to enter the building
+   - Uses software stubs
+     - Inputs badge ID
+     - Inputs distance and temperature
+   - LED stay red (Door locked)
+
+** Test 6: Attempted building entry when building is at capacity
+Camera setup: Sam shows his screen
+
+- Sam attempts to enter the building
+   - Uses software stubs
+     - Inputs badge ID
+     - Inputs distance and temperature
+   - LED stay red (Door locked)
+
+** Test 7: Ideal exit
+Camera setup: Sunny shows her screen
+
+- Sunny attempts to exit the building
+   - Uses software stubs
+     - Inputs badge ID
+   - LED turns green (Door unlocked)
+   - after a delay, LED turns red (Door locked)
+
+** Test 8: Failed exit
+Camera setup: Sunny shows her screen
+
+- Sunny attempts to exit the building
+   - Uses software stubs
+     - Inputs badge ID
+   - LED stay red (Door locked)
+
+** Test 9: View access logs
+Camera setup: Morgan shows his screen
+
+- Sam exits the building
+- Morgan shows the event on the GUI
+
+** Test 10: View access logs
+Camera setup: Morgan shows his screen
+
+- Morgan shows all the activity that has occurred
