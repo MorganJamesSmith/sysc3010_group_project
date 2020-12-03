@@ -20,7 +20,7 @@ class DoorActuator:
         self.locked = 12.5
         self.unlocked = 2.5
         self.servo_delay = 0.5
-        GPIO.setmode(GPIO.BOARD)
+        GPIO.setmode(GPIO.BCM)
         GPIO.setup(servo_pin, GPIO.OUT)
         self.p = GPIO.PWM(servo_pin, frequency)
         self.p.start(self.locked)

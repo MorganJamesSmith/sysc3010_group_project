@@ -20,7 +20,7 @@ class LED:
         self.green_pin = green_pin
         mode_check = GPIO.getmode()
         if mode_check is None:
-            GPIO.setmode(GPIO.BOARD)
+            GPIO.setmode(GPIO.BCM)
     
         #GPIO setup will have pin 17 and 18 as outputs controlling red and green
         GPIO.setup(self.red_pin, GPIO.OUT)
