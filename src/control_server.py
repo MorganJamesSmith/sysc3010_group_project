@@ -219,7 +219,7 @@ class ControlServer:
             resp = message.AccessResponseMessage(transaction.tid, True)
             transaction.status = 'authorized'
             send_state_update = self.current_occupancy == self.settings.maximum_occupancy
-            self.current_occupancy = self.current_occupancy - 1
+            self.current_occupancy = max(self.current_occupancy - 1, 0)
 
         # Entry request
         # When we receive an access request, ask for their temperature
