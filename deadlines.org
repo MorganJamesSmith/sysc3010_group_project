@@ -34,13 +34,15 @@ CLOSED: [2020-11-06 Fri 18:52] SCHEDULED: <2020-11-05 Thu 09:30-11:00>
 CLOSED: [2020-11-06 Fri 18:53] DEADLINE: <2020-11-06 Fri 20:00>
 * DONE Lab Check-in (End-to-End Demo) (To be scheduled collaboratively with TAs)
 CLOSED: [2020-11-12 Thu 10:32] DEADLINE: <2020-11-12 Thu>
-* DONE SYSC3010 Testing Demo
+* DONE Testing Demo
 CLOSED: [2020-11-19 Thu 09:37] SCHEDULED: <2020-11-19 Thu 09:00-09:30>
-* TODO Submission of Technical Memo
-DEADLINE: <2020-11-22 Sun 20:00>
-* TODO Synchronous Code Peer Review (Mandatory)
-DEADLINE: <2020-11-25 Wed>
-* TODO Final Demo of Project (To be scheduled collaboratively with TAs)
-DEADLINE: <2020-12-02 Wed>
+* DONE Submission of Technical Memo
+CLOSED: [2020-11-23 Mon 00:06] DEADLINE: <2020-11-22 Sun 23:59>
+* DONE Synchronous Code Peer Review (Mandatory)
+CLOSED: [2020-11-25 Wed 15:36] SCHEDULED: <2020-11-25 Wed 11:35-13:25>
+* DONE Synchronous Code Peer Review feedback
+CLOSED: [2020-11-26 Thu 14:27] DEADLINE: <2020-11-27 Fri>
+* DONE Final Demo of Project (To be scheduled collaboratively with TAs)
+CLOSED: [2020-12-03 Thu 09:35] DEADLINE: <2020-12-03 Thu>
 * TODO Final Project Report/Video with Synchronous Poster Fair
-DEADLINE: <2020-12-09 Wed 11:30>
+DEADLINE: <2020-12-09 Wed 20:00>
