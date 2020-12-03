@@ -1,0 +1,90 @@
+@startuml
+
+class Channel {
+    +chan_num: Integer
+    +read_key: String
+    +write_key: String
+    +write_url: String
+    +read_url: String
+    +info
+    
+    -void _update_channel_info()
+    -dict _get_field_names()
+    -dict _get_fields_from_dict(dict data)
+
+    +void write(Bytes data, Integer timeout)
+    +Bytes read(Integer count, Integer minutes, Integer start)
+    +Integer get_last_entry_id()
+}
+
+enum TransportLayerFlags <<Enumeration>> {
+    NONE
+    CONN_REQ
+
+    +{static} TransportLayerFlags from_string(String s)
+}
+
+class ThingSpeakPoller <<Thread>> {
+    +channel: Channel
+    +last_entry: Integer
+    +clients: dict
+    +should_stop: Event
+    +has_client: Event
+
+    +void start()
+    +void join()
+
+    +void run()
+    +void stop()
+    +void register(Function callback, Integer poll_period)
+    +void unregister(Function callback)
+}
+
+class ConnectionException <<Exception>>
+
+class Connection {
+    {static} channel_pollers: dict
+
+    +channel: Channel
+    +server: Server
+    +address: String
+    +peer_address: String
+    +established: Event
+    +in_queue: Queue
+    +closed: Boolean
+
+    +void close()
+    -void _handle_entry(dict Entry)
+    +Integer fileno()
+    +void send(Bytes message)
+    +Bytes recv(Boolean block, Integer timeout)
+    -void _send_conn_req()
+}
+
+class Server {
+    +channel: Channel
+    +address: String
+    +connection_queue: Queue
+    +connections: dict
+    +poller: ThingSpeakPoller
+    
+    -void _handle_entry(dict Entry)
+    +Tuple<Connection, String> accept(Boolean block, Integer timeout)
+    +Integer fileno()
+    +void unregister_connection(Connection connection)
+    +void close()
+}
+
+' Formatting
+Server -[hidden]- ConnectionException
+ConnectionException -[hidden]- TransportLayerFlags
+
+Server --> Channel
+Connection --> Channel
+ThingSpeakPoller --> Channel
+
+Server --> ThingSpeakPoller
+Connection --* ThingSpeakPoller : <<Static>>
+
+@enduml
+

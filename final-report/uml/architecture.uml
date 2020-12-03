@@ -1,0 +1,51 @@
+@startuml
+
+skinparam defaultTextAlignment center
+
+actor Operator
+node admin_interface [
+Control Server
+<<Standalone RPi>>
+--
+Operator GUI
+]
+Operator "1..*" -- "1" admin_interface
+
+database Database {
+    collections user [
+    User Profiles
+    --
+    ]
+    collections userlogs [
+    User Logs
+    --
+    ]
+    collections doors [
+    Registered Door Nodes
+    --
+    ]
+}
+
+admin_interface "1" -r- "1" Database
+
+
+node door [
+Door Node
+<<Headless RPi>>
+--
+Infrared Temperature Sensor
+--
+Time of Flight Distance Sensor
+--
+NFC security Badge Reader
+--
+Electronic Lock Actuator
+]
+
+actor User
+
+door "1" -- "1" User
+admin_interface "1" .. "1..*" door : TS Channel
+
+
+@enduml
