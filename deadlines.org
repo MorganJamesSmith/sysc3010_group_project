@@ -44,5 +44,11 @@ CLOSED: [2020-11-25 Wed 15:36] SCHEDULED: <2020-11-25 Wed 11:35-13:25>
 CLOSED: [2020-11-26 Thu 14:27] DEADLINE: <2020-11-27 Fri>
 * DONE Final Demo of Project (To be scheduled collaboratively with TAs)
 CLOSED: [2020-12-03 Thu 09:35] DEADLINE: <2020-12-03 Thu>
+* TODO Final Project Report Content
+DEADLINE: <2020-12-06 Sun>
+* TODO Final Project Report Formatting
+DEADLINE: <2020-12-07 Mon>
 * TODO Final Project Report/Video with Synchronous Poster Fair
+DEADLINE: <2020-12-09 Wed 20:00>
+* TODO Code cleanup
 DEADLINE: <2020-12-09 Wed 20:00>

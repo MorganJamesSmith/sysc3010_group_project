@@ -168,6 +168,12 @@ be restored.
    of time due to midterms or travel)
 4. Assign work for the next week
 * Project Meeting Notes
+** Meeting <2020-12-08 Tue>
+*** Agenda
+- review final report
+** Meeting <2020-12-03 Fri 09:30-11:30>
+- determined timeline for final report
+- filmed project demo video
 ** Meeting <2020-11-27 Fri 14:30>
 *** To be done for this meeting
 - GUI started
