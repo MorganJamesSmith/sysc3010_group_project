@@ -2,7 +2,6 @@
 * Table of Contents                                          :TOC_1:noexport:
 - [[#links][Links]]
 - [[#symptom-monitoring-door-system][Symptom monitoring Door System]]
-- [[#possible-hardware][Possible hardware]]
 - [[#group-expectations][Group Expectations]]
 - [[#group-roles][Group Roles]]
 
@@ -66,86 +65,7 @@ has access to the building. For example, if someone receives a
 negative test result for COVID-19, their access to the building could
 be restored.
 
-** Hardware
-- 3D printed scale model of door
-- Servo
-- Contact-less Temperature Sensor
-- NFC reader + cards
-- Raspberry Pi's
-** Requirements
-*** Computer Components [3/3]
-- [X] Computer per student
-  - Computer for each entrance and exit
-  - Database computer
-- [X] computer in standalone mode
-  - Interface for security team
-    - Allow manual modification of user status
-    - View temperature information on each person
-- [X] computer in headless mode
-  - Computers at entrances and exits
-*** Hardware Components [2/3]
-- [X] Actuator
-  - Door opener
-- [X] one sensor per student
-  - Temperature probes
-- [ ] Feedback loop
-  - Door opens in response to temperature
-*** Software Components [5/7]
-- [X] Database
-  - Number of people inside building
-  - Uniquely identify people via smart card
-- [X] Computer hosting database does something else
-  - Runs GUI
-- [ ] Periodic Timing Loop
-  - Restrict access to when building is open
-- [ ] Data processing
-  - Access control
-  - View interaction history
-- [X] Notifications
-  - Notify on failure and when near capacity
-  - Notify if known infected people try to enter
-- [X] Communication (through thingspeak)
-  - Synchronize Database
-- [X] GUI
-  - See security team interface
 
-* Possible hardware
-** Temperature Sensor
-- [[https://www.melexis.com/en/product/MLX90614/Digital-Plug-Play-Infrared-Thermometer-TO-Can][MLX90614]]
-    - Very popular IR thermometer in TO-can
-    - MLX90614ESF-DAA is the medical version, MLX90614ESF-BAA is the non medial
-      3 V version
-    - In stock at [[https://www.sparkfun.com/products/9570][SparkFun]]
-- [[https://www.excelitas.com/product/tpis-1t-1256-l55-digipile-sensor][TPIS 1T 1256 L5.5]]
-    - Designed for ear and forehead temperature measurement applications
-    - 5 degree field of view
-    - 67 counts per degree kelvin for a 40 ℃ object at 25 ℃ ambient, 8 counts per kelvin of noise for same conditions
-    - Also measures ambient temp
-    - Very annoying badly documented single wire digital interface, may be a bit
-      tricky to get working directly on R-Pi but we could always use a small
-      microcontoller like an ATTiny as a bridge
-    - In stock at [[https://www.digikey.ca/en/products/detail/excelitas-technologies/TPIS-1T-1256-L5-5/5885902][DigiKey]]
-** NFC
-- [[https://www.nxp.com/docs/en/nxp/data-sheets/PN532_C1.pdf][Adafruit breakout for PN532]]
-    - Seems to be compatible with [[https://github.com/nfc-tools/libnfc][libnfc]]
-    - I2C, SPI and UART interfaces (Adafruit seems to strongly recommend SPI for
-      use with the Raspberry Pi, but that could be a limitation of their
-      CircuitPython library)
-    - Comes with a MiFare Classic 1K card
-    - Can get MiFare Classic in many different form factors (cards, keychains,
-      rings, bracelets, etc.) from Adafruit or Sparkfun.
-- [[https://www.nxp.com/products/rfid-nfc/nfc-hf/nfc-readers/explore-nfc-exclusive-from-element14:PNEV512R][NXP EXPLORE-NFC-WW]]
-    - R-Pi hat based on [[https://www.nxp.com/docs/en/data-sheet/PN512.pdf][PN512]]
-    - Cheaper than the Adafruit option and it's a nice hat form factor, but it
-      is only available from [[https://canada.newark.com/nxp/explore-nfc-ww/nfc-add-on-board-raspberry-pi/dp/45X6356][Newark]]
-      and they have not been reliable lately.
-- Mario has a module based on the [[https://www.nxp.com/docs/en/data-sheet/MFRC522.pdf][MFR522]]
-    - Slightly older chip than the others, but it should support everything we
-      need
-    - Might be hard to reliably find exactly the same board for other group
-      members, it came as part of a kit and seems to be one of those Ali-Express
-      type things. It would probably be possible to find other boards with the
-      same chip though
 
 
 * Group Expectations
