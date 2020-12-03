@@ -1,7 +1,7 @@
 #+title: SYSC3010 Group Project
 * Table of Contents                                          :TOC_1:noexport:
 - [[#links][Links]]
-- [[#symptom-monitoring-door-system][Symptom monitoring Door System]]
+- [[#project-description][Project Description]]
 - [[#group-expectations][Group Expectations]]
 - [[#group-roles][Group Roles]]
 - [[#style-guide][Style Guide]]
@@ -10,8 +10,7 @@
 - [[https://morgansmith.xyz/stats.html][Git Contribution Stats]]
 - [[file:meeting-notes.org][Meeting Notes]]
 
-* Symptom monitoring Door System
-** Description
+* Project Description
 The purpose of this system is to increase security and safety of
 secured locations, like offices. The system will attempt to prevent
 the spread of illness by limiting the number of people which can enter
@@ -26,39 +25,23 @@ The system will display a green light at the entrance if it is
 accepting people. The light will turn red when the area is closed or
 if there are too many people inside.
 
-If the light is green, the user will present their NFC security card
-to the system. The system send a message containing a unique user ID
-to a server. The server will use it'd database to determine if the
-user is authorized and if the user had previously shown symptoms to
-the system within the last 14 days. The server will then notify the
-door with the results of the query.
-
-If the user has not already been denied, the system will then take the
-user's temperature. If the temperature is above the threshold, they
-can try again in 1 minute. If they fail 3 times in a row, they will be
-forbidden access, and the operator of the system will have the option
-to automatically deny them entry for the duration of a quarantine
-period.
+If the light is green, the user will present their NFC security card to the
+system. The system send a message containing a unique user ID to a server. The
+server will use it'd database to determine if the user is authorized. The
+server will then notify the door with the results of the query.  If the user
+has not already been denied, the system will then take the user's temperature
+and send the result to the server. If the temperature is below the set
+threshold, and they have access, the server will allow the door to open.
 
 Every access attempt, including the associated temperature reading and
 user ID, is sent to the server to be logged in a database.
-
-If the temperature is below the threshold, and they have access, the
-door will open.
 
 Users will also have to present their NFC card to the door to leave
 the building. By tracking users entering and exiting the building, the
 server will know how many people are in the building.
 
-The central server will also provide a GUI available to the buildings
-security team. This GUI will allow security officers to manually
-update the status of individuals in case a door must fall back to
-manual operation. It will also allow the security team to modify who
-has access to the building. For example, if someone receives a
-negative test result for COVID-19, their access to the building could
-be restored.
-
-
+The central server also provides a GUI available to the building's security
+team.
 
 
 * Group Expectations
