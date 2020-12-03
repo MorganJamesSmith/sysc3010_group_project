@@ -286,6 +286,16 @@ class ControlServer:
         with self.database_con:
             self.database_con.execute("INSERT INTO access_summary(transaction_id, employee_id, access_type, access_node, temp_reading, status) VALUES (?,?,?,?,?,?)", data_tuple)
 
+    def close(self):
+        for client in self.tcp_clients:
+            client.socket.close()
+        self.tcp_server.close()
+
 if __name__ == "__main__":
     server = ControlServer()
-    server.main_loop()
+    try:
+        server.main_loop()
+    except KeyboardInterrupt:
+        print("Exiting...")
+    finally:
+        server.close() 
