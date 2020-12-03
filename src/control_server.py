@@ -57,7 +57,7 @@ class Transaction:
     tid: int
     employee_id: int
     status: str = ''
-    temp_reading: int = 99
+    temp_reading: int = None
 
 class ControlServer:
     clients = [] # List of Client objects
