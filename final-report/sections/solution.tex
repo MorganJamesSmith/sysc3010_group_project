@@ -1,0 +1,43 @@
+\subsection{Deployment Diagram}
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.75\textwidth]{uml/deployment.png}
+\caption{Deployment Diagram}
+\label{fig:deployment-diagram}
+\end{figure}
+
+\subsection{Message Protocol Table}
+
+\begin{table*}[htb]
+\begin{tabular}{ l | l | l | p{4.5cm} }
+\toprule
+Sender & Receiver & Message & Data Format\\
+\midrule
+Door Node & Control Server & \verb|ACCESS_REQUEST| &
+Transaction ID \newline Account ID\\
+\hline
+Control Server & Door Node & \verb|ACCESS_RESPONSE| &
+Transaction ID \newline Access Request Response\\
+\hline
+Control Server & Door Node & \verb|INFORMATION_REQUEST| &
+Transaction ID \newline Information Type\\
+\hline
+Door Node & Control Server & \verb|INFORMATION_RESPONSE| &
+Transaction ID \newline Information Type \newline Information Value\\
+\hline
+Control Server & Door Node & \verb|DOOR_STATE_UPDATE| & New Sate\\
+\bottomrule
+\end{tabular}
+\caption{Application Layer Messages}
+\label{tab:app-layer-messages}
+\end{table*}
+
+\subsection{Sequence Diagram}
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.75\textwidth]{uml/message-sequence-diagram.png}
+\caption{Message Sequence Diagram}
+\label{fig:message-sequence-diagram}
+\end{figure}
