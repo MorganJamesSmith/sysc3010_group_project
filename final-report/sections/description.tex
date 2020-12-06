@@ -1,0 +1,28 @@
+\subsection{Motivation}
+
+Our access control system is designed to help employers look after the safety
+of their employees. The scope of this project is to provide employers with an
+access control system that grants access to the workplace based on their
+measured body temperature. As studies show that fever is the most frequent
+symptom in more than 50\% of COVID-19 cases, our system also blocks access to
+users that had previously scored a body temperature indicating a fever in the
+past 14 days. Additionally, our system helps building owners adhere to social
+distancing guidelines implemented by the government by tracking the number of
+people on the premises and restricting users from entering the building when
+the maximum threshold for the building has been attained. Although not in the
+scope of the project, our system would work with employers to comply with their
+standards and constraints to provide their employees access to a COVID-19 free
+workplace. Our system aims to enable a COVID-19 free work environment.
+
+
+Our product it made up of two parts: the control server, and the door nodes.
+Our product interacts with two types of actors: Operators and Users.
+
+
+The control server maintains a database of operator profiles, operator logs,
+user profiles, and interaction logs.  The control server will use the operator
+profiles to validate users using the operator GUI.  Every action performed in
+the operator GUI will be logged in the operator logs.  Operators can create and
+modify user profiles.  When a user attempts to use a door node, their identity
+is checked against their user profile.  Each interaction with a door node is
+recorded in a user log.
