@@ -2,6 +2,7 @@
 __pycache__
 proposal/figures/*.png
 design/uml/*.png
+final-report/uml/*.png
 
 api_read_key.txt
 api_write_key.txt
