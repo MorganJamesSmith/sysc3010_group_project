@@ -25,6 +25,7 @@ import os.path
 from dataclasses import dataclass
 from select import select
 
+from api_keys import ApiKeys
 import communication.thingspeak as thingspeak
 import communication.transport as transport
 import communication.message as message
@@ -64,14 +65,7 @@ class ControlServer:
     tcp_clients = [] # List of TCP_Client objects
     transactions = [] # List of Transaction objects
     def __init__(self):
-        # Get API keys from file
-        try:
-            with open("api_write_key.txt", "r") as keyfile:
-                write_key = keyfile.read().strip()
-            with open("api_read_key.txt", "r") as keyfile:
-                read_key = keyfile.read().strip()
-        except FileNotFoundError:
-            raise Exception("Could not open keyfiles.")
+        # Get settings from file
         try:
             with open("settings.json", "r") as settingsfile:
                 json_string = settingsfile.read().strip()
@@ -92,7 +86,10 @@ class ControlServer:
             self.database = DataBase()
             self.database_con = sqlite3.connect('security_system.db')
             self.cursor = self.database_con.cursor()
-        self.channel = thingspeak.Channel(1222699, write_key=write_key, read_key=read_key)
+        api_keys = ApiKeys()
+        self.channel = thingspeak.Channel(1222699,
+                                          write_key=api_keys.write_key,
+                                          read_key=api_keys.read_key)
         self.server = transport.Server(self.channel, "control_server")
 
         self.tcp_server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

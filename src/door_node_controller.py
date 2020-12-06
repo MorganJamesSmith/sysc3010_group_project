@@ -11,6 +11,7 @@ from threading import Thread, Event
 import communication.thingspeak as thingspeak
 import communication.transport as transport
 import communication.message as message
+from api_keys import ApiKeys
 
 VERBOSE = True
 
@@ -62,17 +63,11 @@ class DoorNodeController:
         self.transaction_ongoing = False
 
         self.nfc_poller = NFCReaderPoller(self.nfc_reader, self.handle_badge_tap)
-        # Get API keys from file
-        try:
-            with open("api_write_key.txt", "r") as keyfile:
-                write_key = keyfile.read().strip()
-            with open("api_read_key.txt", "r") as keyfile:
-                read_key = keyfile.read().strip()
-        except FileNotFoundError as error:
-            print("Could not open keyfiles.")
-            exit(1)
         # Connect to server via ThingSpeak channel
-        self.thingspeak_chan = thingspeak.Channel(1222699, write_key=write_key, read_key=read_key)
+        api_keys = ApiKeys()
+        self.thingspeak_chan = thingspeak.Channel(1222699,
+                                          write_key=api_keys.write_key,
+                                          read_key=api_keys.read_key)
         self.server_conn = transport.Connection(self.thingspeak_chan, self.address,
                                                 "control_server")
         self.current_state = message.DoorState.NOT_ALLOWING_ENTRY
