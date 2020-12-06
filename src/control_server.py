@@ -4,22 +4,22 @@
 # Copyright (C) 2020 by Sunjeevani Pujari
 #
 # control_server.py
-#
-# This file is the control server for our door security system. The server is
-# started by running the main loop. The server maintains a list of connected
-# clients. The server continuously polls for new messages.
-#
-# If a client is an exit, then the server will allow the door to open. If the
-# client is an entrance, the server will ask for the users body temperature and
-# only allow them in if their temperature is within a specified range.
+
+'''
+This file is the control server for our door security system. The server is
+started by running the main loop. The server maintains a list of connected
+clients. The server continuously polls for new messages.
+
+If a client is an exit, then the server will allow the door to open. If the
+client is an entrance, the server will ask for the users body temperature and
+only allow them in if their temperature is within a specified range.
+'''
 
 import socket
 from queue import Queue
+from queue import Empty as EmptyQueue
 import json
 import sqlite3
-import time
-from datetime import date
-
 import os.path
 
 from dataclasses import dataclass
@@ -32,7 +32,9 @@ import communication.message as message
 from db_structure import DataBase
 
 VERBOSE = True
+DATABASE = 'security_system.db'
 
+# The values in this class are the default values if there is no settings file
 @dataclass
 class Settings:
     minimum_safe_temperature: float = 30.0
@@ -40,7 +42,7 @@ class Settings:
     maximum_occupancy: int  = 50
 
 @dataclass
-class TCP_Client:
+class TCPClient:
     socket: socket.socket
     address: str
     queue: Queue
@@ -61,8 +63,8 @@ class Transaction:
     temp_reading: int = None
 
 class ControlServer:
-    clients = [] # List of Client objects
-    tcp_clients = [] # List of TCP_Client objects
+    clients      = [] # List of Client objects
+    tcp_clients  = [] # List of TCPClient objects
     transactions = [] # List of Transaction objects
     def __init__(self):
         # Get settings from file
@@ -71,20 +73,21 @@ class ControlServer:
                 json_string = settingsfile.read().strip()
                 self.settings = ControlServer.json_to_settings(json_string)
         except FileNotFoundError:
-            print("No settings file")
+            if VERBOSE:
+                print("No settings file. Generating one.")
             self.settings = Settings()
 
         self.current_occupancy = 0
 
         # Connecting to project database
-        if not os.path.isfile('security_system.db'):
+        if not os.path.isfile(DATABASE):
             self.database = DataBase()
-            self.database_con = sqlite3.connect('security_system.db')
+            self.database_con = sqlite3.connect(DATABASE)
             self.cursor = self.database_con.cursor()
             self.database.creating_db()
         else:
             self.database = DataBase()
-            self.database_con = sqlite3.connect('security_system.db')
+            self.database_con = sqlite3.connect(DATABASE)
             self.cursor = self.database_con.cursor()
         api_keys = ApiKeys()
         self.channel = thingspeak.Channel(1222699,
@@ -110,11 +113,9 @@ class ControlServer:
 
             for connection in new_messages:
                 if connection is self.server:
-                    socket, address = self.server.accept(block=False)
-                    self._new_client(socket, address)
+                    self._new_client(*self.server.accept(block=False))
                 elif connection is self.tcp_server:
-                    connection, address = self.tcp_server.accept()
-                    self.tcp_clients.append(TCP_Client(connection, address, Queue()))
+                    self.tcp_clients.append(TCPClient(*self.tcp_server.accept(), Queue()))
                 elif isinstance(connection, transport.Connection):
                     data = connection.recv(block=False)
                     received_message = message.Message.from_bytes(data)
@@ -130,7 +131,7 @@ class ControlServer:
                         for command in data.split('\n'):
                             if command.strip() == "":
                                 continue
-                            elif command != "request":
+                            if command != "request":
                                 try:
                                     self.settings = ControlServer.json_to_settings(command)
                                 except json.decoder.JSONDecodeError:
@@ -153,7 +154,7 @@ class ControlServer:
                 try:
                     client =  next((x for x in self.tcp_clients if x.socket == write), None)
                     msg = client.queue.get_nowait()
-                except queue.Empty:
+                except EmptyQueue:
                     pass
                 else:
                     write.send(msg)
@@ -165,10 +166,12 @@ class ControlServer:
     def _new_client(self, connection, address):
         if VERBOSE:
             print(f"New connection from \"{address}\".\n")
-        self.cursor.execute("SELECT node_id, node_type FROM node_info WHERE address = ?", (address,))
+        self.cursor.execute("SELECT node_id, node_type FROM node_info WHERE address = ?",
+                            (address,))
         try:
             node_id, node_type = self.cursor.fetchone()
-        except:
+        # This is a type error because we try to unpack None
+        except TypeError:
             print("A stranger tried to connect!")
             return
 
@@ -207,7 +210,7 @@ class ControlServer:
 
 
         #invalid employee ID
-        if transaction.employee_id == None:
+        if transaction.employee_id is None:
             resp = message.AccessResponseMessage(transaction.tid, False)
             transaction.status = 'unauthorized'
 
@@ -263,13 +266,15 @@ class ControlServer:
             self.send_door_state_update()
 
     def employee_id_to_status(self, employee_id):
-        self.cursor.execute("SELECT status FROM access_summary WHERE employee_id = ? ORDER BY employee_id DESC LIMIT 1", (employee_id,))
+        self.cursor.execute("SELECT status FROM access_summary " +
+                            "WHERE employee_id = ? ORDER BY employee_id DESC LIMIT 1",
+                            (employee_id,))
         return self.cursor.fetchone()
     
     def badge_id_to_employee_id(self, badge_id):
         self.cursor.execute("SELECT employee_id FROM employee_info WHERE nfc_id =?",(badge_id,) )
         result = self.cursor.fetchone()
-        if (result == None):
+        if result is None:
             return None
         return result[0]
 
@@ -300,9 +305,13 @@ class ControlServer:
 
     def save_access(self, transaction):
         access_type =  'entry' if transaction.client.entrance else 'exit'
-        data_tuple = (transaction.tid, transaction.employee_id, access_type, transaction.client.node_id, transaction.temp_reading, transaction.status)
+        data_tuple = (transaction.tid, transaction.employee_id, access_type,
+                      transaction.client.node_id, transaction.temp_reading, transaction.status)
         with self.database_con:
-            self.database_con.execute("INSERT INTO access_summary(transaction_id, employee_id, access_type, access_node, temp_reading, status) VALUES (?,?,?,?,?,?)", data_tuple)
+            self.database_con.execute(
+                "INSERT INTO access_summary(" +
+                "transaction_id, employee_id, access_type, access_node, temp_reading, status" +
+                ") VALUES (?,?,?,?,?,?)", data_tuple)
 
     def close(self):
         for client in self.tcp_clients:
@@ -316,4 +325,4 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         print("Exiting...")
     finally:
-        server.close() 
+        server.close()
