@@ -1,0 +1,72 @@
+\subsection{Project Description}
+
+The purpose of this system is to increase security and safety of secured
+locations, like offices. The system will attempt to prevent the spread of
+illness by limiting the number of people which can enter the building, and by
+preventing people with a high body temperature from entering the building.
+
+This system will be mounted on the entrances and exits of a building. The system
+will be modular to allow an arbitrary number of nodes to be added.
+
+The system will display a green light at the entrance if it is accepting people.
+The light will turn red when the area is closed or if there are too many people
+inside.
+
+If the light is green, the user will present their NFC security card to the
+system. The system send a message containing a unique user ID to a server. The
+server will use it’d database to determine if the user is authorized. The server
+will then notify the door with the results of the query. If the user has not
+already been denied, the system will then take the user’s temperature and send
+the result to the server. If the temperature is below the set threshold, and
+they have access, the server will allow the door to open.
+
+Every access attempt, including the associated temperature reading and user ID,
+is sent to the server to be logged in a database.
+
+Users will also have to present their NFC card to the door to leave the
+building. By tracking users entering and exiting the building, the server will
+know how many people are in the building.
+
+The central server also provides a GUI available to the building’s security
+team.
+
+\subsection{How to run the code}
+
+\subsubsection{Dependencies}
+
+\begin{enumerate}
+    \item python $\geq$ 3.7
+    \item python-requests
+    \item python-flask
+    \item python-flask-socketio
+    \item python-gevent
+\end{enumerate}
+
+\subsubsection{Control Server}
+
+You will need to run two separate processes.
+
+\noindent
+The first is the Control Server which is responsible for the control logic.
+
+\begin{lstlisting}
+cd src
+./control_server.py
+\end{lstlisting}
+
+\noindent
+The second is the GUI which can be used to view and modify the settings of the
+Control Server. It can also be used to view access logs.
+
+\begin{lstlisting}
+cd src
+./gui/run_gui.py
+\end{lstlisting}
+
+\subsubsection{Door Node}
+
+\begin{lstlisting}
+cd src
+./door_node_controller.py
+\end{lstlisting}
+

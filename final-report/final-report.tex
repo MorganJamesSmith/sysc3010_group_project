@@ -25,6 +25,7 @@
 \usepackage{textcomp}
 \usepackage{listings}
 \usepackage{longtable}
+\usepackage[toc]{appendix}
 
 %% Uncomment for syntax highlighting
 % \usepackage{minted}
@@ -180,13 +181,15 @@ Source
 \input{sections/contributions.tex}
 \clearpage
 
-\section{Appendix}
+\appendix
+\section{README}
+\label{sec:readme}
+\input{sections/readme.tex}
+\clearpage
+
+\section{UML Diagrams}
 \label{sec:appendix}
 \input{sections/appendix.tex}
 \clearpage
-
-%\bibliography{references}{}
-%\bibliographystyle{plain}
-%\clearpage
 
 \end{document}
