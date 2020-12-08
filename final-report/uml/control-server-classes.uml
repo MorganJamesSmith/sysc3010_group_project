@@ -14,27 +14,64 @@ class Database {
     +db_result: query(db_query query)
 }
 
-class ServerController {
-    +thingspeak_chan: Channel
-    +server_conn: Connection
-
-    +database: Database
-    +gui: OperatorGUI
-
-    +void main_loop()
-    +void handle_access_request(AccessRequestMessage request)
-    +void handle_information_response(InformationResponseMessage response)
+class Settings {
+    +minimum_safe_temperature: float
+    +maximum_safe_temperature: float
+    +maximum_occupancy: int
 }
 
-class OperatorGUI {
-    +settings: Settings
-    +void write_settings_to_file(string path)
-    +void read_settings_from_file(string path)
+class TCPClient {
+    +socket: socket.socket
+    +address: str
+    +queue: Queue
+}
+
+class Client {
+    connection: transport.Connection
+    address: str
+    entrance: bool
+    node_id: int
+}
+
+class Transaction {
+    client: Client
+    tid: int
+    employee_id: int
+    status: str
+    temp_reading: int
+}
+
+class ControlServer {
+    +clients: list<Client>
+    +tcp_clients: list<TCPClient>
+    +transactions: list<Transaction>
+
+    +current_occupancy: int
+    +database: Database
+    +cursor
+    +channel: thingspeak.Channel
+    +server: transport.Server
+    +tcp_server: socket.socket
+
+    +void main_loop()
+    -void _new_client(connection, address)
+    -void _new_message(client, received_message)
+
+    +Tuple<str> employee_id_to_status(employee_id)
+    +int badge_id_to_employee_id(badge_id)
+    +void send_door_state_update()
+    +void save_access(transaction)
+    +void close()
+    
+    {static} str settings_to_json(settings)
+    {static} Settings json_to_settings(json_string)
 }
 
 ServerController --> Database
-ServerController --> OperatorGUI
-OperatorGUI --> Database
+ServerController --> Settings
+ServerController --> TCPClient
+ServerController --> Client
+ServerController --> Transaction
 
 @enduml
 
