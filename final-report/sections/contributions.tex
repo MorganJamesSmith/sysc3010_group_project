@@ -1,76 +1,101 @@
-% section: Contributions 
-% Author: Sunjeevani Pujari and Morgan Smith 
+% Copyright (C) 2020 by Morgan Smith
+% Copyright (C) 2020 by Sunjeevani Pujari
 
-This section was made using the statistical analysis tool gitinspector.
+\subsection{Code Contributions}
 
-\begin{center}
+Figure \ref{fig:lines-of-code} and Figure \ref{fig:file-authors} where created
+using the statistical analysis tool gitinspector. As automatically generated
+figures cannot fully describe the work that was undertaken, each member has
+written a short paragraph on their contributions.
+
+\begin{figure}[!htb]
+\centering
 \begin{tabular}{ll}
 Author & Lines of written Python code in current revision\\
 \hline
-Samuel Dewan &  2089\\
-Morgan Smith &   424\\
-sunnypujari  &   362\\
-Mario Shebib &   337\\
+Samuel Dewan &  2099\\
+Morgan Smith &   479\\
+sunnypujari  &   364\\
+Mario Shebib &   342\\
 \end{tabular}
-\end{center}
+\caption{Lines of Code Written}
+\label{fig:lines-of-code}
+\end{figure}
 
-\begin{center}
-\begin{tabular}{llp{3cm}l}
-File & Contributor & Tasks implemented in files with multiple contributors\\
-\hline
-src\_door\_node\_controller.py & Mario& Implement door node control flow logic\\
-src\_hardware/LED.py & Mario &\\
-src\_hardware/RC522.py & Mario&\\
-src\_stub/DoorActuator\_stub.py & Mario&\\
-src\_stub/LED\_stub.py & Mario&\\
-src\_stub/RangeFinder\_stub.py & Mario& Create software stub \\
-src\_test/e2e/exit\_end\_to\_end\_test.py & Mario&\\
-src\_test/testing-demo/door-node-controller-tests.py & Mario&\\
-src\_test/testing-demo/rc522-test.py & Mario &\\
-src\_control\_server.py & Morgan & Implement server control flow logic\\
-src\_hardware/DoorActuator.py & Morgan &\\
-src\_test/e2e/access\_request\_test.py & Morgan&\\
-src\_test/e2e/entrance\_end\_to\_end\_test.py & Morgan&\\
-src\_test/testing-demo/DoorActuator-test.py & Morgan&\\
-src\_communication/client\_test.py & Sam&\\
-src\_communication/message.py & Sam&\\
-src\_communication/server\_test.py & Sam&\\
-src\_communication/thingspeak.py & Sam&\\
-src\_communication/transport.py & Sam&\\
-src\_gui/routes.py & Sam&\\
-src\_gui/run\_gui.py & Sam&\\
-src\_gui/tcp\_client.py & Sam&\\
-src\_gui/waitable\_event.py & Sam&\\
-src\_hardware/mlx90614.py & Sam&\\
-src\_stub/mlx90614\_stub.py & Sam&\\
-src\_stub/RangeFinder\_stub.py & Sam & Modify valaues being returned\\
-src\_stub/RC522\_stub.py & Sam&\\
-src\_test/e2e/e2e-thingspeak-analyzer.py & Sam&\\
-src\_test/e2e/control\_server\_e2e\_test.py & Sam& Integrate message protocol logic\\
-src\_test/testing-demo/mesage-tests.py & Sam&\\
-src\_test/testing-demo/mlx90614-test.py & Sam&\\
-src\_door\_node\_controller.py & Sam&\\
-src\_control\_server.py & Sunny & Integrate database \\
-src\_create\_database.py & Sunny&\\
-src\_database\_code.py & Sunny&\\
-src\_db\_structure.py & Sunny&\\
-src\_hardware/RangeFinder.py & Sunny&\\
-src\_test/e2e/control\_server\_e2e\_test.py & Sunny& Integrate control flow logic\\
-src\_test/testing-demo/database\_test.py & Sunny&\\
-src\_test/testing-demo/Rangefinder\_test & Sunny&\\
-\end{tabular}
-\end{center}
-
-\begin{center}
+\begin{figure}[!htb]
+\centering
 \begin{tabular}{ll}
-Section & Author\\
+File & Main Author\\
 \hline
-Project Description &  Sunny\\
-Final Design Solution &   Morgan\\
-Discussion of Results\_Changes from Proposal &   Mario\\
-Discussion of Results\_ Test data &   Sam\\
-Contributions &   Sunny\\
-Appendix A &   Sam\\
-Appendix B &   Morgan\\
+door\_node\_controller.py & Mario\\
+hardware/LED.py & Mario\\
+hardware/RC522.py & Mario\\
+stub/DoorActuator\_stub.py & Mario\\
+stub/LED\_stub.py & Mario\\
+test/e2e/exit\_end\_to\_end\_test.py & Mario\\
+test/testing-demo/door-node-controller-tests.py & Mario\\
+test/testing-demo/rc522-test.py & Mario\\
+control\_server.py & Morgan\\
+hardware/DoorActuator.py & Morgan\\
+test/e2e/access\_request\_test.py & Morgan\\
+test/e2e/entrance\_end\_to\_end\_test.py & Morgan\\
+test/testing-demo/DoorActuator-test.py & Morgan\\
+communication/client\_test.py & Sam\\
+communication/message.py & Sam\\
+communication/server\_test.py & Sam\\
+communication/thingspeak.py & Sam\\
+communication/transport.py & Sam\\
+gui/routes.py & Sam\\
+gui/run\_gui.py & Sam\\
+gui/tcp\_client.py & Sam\\
+gui/waitable\_event.py & Sam\\
+hardware/mlx90614.py & Sam\\
+stub/mlx90614\_stub.py & Sam\\
+stub/RangeFinder\_stub.py & Sam\\
+stub/RC522\_stub.py & Sam\\
+test/e2e/e2e-thingspeak-analyzer.py & Sam\\
+test/testing-demo/mesage-tests.py & Sam\\
+test/testing-demo/mlx90614-test.py & Sam\\
+create\_database.py & Sunny\\
+database\_code.py & Sunny\\
+db\_structure.py & Sunny\\
+hardware/RangeFinder.py & Sunny\\
+test/e2e/control\_server\_e2e\_test.py & Sunny\\
+test/testing-demo/database\_test.py & Sunny\\
+test/testing-demo/Rangefinder\_test & Sunny\\
 \end{tabular}
-\end{center}
+\caption{Main file authors}
+\label{fig:file-authors}
+\end{figure}
+
+\subsubsection{Sam}
+TODO
+- I did communication, etc...
+\subsubsection{Sunny}
+TODO
+- I did database, etc...
+\subsubsection{Mario}
+TODO
+- I did stubs, etc...
+\subsubsection{Morgan}
+TODO
+- I did Control Server, etc...
+
+\subsection{Final Report Contributions}
+
+\begin{figure}[!htb]
+\centering
+\begin{tabular}{lll}
+Section               & Subsection            & Author\\
+\hline
+Project Description   &                       & Sunny\\
+Final Design Solution &                       & Morgan\\
+Discussion of Results & Changes from Proposal & Mario\\
+Discussion of Results & Test data             & Sam\\
+Contributions         &                       & Morgan\\
+Appendix A            &                       & Sam\\
+Appendix B            &                       & Morgan\\
+\end{tabular}
+\caption{Final Report Contributions}
+\label{fig:final-report-contributions}
+\end{figure}
