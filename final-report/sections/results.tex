@@ -7,3 +7,66 @@ The two changes for the door node were the addition of a distance sensor to have
  Due to time constraints it was decided to not pursue creating a 3D printed door as a model to showcase. There was a decision that both for time and ease of communication to change the hardware interface stubs from creating log files to instead print out statements of their actions and send those outputs to the database as though they were data taken from original hardware. The choice was made for practical reasons to not have a test rig that allowed for the temperature sensor to test controlled arbitrary temperatures. Instead we opted to in testing have limits that were far apart to deal with the fact that the temperature sensor gave lower temperatures then expected. Connected with the temperature sensor the temperature sensor chosen did not require a calibration set up.
 \subsubsection{Schedule}
 The schedule for the project was heavily modified after the submission of Project Design. The time restrictions lead to the removal of the Door Model being created and the milestones being changed to be less concrete and less formal deadlines that were focused on having the necessary code ready for the three demonstrations becoming the priority.
+
+\subsection{Findings}
+
+
+\subsubsection{ThingSpeak}
+
+One of the most difficult to debug aspects of our project was the ThingSpeak
+communication code. In our project we used ThingSpeak for communication between
+nodes. Because the nature of our project did not match well with the structure
+of ThingSpeak we wrote an abstraction layer over our ThingSpeak channel to
+use it as a medium over which we could provide a communication service similar
+to a TCP or UDP socket. This abstraction made our application much easier to
+write, but we also ran into some quarks with ThingSpeak that complicated the
+abstraction itself.
+
+The REST API documentation on the ThingSpeak site is not very complete. While it
+describes the operation of the API in broad stokes, there are many minor details
+missing. One of those is the that ThingSpeak has a rate limit for posts to
+channels. This lack of documentation is compounded by the fact that ThingSpeak
+does not return an error when an attempt is made to update a channel too
+quickly, it simply drops the request silently. It took us a while to discover
+that intermittent problems with missing channel entries where caused by a rate
+limit end then to characterize the rate limit as being one update per second.
+This discovery led us to implement a mechanism in our ThingSpeak code such that
+when sending a packet out code verifies that it has appeared on the ThingSpeak
+channel, and if it is not appeared after a presepcified delay the entry will
+be resubmitted.
+
+\subsubsection{Sensors}
+
+We used two sensors in our project, an infrared temperature sensor and an
+infrared range finder. We performed testing with both of these sensors in an
+attempt to characterize them and get an idea of what values we could expect to
+read from them in normal operation for our use case.
+
+We found that our infrared temperature sensor consistently returned measurements
+much lower than what we expected. Normal human body temperature is around 37
+degrees Celsius, and we had assumed that we would see readings that where a few
+degrees below this because we where measuring skin temperature rather than
+body temperature. In practice, when measuring forehead temperature we saw values
+ranging from approximately 26 to 31 degrees. This appears to be the nature of
+forehead temperature measurements rather than an issue with our particular sensor
+since the issue persisted after swapping to a different temperature sensor of the
+same model and we got expected measurements for object other than people. We
+where unable to source the medical grade version of the sensor we used, and had
+we been able to would likely have seen slightly smaller variability if we had
+used the medical rather than industrial calibrated version, but that does not
+account for all of the very large variability we saw in practice.
+
+
+The lower temperatures and much larger variability than expected left us unable
+to determine a reasonable threshold for fever detection, if we wanted to work
+further on this project we would have to invest more resources into taking a
+wide variety of measurements in order to get a better idea of where temperature
+thresholds should be set. If we had access to a proper black body radio source
+we would have been able to perform better calibration of our sensor as well.
+
+In contrast to the temperature sensor, the infrared range finder worked as
+expected. The sensor driver provided us a value in millimetres which in our
+tests was typically within about ten millimetres away from the true distance we
+where testing with. This accuracy was more than sufficient for our use case.
+
+
