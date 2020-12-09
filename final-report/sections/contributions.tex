@@ -3,26 +3,32 @@
 
 \subsection{Code Contributions}
 
-Figure \ref{fig:lines-of-code} and Figure \ref{fig:file-authors} where created
-using the statistical analysis tool gitinspector. As automatically generated
-figures cannot fully describe the work that was undertaken, each member has
-written a short paragraph on their contributions.
+Figure \ref{fig:file-authors} was created using the statistical analysis tool
+gitinspector. As automatically generated figures cannot fully describe the work
+that was undertaken, each member has written a short paragraph on their
+contributions.
 
-\begin{figure}[!htb]
-\centering
-\begin{tabular}{ll}
-Author & Lines of written Python code in current revision\\
-\hline
-Samuel Dewan &  2099\\
-Morgan Smith &   479\\
-sunnypujari  &   364\\
-Mario Shebib &   342\\
-\end{tabular}
-\caption{Lines of Code Written}
-\label{fig:lines-of-code}
-\end{figure}
+\subsubsection{Sam}
+My main responsibility was out communication code, which abstracted over
+ThingSpeak and provided classes for marshalling and unmarshalling of our
+messages. I also wrote our graphical user interface code. Finally, I
+contributed bug fixes and refactoring to a large amount of code accross the
+project.
 
-\begin{figure}[!htb]
+\subsubsection{Sunny}
+One of my major contributions was to build the
+database and integrate the database into all
+the major components of the system using SQL queries.
+\subsubsection{Mario}
+TODO
+- I did stubs, etc...
+\subsubsection{Morgan}
+My main responsibility was writing the control server logic, which is the main
+logic that govern the operation of our project. I worked with Sunny to
+integrate the database and I worked with Sam to integrate the GUI.
+
+
+\begin{figure}[ht]
 \centering
 \begin{tabular}{ll}
 File & Main Author\\
@@ -68,25 +74,6 @@ test/testing-demo/Rangefinder\_test & Sunny\\
 \label{fig:file-authors}
 \end{figure}
 
-\subsubsection{Sam}
-I work on a number of aspects of the project. My main responsability was out
-communication code, which abstracted over ThingSpeak and provided classes for
-marshalling and unmarshalling of our messages. I also wrote our graphical user
-interface code. Finaly, I contributed bug fixes and refactoring to a large
-amount of code accross the project.
-
-\subsubsection{Sunny}
-TODO
-One of my major contributions was to build the 
-database and integrate the database into all 
-the major components of the system using SQL queries.
-\subsubsection{Mario}
-TODO
-- I did stubs, etc...
-\subsubsection{Morgan}
-TODO
-- I did Control Server, etc...
-
 \subsection{Final Report Contributions}
 
 \begin{figure}[!htb]
@@ -95,7 +82,8 @@ TODO
 Section               & Subsection            & Author\\
 \hline
 Project Description   &                       & Sunny\\
-Final Design Solution &                       & Morgan\\
+Final Design Solution & Content               & Sam\\
+Final Design Solution & Figures               & Morgan\\
 Discussion of Results & Changes from Proposal & Mario\\
 Discussion of Results & Test data             & Sam\\
 Contributions         &                       & Morgan\\
