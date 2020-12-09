@@ -31,20 +31,20 @@ nodes. Because the nature of our project did not match well with the structure
 of ThingSpeak we wrote an abstraction layer over our ThingSpeak channel to
 use it as a medium over which we could provide a communication service similar
 to a TCP or UDP socket. This abstraction made our application much easier to
-write, but we also ran into some quarks with ThingSpeak that complicated the
+write, but we also ran into some quirks with ThingSpeak that complicated the
 abstraction itself.
 
-The REST API documentation on the ThingSpeak site is not very complete. While it
+The REST API documentation on the ThingSpeak site is not comprehensive. While it
 describes the operation of the API in broad stokes, there are many minor details
 missing. One of those is the that ThingSpeak has a rate limit for posts to
 channels. This lack of documentation is compounded by the fact that ThingSpeak
 does not return an error when an attempt is made to update a channel too
 quickly, it simply drops the request silently. It took us a while to discover
 that intermittent problems with missing channel entries where caused by a rate
-limit end then to characterize the rate limit as being one update per second.
+limit and then to characterize the rate limit as being one update per second.
 This discovery led us to implement a mechanism in our ThingSpeak code such that
-when sending a packet out code verifies that it has appeared on the ThingSpeak
-channel, and if it is not appeared after a presepcified delay the entry will
+when sending a packet our code verifies that it has appeared on the ThingSpeak
+channel, and if it is not appeared after a prespecified delay the entry will
 be resubmitted.
 
 \subsubsection{Sensors}
@@ -67,7 +67,6 @@ where unable to source the medical grade version of the sensor we used, and had
 we been able to would likely have seen slightly smaller variability if we had
 used the medical rather than industrial calibrated version, but that does not
 account for all of the very large variability we saw in practice.
-
 
 The lower temperatures and much larger variability than expected left us unable
 to determine a reasonable threshold for fever detection, if we wanted to work
