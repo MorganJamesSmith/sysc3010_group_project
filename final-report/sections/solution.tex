@@ -2,6 +2,12 @@
 
 \subsection{Deployment Diagram}
 
+Figure \ref{fig:depoloyment-diagram} shows a deployment diagram of our system.
+Our system has one or more door nodes (one per building entrance/exit), which
+are headless Raspberry Pis responsible for controlling access to the building.
+The control server runs on a standalone Raspberry Pi, it makes access decisions
+for the door nodes and run the GUI that can be used to control the system.
+
 \begin{figure}[!htb]
 \centering
 \includegraphics[width=0.75\textwidth]{uml/deployment.png}
@@ -10,6 +16,10 @@
 \end{figure}
 
 \subsection{Message Protocol Table}
+
+Our message protocol is shown in table \ref{tab:app-layer-messages}. Further
+details on the exact format of our messages are available in our design
+document.
 
 \begin{table*}[htb]
 \begin{tabular}{ l | l | l | p{4.5cm} }
@@ -36,6 +46,16 @@ Control Server & Door Node & \verb|DOOR_STATE_UPDATE| & New State\\
 \end{table*}
 
 \subsection{Sequence Diagram}
+
+The sequence diagram in figure \ref{fig:message-sequence-diagram} shows the
+possible interactions between the door nodes and control server. Door nodes send
+access requests to the control server, to which the server is able to
+immediately respond indicating whether access should be granted or send a
+request for further information.
+
+The control server is also able to send state update messages to the door nodes.
+These state updates are used by the door nodes to inform what information they
+should indicate to users between accesses.
 
 \begin{figure}[!htb]
 \centering
