@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-12-03 Thu 19:54 -->
+<!-- 2020-12-09 Wed 04:10 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>SYSC3010 Group Project</title>
@@ -247,33 +247,34 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org8b2f387">1. Links</a></li>
-<li><a href="#org8ac9171">2. Project Description</a></li>
-<li><a href="#org3032ac8">3. How to run the code</a>
+<li><a href="#org6a227ad">1. Links</a></li>
+<li><a href="#org9194aa9">2. Project Description</a></li>
+<li><a href="#orga7ad4de">3. Repository Roadmap</a></li>
+<li><a href="#org2043baa">4. How to run the code</a>
 <ul>
-<li><a href="#org13b6e36">3.1. Dependencies</a></li>
-<li><a href="#orgc8a9919">3.2. Control Server</a></li>
-<li><a href="#orgb4d5046">3.3. Door Node</a></li>
+<li><a href="#org5b626b3">4.1. Dependencies</a></li>
+<li><a href="#org95d8a26">4.2. Control Server</a></li>
+<li><a href="#org4503f53">4.3. Door Node</a></li>
 </ul>
 </li>
-<li><a href="#orgea9f989">4. Group Contributions</a>
+<li><a href="#org0eaadf7">5. Group Contributions</a>
 <ul>
-<li><a href="#org8221187">4.1. Sam</a></li>
-<li><a href="#org37a61c1">4.2. Sunny</a></li>
-<li><a href="#org80bbf80">4.3. Mario</a></li>
-<li><a href="#org187c8bb">4.4. Morgan</a></li>
+<li><a href="#orga65fdb7">5.1. Sam</a></li>
+<li><a href="#org842b57c">5.2. Sunny</a></li>
+<li><a href="#orgd0c29dd">5.3. Mario</a></li>
+<li><a href="#org393a236">5.4. Morgan</a></li>
 </ul>
 </li>
-<li><a href="#org33b2fb7">5. Style Guide</a>
+<li><a href="#org7a214b0">6. Style Guide</a>
 <ul>
-<li><a href="#orgc839915">5.1. Terminology</a></li>
+<li><a href="#org7e23fcf">6.1. Terminology</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org8b2f387" class="outline-2">
-<h2 id="org8b2f387"><span class="section-number-2">1</span> Links</h2>
+<div id="outline-container-org6a227ad" class="outline-2">
+<h2 id="org6a227ad"><span class="section-number-2">1</span> Links</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li><a href="https://morgansmith.xyz/stats.html">Git Contribution Stats</a></li>
@@ -282,8 +283,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org8ac9171" class="outline-2">
-<h2 id="org8ac9171"><span class="section-number-2">2</span> Project Description</h2>
+<div id="outline-container-org9194aa9" class="outline-2">
+<h2 id="org9194aa9"><span class="section-number-2">2</span> Project Description</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 The purpose of this system is to increase security and safety of
@@ -333,25 +334,69 @@ team.
 </div>
 </div>
 
-<div id="outline-container-org3032ac8" class="outline-2">
-<h2 id="org3032ac8"><span class="section-number-2">3</span> How to run the code</h2>
+<div id="outline-container-orga7ad4de" class="outline-2">
+<h2 id="orga7ad4de"><span class="section-number-2">3</span> Repository Roadmap</h2>
 <div class="outline-text-2" id="text-3">
+<p>
+This repository contains all of the files related to our project. Our proposal,
+design document and final report are located in the proposal, design and
+final-report folders respectively. All of our source code is located in the
+src folder.
+</p>
+
+<p>
+Within the src folder, several top level programs are located such as
+door<sub>node</sub><sub>controller.py</sub> and control<sub>server.py</sub>. Aditional scripts are located in
+subfolders of the src folder such as hardware drivers in the hardware folder,
+GUI related code in the gui folder, ThingSpeak and messages parsing related code
+in the communication folder and hardware stubs in the stub folder.
+</p>
+
+<p>
+The test subfolder of the src directory of our repository contains all of our
+test code for our end to end and testing demos.
+</p>
 </div>
-<div id="outline-container-org13b6e36" class="outline-3">
-<h3 id="org13b6e36"><span class="section-number-3">3.1</span> Dependencies</h3>
-<div class="outline-text-3" id="text-3-1">
+</div>
+
+<div id="outline-container-org2043baa" class="outline-2">
+<h2 id="org2043baa"><span class="section-number-2">4</span> How to run the code</h2>
+<div class="outline-text-2" id="text-4">
+</div>
+<div id="outline-container-org5b626b3" class="outline-3">
+<h3 id="org5b626b3"><span class="section-number-3">4.1</span> Dependencies</h3>
+<div class="outline-text-3" id="text-4-1">
+<p>
+The following dependancies are required to run the door node software with
+hardware emulating stubs, the control server and the GUI server.
+</p>
+
 <ul class="org-ul">
 <li>python &gt;= 3.7</li>
 <li>python-requests</li>
 <li>python-flask</li>
 <li>python-flask-socketio</li>
 <li>python-gevent</li>
+<li>python-socketio</li>
+</ul>
+
+<p>
+In order to run the door node software with hardware present, the following
+additional Python packages are required:
+</p>
+
+<ul class="org-ul">
+<li>rpi.gpio</li>
+<li>mfrc522</li>
+<li>adafruit-circuitpython-vl53l0x</li>
+<li>smbus</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orgc8a9919" class="outline-3">
-<h3 id="orgc8a9919"><span class="section-number-3">3.2</span> Control Server</h3>
-<div class="outline-text-3" id="text-3-2">
+
+<div id="outline-container-org95d8a26" class="outline-3">
+<h3 id="org95d8a26"><span class="section-number-3">4.2</span> Control Server</h3>
+<div class="outline-text-3" id="text-4-2">
 <p>
 You will need to run two separate processes.
 </p>
@@ -378,9 +423,9 @@ Control Server. It can also be used to view access logs.
 </div>
 </div>
 </div>
-<div id="outline-container-orgb4d5046" class="outline-3">
-<h3 id="orgb4d5046"><span class="section-number-3">3.3</span> Door Node</h3>
-<div class="outline-text-3" id="text-3-3">
+<div id="outline-container-org4503f53" class="outline-3">
+<h3 id="org4503f53"><span class="section-number-3">4.3</span> Door Node</h3>
+<div class="outline-text-3" id="text-4-3">
 <div class="org-src-container">
 <pre class="src src-sh">cd src
 ./door_node_controller.py
@@ -390,27 +435,27 @@ Control Server. It can also be used to view access logs.
 </div>
 </div>
 
-<div id="outline-container-orgea9f989" class="outline-2">
-<h2 id="orgea9f989"><span class="section-number-2">4</span> Group Contributions</h2>
-<div class="outline-text-2" id="text-4">
+<div id="outline-container-org0eaadf7" class="outline-2">
+<h2 id="org0eaadf7"><span class="section-number-2">5</span> Group Contributions</h2>
+<div class="outline-text-2" id="text-5">
 </div>
-<div id="outline-container-org8221187" class="outline-3">
-<h3 id="org8221187"><span class="section-number-3">4.1</span> Sam</h3>
-<div class="outline-text-3" id="text-4-1">
+<div id="outline-container-orga65fdb7" class="outline-3">
+<h3 id="orga65fdb7"><span class="section-number-3">5.1</span> Sam</h3>
+<div class="outline-text-3" id="text-5-1">
 <ul class="org-ul">
 <li>Submit deliverables</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org37a61c1" class="outline-3">
-<h3 id="org37a61c1"><span class="section-number-3">4.2</span> Sunny</h3>
+<div id="outline-container-org842b57c" class="outline-3">
+<h3 id="org842b57c"><span class="section-number-3">5.2</span> Sunny</h3>
 </div>
-<div id="outline-container-org80bbf80" class="outline-3">
-<h3 id="org80bbf80"><span class="section-number-3">4.3</span> Mario</h3>
+<div id="outline-container-orgd0c29dd" class="outline-3">
+<h3 id="orgd0c29dd"><span class="section-number-3">5.3</span> Mario</h3>
 </div>
-<div id="outline-container-org187c8bb" class="outline-3">
-<h3 id="org187c8bb"><span class="section-number-3">4.4</span> Morgan</h3>
-<div class="outline-text-3" id="text-4-4">
+<div id="outline-container-org393a236" class="outline-3">
+<h3 id="org393a236"><span class="section-number-3">5.4</span> Morgan</h3>
+<div class="outline-text-3" id="text-5-4">
 <ul class="org-ul">
 <li>Meeting Secretary</li>
 <li>Server hosting
@@ -421,8 +466,8 @@ Control Server. It can also be used to view access logs.
 </ul>
 </div>
 <ol class="org-ol">
-<li><a id="org539911f"></a>Code Contributions<br />
-<div class="outline-text-4" id="text-4-4-1">
+<li><a id="org5c3ae59"></a>Code Contributions<br />
+<div class="outline-text-4" id="text-5-4-1">
 <ul class="org-ul">
 <li>Control Server control flow</li>
 <li>Control Server &amp; Door Node testing and debugging</li>
@@ -435,13 +480,13 @@ Control Server. It can also be used to view access logs.
 </div>
 </div>
 
-<div id="outline-container-org33b2fb7" class="outline-2">
-<h2 id="org33b2fb7"><span class="section-number-2">5</span> Style Guide</h2>
-<div class="outline-text-2" id="text-5">
+<div id="outline-container-org7a214b0" class="outline-2">
+<h2 id="org7a214b0"><span class="section-number-2">6</span> Style Guide</h2>
+<div class="outline-text-2" id="text-6">
 </div>
-<div id="outline-container-orgc839915" class="outline-3">
-<h3 id="orgc839915"><span class="section-number-3">5.1</span> Terminology</h3>
-<div class="outline-text-3" id="text-5-1">
+<div id="outline-container-org7e23fcf" class="outline-3">
+<h3 id="org7e23fcf"><span class="section-number-3">6.1</span> Terminology</h3>
+<div class="outline-text-3" id="text-6-1">
 <p>
 To keep a consistent style please use the following terms. No synonyms please
 </p>

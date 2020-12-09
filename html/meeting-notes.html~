@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-12-09 Wed 04:10 -->
+<!-- 2020-12-03 Thu 19:54 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Meeting Notes</title>
@@ -247,29 +247,29 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org5fa80ff">1. Weekly Meeting Guidelines</a></li>
-<li><a href="#orgf167a25">2. Project Meeting Notes</a>
+<li><a href="#org78e2d08">1. Weekly Meeting Guidelines</a></li>
+<li><a href="#org1d5fa01">2. Project Meeting Notes</a>
 <ul>
-<li><a href="#org32bec59">2.1. Meeting <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-12-08 Tue&gt;</span></span></a></li>
-<li><a href="#orga2c8081">2.2. Meeting <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-12-03 Thu 09:30&gt;&#x2013;&lt;2020-12-03 Thu 11:30&gt;</span></span></a></li>
-<li><a href="#orge755db3">2.3. Meeting <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-11-27 Fri 14:30&gt;</span></span></a></li>
-<li><a href="#org1397bd6">2.4. Meeting <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-11-24 Tue 09:30&gt;</span></span></a></li>
-<li><a href="#org2cc4cb8">2.5. Meeting 9 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-10-28 Wed 18:00&gt;&#x2013;&lt;2020-10-28 Wed 22:00&gt;</span></span></a></li>
-<li><a href="#org09371b1">2.6. Meeting 8 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-10-20 Tue 09:30&gt;</span></span></a></li>
-<li><a href="#orgc4f51de">2.7. Meeting 7 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-10-13 Tue 09:30&gt;</span></span></a></li>
-<li><a href="#org89e77d2">2.8. Meeting 6 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-10-06 Tue 09:30&gt;&#x2013;&lt;2020-10-06 Tue 10:10&gt;</span></span></a></li>
-<li><a href="#orgb8450c4">2.9. Meeting 5 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-10-01 Thu 08:30&gt;&#x2013;&lt;2020-10-01 Thu 10:15&gt;</span></span></a></li>
-<li><a href="#orgdafc1ab">2.10. Meeting 4 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-09-29 Tue 09:30&gt;&#x2013;&lt;2020-09-29 Tue 11:30&gt;</span></span></a></li>
-<li><a href="#org4356400">2.11. Meeting 3 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-09-22 Tue 09:30&gt;&#x2013;&lt;2020-09-22 Tue 11:00&gt;</span></span></a></li>
-<li><a href="#org3d022a0">2.12. Meeting 2 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-09-18 Fri 10:00&gt;&#x2013;&lt;2020-09-18 Fri 12:20&gt;</span></span></a></li>
-<li><a href="#org79669d8">2.13. Meeting 1 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-09-17 Thu 10:30&gt;&#x2013;&lt;2020-09-17 Thu 11:30&gt;</span></span></a></li>
+<li><a href="#orgd0413de">2.1. Meeting <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-12-08 Tue&gt;</span></span></a></li>
+<li><a href="#orga73c7b8">2.2. Meeting <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-12-03 Thu 09:30&gt;&#x2013;&lt;2020-12-03 Thu 11:30&gt;</span></span></a></li>
+<li><a href="#orgb1a62d6">2.3. Meeting <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-11-27 Fri 14:30&gt;</span></span></a></li>
+<li><a href="#org9f776de">2.4. Meeting <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-11-24 Tue 09:30&gt;</span></span></a></li>
+<li><a href="#org58d5f53">2.5. Meeting 9 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-10-28 Wed 18:00&gt;&#x2013;&lt;2020-10-28 Wed 22:00&gt;</span></span></a></li>
+<li><a href="#orgc2c3fb0">2.6. Meeting 8 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-10-20 Tue 09:30&gt;</span></span></a></li>
+<li><a href="#org8402b0a">2.7. Meeting 7 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-10-13 Tue 09:30&gt;</span></span></a></li>
+<li><a href="#org62fab17">2.8. Meeting 6 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-10-06 Tue 09:30&gt;&#x2013;&lt;2020-10-06 Tue 10:10&gt;</span></span></a></li>
+<li><a href="#org7d5ec2b">2.9. Meeting 5 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-10-01 Thu 08:30&gt;&#x2013;&lt;2020-10-01 Thu 10:15&gt;</span></span></a></li>
+<li><a href="#org3fa882e">2.10. Meeting 4 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-09-29 Tue 09:30&gt;&#x2013;&lt;2020-09-29 Tue 11:30&gt;</span></span></a></li>
+<li><a href="#org0fbc581">2.11. Meeting 3 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-09-22 Tue 09:30&gt;&#x2013;&lt;2020-09-22 Tue 11:00&gt;</span></span></a></li>
+<li><a href="#orge712c41">2.12. Meeting 2 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-09-18 Fri 10:00&gt;&#x2013;&lt;2020-09-18 Fri 12:20&gt;</span></span></a></li>
+<li><a href="#orgbf726ea">2.13. Meeting 1 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-09-17 Thu 10:30&gt;&#x2013;&lt;2020-09-17 Thu 11:30&gt;</span></span></a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org5fa80ff" class="outline-2">
-<h2 id="org5fa80ff"><span class="section-number-2">1</span> Weekly Meeting Guidelines</h2>
+<div id="outline-container-org78e2d08" class="outline-2">
+<h2 id="org78e2d08"><span class="section-number-2">1</span> Weekly Meeting Guidelines</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li>Happens every Tuesday @ 09:30</li>
@@ -288,16 +288,16 @@ of time due to midterms or travel)</li>
 </ol>
 </div>
 </div>
-<div id="outline-container-orgf167a25" class="outline-2">
-<h2 id="orgf167a25"><span class="section-number-2">2</span> Project Meeting Notes</h2>
+<div id="outline-container-org1d5fa01" class="outline-2">
+<h2 id="org1d5fa01"><span class="section-number-2">2</span> Project Meeting Notes</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-org32bec59" class="outline-3">
-<h3 id="org32bec59"><span class="section-number-3">2.1</span> Meeting <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-12-08 Tue&gt;</span></span></h3>
+<div id="outline-container-orgd0413de" class="outline-3">
+<h3 id="orgd0413de"><span class="section-number-3">2.1</span> Meeting <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-12-08 Tue&gt;</span></span></h3>
 <div class="outline-text-3" id="text-2-1">
 </div>
 <ol class="org-ol">
-<li><a id="org5b44869"></a>Agenda<br />
+<li><a id="org23e0754"></a>Agenda<br />
 <div class="outline-text-4" id="text-2-1-1">
 <ul class="org-ul">
 <li>review final report</li>
@@ -306,8 +306,8 @@ of time due to midterms or travel)</li>
 </li>
 </ol>
 </div>
-<div id="outline-container-orga2c8081" class="outline-3">
-<h3 id="orga2c8081"><span class="section-number-3">2.2</span> Meeting <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-12-03 Thu 09:30&gt;&#x2013;&lt;2020-12-03 Thu 11:30&gt;</span></span></h3>
+<div id="outline-container-orga73c7b8" class="outline-3">
+<h3 id="orga73c7b8"><span class="section-number-3">2.2</span> Meeting <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-12-03 Thu 09:30&gt;&#x2013;&lt;2020-12-03 Thu 11:30&gt;</span></span></h3>
 <div class="outline-text-3" id="text-2-2">
 <ul class="org-ul">
 <li>determined timeline for final report</li>
@@ -315,12 +315,12 @@ of time due to midterms or travel)</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orge755db3" class="outline-3">
-<h3 id="orge755db3"><span class="section-number-3">2.3</span> Meeting <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-11-27 Fri 14:30&gt;</span></span></h3>
+<div id="outline-container-orgb1a62d6" class="outline-3">
+<h3 id="orgb1a62d6"><span class="section-number-3">2.3</span> Meeting <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-11-27 Fri 14:30&gt;</span></span></h3>
 <div class="outline-text-3" id="text-2-3">
 </div>
 <ol class="org-ol">
-<li><a id="orgab1de87"></a>To be done for this meeting<br />
+<li><a id="orgc8779bb"></a>To be done for this meeting<br />
 <div class="outline-text-4" id="text-2-3-1">
 <ul class="org-ul">
 <li>GUI started</li>
@@ -332,12 +332,12 @@ of time due to midterms or travel)</li>
 </li>
 </ol>
 </div>
-<div id="outline-container-org1397bd6" class="outline-3">
-<h3 id="org1397bd6"><span class="section-number-3">2.4</span> Meeting <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-11-24 Tue 09:30&gt;</span></span></h3>
+<div id="outline-container-org9f776de" class="outline-3">
+<h3 id="org9f776de"><span class="section-number-3">2.4</span> Meeting <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-11-24 Tue 09:30&gt;</span></span></h3>
 <div class="outline-text-3" id="text-2-4">
 </div>
 <ol class="org-ol">
-<li><a id="org1506feb"></a>To be done for this meeting<br />
+<li><a id="orgf8b8ebf"></a>To be done for this meeting<br />
 <div class="outline-text-4" id="text-2-4-1">
 <ul class="org-ul">
 <li>Control Server Code (Morgan + Sunny)
@@ -354,28 +354,28 @@ of time due to midterms or travel)</li>
 </li>
 </ol>
 </div>
-<div id="outline-container-org2cc4cb8" class="outline-3">
-<h3 id="org2cc4cb8"><span class="section-number-3">2.5</span> Meeting 9 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-10-28 Wed 18:00&gt;&#x2013;&lt;2020-10-28 Wed 22:00&gt;</span></span></h3>
+<div id="outline-container-org58d5f53" class="outline-3">
+<h3 id="org58d5f53"><span class="section-number-3">2.5</span> Meeting 9 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-10-28 Wed 18:00&gt;&#x2013;&lt;2020-10-28 Wed 22:00&gt;</span></span></h3>
 <div class="outline-text-3" id="text-2-5">
 </div>
 <ol class="org-ol">
-<li><a id="orgfc4965a"></a>Minutes<br />
+<li><a id="orgd0ba621"></a>Minutes<br />
 <div class="outline-text-4" id="text-2-5-1">
 <p>
 Worked on design document.
 </p>
 </div>
 </li>
-<li><a id="orgece438f"></a>TODOs<br />
+<li><a id="orgbf6c6e2"></a>TODOs<br />
 <ol class="org-ol">
-<li><a id="org7660b76"></a>Everyone<br />
+<li><a id="org084dbb9"></a>Everyone<br />
 <div class="outline-text-5" id="text-2-5-2-1">
 <ul class="org-ul">
 <li>Write hardware stubs for your hardware</li>
 </ul>
 </div>
 </li>
-<li><a id="org20d5551"></a>Sam<br />
+<li><a id="org4686154"></a>Sam<br />
 <div class="outline-text-5" id="text-2-5-2-2">
 <ul class="org-ul">
 <li>Make electronic-lock-schematic.png slightly prettier</li>
@@ -385,7 +385,7 @@ Worked on design document.
 </ul>
 </div>
 </li>
-<li><a id="org8dd881d"></a>Mario<br />
+<li><a id="org0dd2a48"></a>Mario<br />
 <div class="outline-text-5" id="text-2-5-2-3">
 <ul class="org-ul">
 <li>Flow chart stuff
@@ -402,7 +402,7 @@ of tasks or behaviors) instead of a list of parts
 </ul>
 </div>
 <ol class="org-ol">
-<li><a id="orge7da233"></a>Sam's comment that might help you<br />
+<li><a id="org83b0d11"></a>Sam's comment that might help you<br />
 <div class="outline-text-6" id="text-2-5-2-3-1">
 <p>
 Functional requirements:
@@ -427,7 +427,7 @@ not within an appropriate range of the temperature sensor.</li>
 </li>
 </ol>
 </li>
-<li><a id="org3c9a54f"></a>Sunny<br />
+<li><a id="orgcc23ad6"></a>Sunny<br />
 <div class="outline-text-5" id="text-2-5-2-4">
 <ul class="org-ul">
 <li>Please write a description of the database schema</li>
@@ -441,12 +441,12 @@ not within an appropriate range of the temperature sensor.</li>
 </li>
 </ol>
 </div>
-<div id="outline-container-org09371b1" class="outline-3">
-<h3 id="org09371b1"><span class="section-number-3">2.6</span> Meeting 8 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-10-20 Tue 09:30&gt;</span></span></h3>
+<div id="outline-container-orgc2c3fb0" class="outline-3">
+<h3 id="orgc2c3fb0"><span class="section-number-3">2.6</span> Meeting 8 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-10-20 Tue 09:30&gt;</span></span></h3>
 <div class="outline-text-3" id="text-2-6">
 </div>
 <ol class="org-ol">
-<li><a id="org5247805"></a>Agenda<br />
+<li><a id="orgc064a50"></a>Agenda<br />
 <div class="outline-text-4" id="text-2-6-1">
 <ul class="org-ul">
 <li>Design Peer Review Integration</li>
@@ -455,12 +455,12 @@ not within an appropriate range of the temperature sensor.</li>
 </li>
 </ol>
 </div>
-<div id="outline-container-orgc4f51de" class="outline-3">
-<h3 id="orgc4f51de"><span class="section-number-3">2.7</span> Meeting 7 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-10-13 Tue 09:30&gt;</span></span></h3>
+<div id="outline-container-org8402b0a" class="outline-3">
+<h3 id="org8402b0a"><span class="section-number-3">2.7</span> Meeting 7 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-10-13 Tue 09:30&gt;</span></span></h3>
 <div class="outline-text-3" id="text-2-7">
 </div>
 <ol class="org-ol">
-<li><a id="org6ef0511"></a>Minutes<br />
+<li><a id="orgecc1211"></a>Minutes<br />
 <div class="outline-text-4" id="text-2-7-1">
 <ul class="org-ul">
 <li>Sam demoed his ThingSpeak code (very cool, much wow)</li>
@@ -468,14 +468,14 @@ not within an appropriate range of the temperature sensor.</li>
 </ul>
 </div>
 </li>
-<li><a id="org238844d"></a>Project Design Roles<br />
+<li><a id="orgafbe8f4"></a>Project Design Roles<br />
 <div class="outline-text-4" id="text-2-7-2">
 <ul class="org-ul">
 <li>flow chart for testing</li>
 </ul>
 </div>
 <ol class="org-ol">
-<li><a id="org32cd856"></a>Sam<br />
+<li><a id="org864c6f7"></a>Sam<br />
 <div class="outline-text-5" id="text-2-7-2-1">
 <ul class="org-ul">
 <li>demo plan 3</li>
@@ -493,7 +493,7 @@ not within an appropriate range of the temperature sensor.</li>
 </ul>
 </div>
 </li>
-<li><a id="org27bd808"></a>Sunny<br />
+<li><a id="org0a208a7"></a>Sunny<br />
 <div class="outline-text-5" id="text-2-7-2-2">
 <ul class="org-ul">
 <li>Problem statement</li>
@@ -505,7 +505,7 @@ not within an appropriate range of the temperature sensor.</li>
 </ul>
 </div>
 </li>
-<li><a id="org7adf68e"></a>Mario<br />
+<li><a id="orgb4f95b8"></a>Mario<br />
 <div class="outline-text-5" id="text-2-7-2-3">
 <ul class="org-ul">
 <li>NFC
@@ -519,7 +519,7 @@ not within an appropriate range of the temperature sensor.</li>
 </ul>
 </div>
 </li>
-<li><a id="org203450b"></a>Morgan<br />
+<li><a id="org1c4a67c"></a>Morgan<br />
 <div class="outline-text-5" id="text-2-7-2-4">
 <ul class="org-ul">
 <li>motor
@@ -537,12 +537,12 @@ not within an appropriate range of the temperature sensor.</li>
 </li>
 </ol>
 </div>
-<div id="outline-container-org89e77d2" class="outline-3">
-<h3 id="org89e77d2"><span class="section-number-3">2.8</span> Meeting 6 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-10-06 Tue 09:30&gt;&#x2013;&lt;2020-10-06 Tue 10:10&gt;</span></span></h3>
+<div id="outline-container-org62fab17" class="outline-3">
+<h3 id="org62fab17"><span class="section-number-3">2.8</span> Meeting 6 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-10-06 Tue 09:30&gt;&#x2013;&lt;2020-10-06 Tue 10:10&gt;</span></span></h3>
 <div class="outline-text-3" id="text-2-8">
 </div>
 <ol class="org-ol">
-<li><a id="orgbe53469"></a>Minutes<br />
+<li><a id="orgf0d0987"></a>Minutes<br />
 <div class="outline-text-4" id="text-2-8-1">
 <ul class="org-ul">
 <li>preliminary project design discussions</li>
@@ -551,34 +551,34 @@ not within an appropriate range of the temperature sensor.</li>
 </li>
 </ol>
 </div>
-<div id="outline-container-orgb8450c4" class="outline-3">
-<h3 id="orgb8450c4"><span class="section-number-3">2.9</span> Meeting 5 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-10-01 Thu 08:30&gt;&#x2013;&lt;2020-10-01 Thu 10:15&gt;</span></span></h3>
+<div id="outline-container-org7d5ec2b" class="outline-3">
+<h3 id="org7d5ec2b"><span class="section-number-3">2.9</span> Meeting 5 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-10-01 Thu 08:30&gt;&#x2013;&lt;2020-10-01 Thu 10:15&gt;</span></span></h3>
 <div class="outline-text-3" id="text-2-9">
 <ul class="org-ul">
 <li>Reviewed proposal feedback and made changes</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orgdafc1ab" class="outline-3">
-<h3 id="orgdafc1ab"><span class="section-number-3">2.10</span> Meeting 4 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-09-29 Tue 09:30&gt;&#x2013;&lt;2020-09-29 Tue 11:30&gt;</span></span></h3>
+<div id="outline-container-org3fa882e" class="outline-3">
+<h3 id="org3fa882e"><span class="section-number-3">2.10</span> Meeting 4 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-09-29 Tue 09:30&gt;&#x2013;&lt;2020-09-29 Tue 11:30&gt;</span></span></h3>
 <div class="outline-text-3" id="text-2-10">
 </div>
 <ol class="org-ol">
-<li><a id="org569c020"></a>Agenda<br />
+<li><a id="orgc5b725c"></a>Agenda<br />
 <div class="outline-text-4" id="text-2-10-1">
 <ul class="org-ul">
 <li>Review proposal draft together</li>
 </ul>
 </div>
 </li>
-<li><a id="org9719cf4"></a>Minutes<br />
+<li><a id="org98976d8"></a>Minutes<br />
 <div class="outline-text-4" id="text-2-10-2">
 <ul class="org-ul">
 <li>We reviewed the proposal and made some changes</li>
 </ul>
 </div>
 </li>
-<li><a id="orgb7aecfa"></a>TODOs<br />
+<li><a id="org230dbc3"></a>TODOs<br />
 <div class="outline-text-4" id="text-2-10-3">
 <ul class="org-ul">
 <li>Everyone: Touch up proposal as we discussed</li>
@@ -589,12 +589,12 @@ deployment diagram</li>
 </li>
 </ol>
 </div>
-<div id="outline-container-org4356400" class="outline-3">
-<h3 id="org4356400"><span class="section-number-3">2.11</span> Meeting 3 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-09-22 Tue 09:30&gt;&#x2013;&lt;2020-09-22 Tue 11:00&gt;</span></span></h3>
+<div id="outline-container-org0fbc581" class="outline-3">
+<h3 id="org0fbc581"><span class="section-number-3">2.11</span> Meeting 3 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-09-22 Tue 09:30&gt;&#x2013;&lt;2020-09-22 Tue 11:00&gt;</span></span></h3>
 <div class="outline-text-3" id="text-2-11">
 </div>
 <ol class="org-ol">
-<li><a id="orga8c7bda"></a>Agenda<br />
+<li><a id="org080d2eb"></a>Agenda<br />
 <div class="outline-text-4" id="text-2-11-1">
 <ul class="org-ul">
 <li>Research project concepts
@@ -604,14 +604,14 @@ deployment diagram</li>
 </ul>
 </div>
 </li>
-<li><a id="org2b9294a"></a>Completed<br />
+<li><a id="org3702a6b"></a>Completed<br />
 <div class="outline-text-4" id="text-2-11-2">
 <ul class="org-ul">
 <li>Finalized Project Idea</li>
 </ul>
 </div>
 </li>
-<li><a id="org2199e0c"></a>TODOs<br />
+<li><a id="org077b69c"></a>TODOs<br />
 <div class="outline-text-4" id="text-2-11-3">
 <ul class="org-ul">
 <li>Everyone: Review proposal draft posted on Monday and bring written
@@ -621,18 +621,18 @@ comments to next meeting</li>
 </ul>
 </div>
 <ol class="org-ol">
-<li><a id="orgab34211"></a>Proposal<br />
+<li><a id="org6797cb6"></a>Proposal<br />
 <ol class="org-ol">
-<li><a id="orgbd2b457"></a>Timeline<br />
+<li><a id="org8d70552"></a>Timeline<br />
 <ol class="org-ol">
-<li><a id="org299644b"></a>Content<br />
+<li><a id="org4161f7d"></a>Content<br />
 <div class="outline-text-7" id="text-2-11-3-1-1-1">
 <p>
 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-09-27 Sun 12:00&gt;</span></span>
 </p>
 </div>
 </li>
-<li><a id="orgde30d30"></a>Latex formatting + send PDF to slack<br />
+<li><a id="orgf8963d5"></a>Latex formatting + send PDF to slack<br />
 <div class="outline-text-7" id="text-2-11-3-1-1-2">
 <p>
 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-09-28 Mon&gt;</span></span>
@@ -641,7 +641,7 @@ comments to next meeting</li>
 </li>
 </ol>
 </li>
-<li><a id="org2c8af11"></a>Sunny<br />
+<li><a id="org8f794ae"></a>Sunny<br />
 <div class="outline-text-6" id="text-2-11-3-1-2">
 <ul class="org-ul">
 <li>Executive Summary
@@ -655,7 +655,7 @@ comments to next meeting</li>
 </ul>
 </div>
 </li>
-<li><a id="org3ff5a4a"></a>Morgan<br />
+<li><a id="org7613e77"></a>Morgan<br />
 <div class="outline-text-6" id="text-2-11-3-1-3">
 <ul class="org-ul">
 <li>deployment diagram</li>
@@ -664,7 +664,7 @@ comments to next meeting</li>
 </ul>
 </div>
 </li>
-<li><a id="orgaa98488"></a>Sam<br />
+<li><a id="org656a289"></a>Sam<br />
 <div class="outline-text-6" id="text-2-11-3-1-4">
 <ul class="org-ul">
 <li>Test Plan</li>
@@ -673,7 +673,7 @@ comments to next meeting</li>
 </ul>
 </div>
 </li>
-<li><a id="orgdef89b3"></a>Mario<br />
+<li><a id="orgd849ee5"></a>Mario<br />
 <div class="outline-text-6" id="text-2-11-3-1-5">
 <ul class="org-ul">
 <li>proposed solution
@@ -691,12 +691,12 @@ comments to next meeting</li>
 </li>
 </ol>
 </div>
-<div id="outline-container-org3d022a0" class="outline-3">
-<h3 id="org3d022a0"><span class="section-number-3">2.12</span> Meeting 2 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-09-18 Fri 10:00&gt;&#x2013;&lt;2020-09-18 Fri 12:20&gt;</span></span></h3>
+<div id="outline-container-orge712c41" class="outline-3">
+<h3 id="orge712c41"><span class="section-number-3">2.12</span> Meeting 2 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-09-18 Fri 10:00&gt;&#x2013;&lt;2020-09-18 Fri 12:20&gt;</span></span></h3>
 <div class="outline-text-3" id="text-2-12">
 </div>
 <ol class="org-ol">
-<li><a id="org505814c"></a>Agenda<br />
+<li><a id="org3f5afd8"></a>Agenda<br />
 <div class="outline-text-4" id="text-2-12-1">
 <ul class="org-ul">
 <li>Discuss Project Ideas</li>
@@ -704,7 +704,7 @@ comments to next meeting</li>
 </ul>
 </div>
 </li>
-<li><a id="org72bcb46"></a>Completed<br />
+<li><a id="org536046c"></a>Completed<br />
 <div class="outline-text-4" id="text-2-12-2">
 <ul class="org-ul">
 <li>Team contract</li>
@@ -714,8 +714,8 @@ comments to next meeting</li>
 </li>
 </ol>
 </div>
-<div id="outline-container-org79669d8" class="outline-3">
-<h3 id="org79669d8"><span class="section-number-3">2.13</span> Meeting 1 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-09-17 Thu 10:30&gt;&#x2013;&lt;2020-09-17 Thu 11:30&gt;</span></span></h3>
+<div id="outline-container-orgbf726ea" class="outline-3">
+<h3 id="orgbf726ea"><span class="section-number-3">2.13</span> Meeting 1 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-09-17 Thu 10:30&gt;&#x2013;&lt;2020-09-17 Thu 11:30&gt;</span></span></h3>
 <div class="outline-text-3" id="text-2-13">
 <ul class="org-ul">
 <li>Assigned Morgan "Secretary" role for weekly meetings</li>
@@ -728,7 +728,7 @@ comments to next meeting</li>
 </ul>
 </div>
 <ol class="org-ol">
-<li><a id="org14a223b"></a>To be completed before meeting 2<br />
+<li><a id="orgbd71209"></a>To be completed before meeting 2<br />
 <div class="outline-text-4" id="text-2-13-1">
 <ul class="org-ul">
 <li>All members: Review
