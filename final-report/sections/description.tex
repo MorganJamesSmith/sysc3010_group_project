@@ -1,4 +1,5 @@
-% Copyright (C) 2020 by Morgan Smith and Sunjeevani Pujari
+% Copyright (C) 2020 by Morgan Smith
+% Copyright (C) 2020 by Sunjeevani Pujari
 
 \subsection{Motivation}
 
@@ -6,13 +7,12 @@ Our access control system is designed to help employers look after the safety
 of their employees.  This system provides employers with an access control
 system that grants access to the workplace based on a security badge and
 measured body temperature.  Additionally, our system helps building owners
-adhere to social distancing guidelines implemented by the government by
-tracking the number of people on the premises and restricting users from
-entering the building when the maximum threshold for the building has been
-attained.  Although not in the scope of the project, our system would work with
-employers to comply with their standards and constraints to provide their
-employees access to a COVID-19 free workplace.  Our system aims to enable a
-COVID-19 free work environment.
+adhere to social distancing guidelines by tracking the number of people on the
+premises and restricting users from entering the building when the maximum
+threshold for the building has been attained.  Although not in the scope of the
+project, our system would work with employers to comply with their standards
+and constraints to provide their employees access to a COVID-19 free workplace.
+Our system aims to enable a COVID-19 free work environment.
 
 
 \subsection{Design}
@@ -20,13 +20,18 @@ COVID-19 free work environment.
 Our product is made up of two parts: the control server, and the door nodes.
 Our product interacts with two types of actors: Operators and Users.
 
-
 The control server maintains a database of door nodes, user profiles, and
-interaction logs.  Operators can create and modify user profiles and system
-settings (such as the maximum occupancy limit and the maximum allowable body
-temperature).  When a user attempts to use a door node, their identity is
-checked against their user profile.  Each interaction with a door node is
-recorded in a user log.
+interaction logs.  The control server also runs a GUI that can be used to
+interact with the system. This GUI can be used to modify user profiles and the
+list of door nodes. The GUI can also be used to modify system settings such as
+the maximum occupancy limit and the maximum allowable body temperature.
+
+When a user attempts to use a door node, their identity is checked against
+their user profile.  Each interaction with a door node is recorded in a user
+log.
+
+The design is further detailed in the class diagrams found in appendix
+\ref{sec:appendix}.
 
 \subsection{Functional Requirements}
 
