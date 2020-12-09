@@ -30,17 +30,48 @@ know how many people are in the building.
 The central server also provides a GUI available to the building’s security
 team.
 
+\subsection{Repository Roadmap}
+
+This repository contains all of the files related to our project. Our proposal,
+design document and final report are located in the proposal, design and
+final-report folders respectively. All of our source code is located in the src
+folder.
+
+Within the src folder, several top level programs are located such as
+door\_node\_controller.py and control\_server.py. Aditional scripts are located
+in subfolders of the src folder such as hardware drivers in the hardware folder,
+GUI related code in the gui folder, ThingSpeak and messages parsing related
+code in the communication folder and hardware stubs in the stub folder.
+
+The test subfolder of the src directory of our repository contains all of our
+test code for our end to end and testing demos.
+
 \subsection{How to run the code}
 
 \subsubsection{Dependencies}
 
-\begin{enumerate}
+The following dependancies are required to run the door node software with
+hardware emulating stubs, the control server and the GUI server.
+
+\begin{itemize}
     \item python $\geq$ 3.7
     \item python-requests
     \item python-flask
     \item python-flask-socketio
     \item python-gevent
-\end{enumerate}
+    \item python-socketio
+\end{itemize}
+
+\noindent
+In order to run the door node software with hardware present, the following
+additional Python packages are required:
+
+\begin{itemize}
+    \item rpi.gpio
+    \item mfrc522
+    \item adafruit-circuitpython-vl53l0x
+    \item smbus
+\end{itemize}
 
 \subsubsection{Control Server}
 
@@ -49,24 +80,24 @@ You will need to run two separate processes.
 \noindent
 The first is the Control Server which is responsible for the control logic.
 
-\begin{lstlisting}
+\begin{verbatim}
 cd src
 ./control_server.py
-\end{lstlisting}
+\end{verbatim}
 
 \noindent
 The second is the GUI which can be used to view and modify the settings of the
 Control Server. It can also be used to view access logs.
 
-\begin{lstlisting}
+\begin{verbatim}
 cd src
 ./gui/run_gui.py
-\end{lstlisting}
+\end{verbatim}
 
 \subsubsection{Door Node}
 
-\begin{lstlisting}
+\begin{verbatim}
 cd src
 ./door_node_controller.py
-\end{lstlisting}
+\end{verbatim}
 

@@ -43,13 +43,43 @@ server will know how many people are in the building.
 The central server also provides a GUI available to the building's security
 team.
 
+* Repository Roadmap
+
+This repository contains all of the files related to our project. Our proposal,
+design document and final report are located in the proposal, design and
+final-report folders respectively. All of our source code is located in the
+src folder.
+
+Within the src folder, several top level programs are located such as
+door_node_controller.py and control_server.py. Aditional scripts are located in
+subfolders of the src folder such as hardware drivers in the hardware folder,
+GUI related code in the gui folder, ThingSpeak and messages parsing related code
+in the communication folder and hardware stubs in the stub folder.
+
+The test subfolder of the src directory of our repository contains all of our
+test code for our end to end and testing demos.
+
 * How to run the code
 ** Dependencies
+
+The following dependancies are required to run the door node software with
+hardware emulating stubs, the control server and the GUI server.
+
 - python >= 3.7
 - python-requests
 - python-flask
 - python-flask-socketio
 - python-gevent
+- python-socketio
+
+In order to run the door node software with hardware present, the following
+additional Python packages are required:
+
+- rpi.gpio
+- mfrc522
+- adafruit-circuitpython-vl53l0x
+- smbus
+
 ** Control Server
 You will need to run two separate processes.
 
