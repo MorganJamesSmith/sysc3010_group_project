@@ -1,4 +1,4 @@
-% Copyright (C) 2020 by Morgan Smith
+% Copyright (C) 2020 by Morgan Smith and Sunjeevani Pujari
 
 \subsection{Motivation}
 
@@ -27,3 +27,20 @@ settings (such as the maximum occupancy limit and the maximum allowable body
 temperature).  When a user attempts to use a door node, their identity is
 checked against their user profile.  Each interaction with a door node is
 recorded in a user log.
+
+\subsection{Functional Requirements}
+
+The  functional requirements for the system are listed below:
+
+\begin{itemize}
+	\item Display a  light at the entrance if it is accepting people
+	\item Be equipped with a Near Field Communication (NFC) security badge
+	reader
+	\item Recognize employees based on their NFC security cards presented to
+	the reader 
+	\item Measure the body temperature of an employee trying to enter the work
+	premises 
+	\item Prevent access to employees with a fever
+	\item Track and limit the maximum number of people in the building and display a
+	light at the entrance when the building has acquired maximum threshold
+\end{itemize}
